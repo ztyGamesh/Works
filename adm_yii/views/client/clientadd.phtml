@@ -1,0 +1,291 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/client/client">广告主列表</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加广告主</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<form id="<?php echo $form['uid'] ? 'edit' : 'add' ?>" method="post"
+      action="/client/client<?php echo $form['uid'] ? 'edit' : 'add' ?>" class="form-horizontal"
+      novalidate="novalidate" onsubmit="return clientaddVilidate();">
+
+    <div style="width:100%;height:79px;padding-top: 10px">
+        <?php if (isset($form['error'])) { ?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <strong>错误信息：</strong> <?php echo $form['error']; ?>
+            </div>
+        <?php } ?>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告主名称:</label>
+        <div class="col-md-7">
+            <input type="text" name="name" id="name" class="form-control" check-type="required"
+                   value="<?php echo $form['name']; ?>">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">代理商名称:</label>
+        <div class="col-md-7">
+            <select name="agency" class="selectpicker form-control" data-live-search="true" data-size="8">
+                <option value="">无（直接客户）</option>
+                <?php foreach ($agencyList as $key => $val): ?>
+                    <option
+                        value="<?php echo $key ?>" <?php if ($row['agency'] == $key) echo 'selected="selected"' ?>><?php echo $val; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告主网址:</label>
+        <div class="col-md-7">
+            <input type="text" name="url" id="url" class="form-control" placeholder="请以http://或https://开头"
+                   value="<?php echo $row['url']; ?>">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">所属行业:</label>
+        <div class="col-md-7">
+            <select id="selF" class="form-control selectpicker dropdown" data-size="8">
+                <option>一级分类</option>
+            </select>
+        </div>
+        <div class="col-md-7 col-md-offset-3" style="margin-top: 10px">
+            <select id="selT" name="category" class="form-control selectpicker dropdown" data-size="8">
+                <option>二级分类</option>
+            </select>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">联系人:</label>
+        <div class="col-md-7">
+            <input type="text" name="linkman" id="linkman" class="form-control" check-type="required"
+                   value="<?php echo $row['linkman']; ?>">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">电话号码:</label>
+        <div class="col-md-7">
+            <input type="text" name="tel" id="tel" class="form-control" check-type="required"
+                   value="<?php echo $row['tel']; ?>">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group hidden">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">内部负责人:</label>
+        <div class="col-md-7">
+            <select name="duty_user" class="form-control selectpicker dropup" data-live-search="true">
+                <?php foreach ($userList as $key => $val): ?>
+                    <option
+                        value="<?php echo $key ?>" <?php if ($row['duty_user'] == $key) echo 'selected="selected"' ?>><?php echo $val; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label">备注信息:</label>
+        <div class="col-md-7">
+            <input type="text" name="info" id="info" class="form-control"
+                   value="<?php echo $row['info']; ?>">
+        </div>
+    </div>
+
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <button type="submit" class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </button>
+        </div>
+    </div>
+</form>
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicFooter.phtml');
+?>
+
+<script type="text/javascript">
+
+    checkActionAuth('/client/client', 2);
+    $('#name').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#name'), '广告主名称不能为空');
+        } else {
+            vaSuccess($('#name'));
+        }
+    });
+    $('#linkman').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#linkman'), '联系人不能为空');
+        } else {
+            vaSuccess($('#linkman'));
+        }
+    });
+    $('#url').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#url'), '广告主网址不能为空');
+        } else if (!vaIsUrl($(this).val())) {
+            vaError($('#url'), '广告主网址地址应以http://或者https://开头');
+        } else {
+            vaSuccess($('#url'));
+        }
+    });
+    $('#tel').blur(function () {
+        if (!vaIsNotNull($('#tel').val())) {
+            vaError($('#tel'), '请输入联系人手机号码');
+        } else if (!validatePhoneNum($('#tel').val())) {
+            vaError($('#tel'), '手机号码格式错误');
+        } else {
+            vaSuccess($('#tel'));
+        }
+    });
+    //校验规则：渠道不能空；手机号码可以空、校验格式；
+    function clientaddVilidate() {
+        $("#Deepleaper_loading").show();
+//        checkselT();
+        var name = $('#name');
+        var nameVal = name.val();
+        var linkman = $('#linkman');
+        var linkmanVal = linkman.val();
+        var tel = $('#tel');
+        var telVal = tel.val();
+        var url = $('#url');
+        var urlVal = url.val();
+        if (!vaIsNotNull(nameVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(name, '广告主名称不能为空');
+            return false;
+        } else if (!vaIsNotNull(urlVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(url, '广告主网址不能为空');
+            return false;
+        } else if (!vaIsUrl(urlVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(url, '广告主网址应以http://或者https://开头');
+            return false;
+        } else if (!vaIsNotNull(linkmanVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(linkman, '联系人不能为空');
+            return false;
+        } else if (!vaIsNotNull(telVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(tel, '请输入联系人手机号码');
+            return false;
+        } else if (!validatePhoneNum(telVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(tel, '手机号码格式错误');
+            return false;
+        } else {
+            $("#Deepleaper_loading").hide();
+            return checkFormValidByBackend();
+        }
+    }
+    function checkFormValidByBackend() {
+        var data = {
+            name: $('#name').val(),
+            agency: $('#agency').val(),
+            url: $('#url').val(),
+            category: $('#selT').val(),
+            linkman: $('#linkman').val(),
+            tel: $('#tel').val(),
+            info: $('#info').val()
+        };
+
+        var valid;
+
+        $.ajax({
+            url: '/client/checkAddOrEditClientFormValid',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            async: false,
+            success: function (ret) {
+                if (ret && ret.data) {
+                    if (ret.data.res) {
+                        // 验证成功
+                        valid = true;
+                    } else {
+                        // 验证失败
+                        valid = false;
+                        if ($('#selT').next().length) {
+                            $('#selT').next().remove();
+                        }
+
+                        var validObj = ['name', 'category', 'url'];
+                        for (var i = 0; i < validObj.length; i++) {
+                            vaSuccess($('[name=' + validObj[i] + ']'));
+                        }
+
+                        for (var key in ret.data.error) {
+                            vaError($('[name=' + key + ']'), ret.data.error[key]);
+                        }
+                    }
+                }
+            }
+        });
+        return valid;
+    }
+    $("#cancel").bind('click', function () {
+        window.location = '/client/client';
+    });
+    $(function () {
+        function objInit(obj) {
+            return $(obj).html("<option>请选择</option>");
+        }
+
+        var arrData =<?php echo $mediaclass_menu2;?>
+
+            $.each(arrData, function (pF) {
+                $("#selF").append("<option>" + pF + "</option>");
+            });
+
+        $("#selF").change(function () {
+            objInit("#selT");
+            objInit("#selC");
+            $.each(arrData, function (pF, pS) {
+                if ($("#selF option:selected").text() == pF) {
+                    //遍历数据增加品牌项
+                    $.each(pS, function (pT, pC) {
+                        $("#selT").append('<option value = ' + pC + '>' + pT + '</option>');
+                    });
+                    //品牌列表change事件
+                    $("#selT").change(function () {
+                        objInit("#selC");
+                        $.each(pS, function (pT, pC) {
+                            if ($("#selT option:selected").text() == pT) {
+                                $.each(pC.split(","), function () {
+                                    $("#selC").append('<option>' + this + '</option>');
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    });
+
+</script>

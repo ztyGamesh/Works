@@ -1,0 +1,2018 @@
+<!--内容合作数据 账户报表界面-->
+<?php
+/* @var $this yii\web\View */
+
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+
+<link rel="stylesheet" href="/css/application/dashboard/clientdashboard.css?v=20170504">
+<link rel="stylesheet" href="/css/application/dashboard/contentview.css">
+
+<!--日历插件-->
+<div class="toolbar">
+    <div class="container-fluid" style="margin: 20px 0;">
+        <div class="row">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <div class="input-group date dl-date-range-wrapper">
+                        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+                        <span class="caret dl-date-range-input-icon"></span>
+                    </div>
+                </div>
+                <div class="form-group download-table pull-right">
+                    <input type="button" class="form-control btn btn-default " value="下载报表" id="downloadTable1">
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="form-inline" role="form">
+                <div class="btn-group dl-custom-filter" role="group">
+                    <button type="button" class="btn dl-btn-primary dl-custom-filter-all active">全部</button>
+                    <div class="btn-group dl-custom-filter-custom" role="group">
+                        <select id="media_check_custom_select" class="selectpicker" data-width="100%"
+                                data-size="8" title="筛选媒体">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--显示汇总数据-->
+<div class="all_data" style="height: 130px" id="sumData">
+    <table>
+        <tr class="tr_n">
+            <th>日期</th>
+            <th>消费</th>
+            <th>媒体收入</th>
+            <th>列表页PV</th>
+            <th>列表页内容CTR</th>
+            <th>列表页广告CTR</th>
+            <th>详情页PV</th>
+            <th>详情页广告CTR</th>
+            <th>商品CTR</th>
+            <th>商品成交量</th>
+            <th>佣金</th>
+        </tr>
+        <tr class="tr_now" id="topNow">
+            <td info="time">-</td>
+            <td info="cost">-</td>
+            <td info="media_income">-</td>
+            <td info="list_pv">-</td>
+            <td info="list_content_ctr">-</td>
+            <td info="list_ad_ctr">-</td>
+            <td info="detail_pv">-</td>
+            <td info="detail_ad_ctr">-</td>
+            <td info="goods_ctr">-</td>
+            <td info="goods_vol">-</td>
+            <td info="payment">-</td>
+        </tr>
+        <tr class="tr_before" id="topBefore">
+            <td info="time">-</td>
+            <td info="cost">-</td>
+            <td info="media_income">-</td>
+            <td info="list_pv">-</td>
+            <td info="list_content_ctr">-</td>
+            <td info="list_ad_ctr">-</td>
+            <td info="detail_pv">-</td>
+            <td info="detail_ad_ctr">-</td>
+            <td info="goods_ctr">-</td>
+            <td info="goods_vol">-</td>
+            <td info="payment">-</td>
+        </tr>
+
+    </table>
+</div>
+
+<!--折线图-->
+<div id="echarsBox" style="width: 100%;height:400px;">
+    <!--    这里插入折线图的html代码-->
+    <!--折线图静态结构-->
+    <div id="admEchart">
+        <div id="main"></div>
+    </div>
+</div>
+
+<!--热门文章排行榜-->
+<div class="" style="margin-left: 0px;">
+    <div>
+        <div class="keyWords_title" style="width: 90%; display: inline-block;"><span id="now_keyWords">热门文章排行榜</span></div>
+        <div class="form-group download-table pull-right">
+            <input type="button" class="form-control btn btn-default " value="下载报表" id="downloadTable2">
+        </div>
+
+        <!--            <button class="down-excel" style="display: inline-block; float: right;">下载报表</button>-->
+    </div>
+    <div class="keyWords_table">
+        <table id="table" class="list-table"></table>
+    </div>
+</div>
+
+<!--热门商品排行榜-->
+<div class="" style="margin-top: 25px;">
+    <div>
+        <div class="keyWords_title" style="width: 90%; display: inline-block;"><span id="before_keyWords">热门商品排行榜</span></div>
+        <div class="form-group download-table pull-right">
+            <input type="button" class="form-control btn btn-default " value="下载报表" id="downloadTable3">
+        </div>
+    </div>
+    <div class="keyWords_table">
+        <table id="table_goods" class="list-table"></table>
+    </div>
+</div>
+
+<?php
+echo $this->renderFile('@app/views/layouts/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script src="/js/macarons.js"></script>
+
+<script>
+    //千位符处理函数，带小数的也可以处理
+    function splitK(num) {
+
+        var decimal = String(num).split('.')[1] || '';//小数部分
+        var tempArr = [];
+        var revNumArr = String(num).split('.')[0].split("").reverse();//倒序
+        for (i in revNumArr){
+            tempArr.push(revNumArr[i]);
+            if((i+1)%3 === 0 && i != revNumArr.length-1){
+                tempArr.push(',');
+            }
+        }
+        var zs = tempArr.reverse().join('');//整数部分
+        return decimal?zs+'.'+decimal:zs;
+    }
+</script>
+<!--初始化媒体-->
+<script>
+    mediaAPI(mediaAPIonSuccess);
+    function mediaAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            var option = '';
+            for (var key in data) {
+                option += '<option value="' + data[key].uid + '">' + data[key].name + '</option>';
+            }
+            $('#media_check_custom_select').html(option);
+        } else {
+            layer.msg(req.msg);
+        }
+    }
+
+    $("#media_check_custom_select").bind('change', function () {
+        sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+        chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessCurrent);
+        chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessPrev);
+    });
+
+    $('.dl-custom-filter-all').bind('click', function () {
+//        清空select内容
+        document.getElementById("media_check_custom_select").options.selectedIndex = 0;
+        $('#media_check_custom_select').selectpicker('refresh');
+
+        sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+        chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessCurrent);
+        chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessPrev);
+    });
+</script>
+
+<!--汇总数据 &&  折线图-->
+<script>
+    //  折线图功能
+    //    折线图js
+    //处理filter
+    if (!Array.prototype.filter) {
+        Array.prototype.filter = function (callback) {
+            var arr = [];
+            for (var i = 0, len = this.length; i < len; i++) {
+                if (callback(this[i], i)) {
+                    arr.push(this[i])
+                }
+            }
+            return arr;
+        }
+    }
+    //forEach处理
+    if (!Array.prototype.forEach) {
+        Array.prototype.forEach = function (callback) {
+            for (var i = 0, len = this.length; i < len; i++) {
+                callback(this[i], i);
+            }
+        }
+    }
+    //计算对比时间
+    function transfer(option) {
+        //获取查询时间毫秒
+        var curDateStart = new Date(option.start);
+        var curDateEnd = new Date(option.end);
+        var deltaTime;
+        //如果是同一天
+        if (option.start === option.end) {
+            deltaTime = 3600 * 24 * 1000;
+        } else {
+            //计算查询时间的时间间隔
+            deltaTime = curDateEnd.getTime() - curDateStart.getTime();
+        }
+        //计算上一个阶段的时间节点
+        var prevDateStart = curDateStart.getTime() - deltaTime;
+        var prevDateEnd = curDateEnd.getTime() - deltaTime;
+        //将上一个阶段的时间节点转化为时间对象
+        var preStart = new Date(prevDateStart);
+        var preEnd = new Date(prevDateEnd);
+
+        var preStartArr = [];
+        var preEndArr = [];
+        preStartArr[0] = preStart.getFullYear();
+        preStartArr[1] = preStart.getMonth() + 1;
+        preStartArr[2] = preStart.getDate();
+
+        preEndArr[0] = preEnd.getFullYear();
+        preEndArr[1] = preEnd.getMonth() + 1;
+        preEndArr[2] = preEnd.getDate();
+
+        //格式处理
+        for (var i = 0; i < 3; i++) {
+            preStartArr[i] = preStartArr[i].toString();
+            preEndArr[i] = preEndArr[i].toString();
+            if (preStartArr[i].length === 1) {
+                preStartArr[i] = '0' + preStartArr[i];
+            }
+            if (preEndArr[i].length === 1) {
+                preEndArr[i] = '0' + preEndArr[i];
+            }
+        }
+
+        //将结果包装成对象
+        return {
+            start: preStartArr.join('/'),
+            end: preEndArr.join('/')
+        };
+    }
+
+    function topRender(options, phase, time) {
+        var show;
+        if (phase) {
+            //current
+            show = document.getElementById('topNow');
+        } else {
+            //prev
+            show = document.getElementById('topBefore');
+        }
+        if (!options) {
+            for (var j = 0; j < show.children.length; j++) {
+                show.children[j].innerHTML = '-';
+            }
+        }
+        for (var j = 0; j < show.children.length; j++) {
+            var info = show.children[j].getAttribute('info');
+            if (info === 'time') {
+                if(time.length <= 10 ){
+                    // 不折行
+                    // 字体大
+                    show.children[j].innerHTML = time;
+                    $($("#topNow").children()[0]).css("fontSize","20px");
+                    $($("#topBefore").children()[0]).css("fontSize","12px");
+                } else {
+                    // 折行
+                    // 字体小
+                    var arr = time.split("至");
+                    var str = arr[0]+ "至" + "<br>" + arr[1];
+                    show.children[j].innerHTML = str;
+                    $($("#topNow").children()[0]).css("fontSize","10px");
+                    $($("#topBefore").children()[0]).css("fontSize","6px");
+                }
+            }
+            for (var k in options) {
+                if (k === info) {
+                    if(options[k]){
+                        show.children[j].innerHTML = splitK(options[k]) || '-';
+                    }else {
+                        show.children[j].innerHTML = options[k] || '-';
+                    }
+
+                }
+
+
+                if (info.indexOf('ctr') > -1) {
+
+                    if (show.children[j].innerHTML.indexOf('%') === -1) {
+
+                        if(show.children[j].innerHTML != '-'){
+                            show.children[j].innerHTML = (show.children[j].innerHTML*100).toFixed(2) + '%';
+                        }
+                        else {
+                            show.children[j].innerHTML += '%';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    var lastTime = new Object();
+    var nowTime = {
+        "start": moment().format('YYYY/MM/DD'),//刚进入页面时获取当前时间
+        "end": moment().format('YYYY/MM/DD')
+    };
+    nowTime = transfer(nowTime); //当前时间设定为昨天
+    lastTime = transfer(nowTime);//根据当前时间，获取前一天时间
+    var mediasessiontimeStart = window.sessionStorage.getItem('mediasessiontimeStart');
+    var mediasessiontimeEnd = window.sessionStorage.getItem('mediasessiontimeEnd');
+    var mediasessiontimeLastStart = window.sessionStorage.getItem('mediasessiontimeLastStart');
+    var mediasessiontimeLastEnd = window.sessionStorage.getItem('mediasessiontimeLastEnd');
+
+    if(mediasessiontimeStart != null){
+        nowTime.start = mediasessiontimeStart;
+    }
+    if(mediasessiontimeEnd != null){
+        nowTime.end = mediasessiontimeEnd;
+    }
+    if(mediasessiontimeLastStart != null){
+        lastTime.start = mediasessiontimeLastStart;
+    }
+    if(mediasessiontimeLastEnd != null){
+        lastTime.end = mediasessiontimeLastEnd;
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //自定义图例名称
+    var arr = ['消费', '媒体收入', '列表页PV', '列表页内容CTR', '列表页广告CTR', '详情页PV', '详情页广告CTR', '商品CTR', '商品成交量', '佣金'];
+    // 折线图
+    var myChart = echarts.init(document.getElementById('main'), 'macarons');
+    function render(arr) {
+        //创建自定义图例
+        var fragment = document.createDocumentFragment();
+        var ul = document.createElement('ul');
+        ul.id = 'data-list';
+        var len = arr.length;
+        arr.forEach(function (v, i) {
+            var li = document.createElement('li');
+            var a = document.createElement('a');
+            a.className = 'item';
+            a.innerHTML = v;
+            a.title = v;
+            a.index = i;
+            if (i === len - 1) {
+                li.style.borderRight = '0';
+            }
+            li.appendChild(a);
+            ul.appendChild(li);
+        })
+        fragment.appendChild(ul);
+        document.getElementById('admEchart').appendChild(fragment);
+        //创建自定义时间展示块
+        var timeModule = document.createDocumentFragment();
+        var div = document.createElement('div');
+        //自定义时间图例
+        var fragmentTime = document.createDocumentFragment();
+        var ulTime = document.createElement('ul');
+        ulTime.className = 'timeModule';
+        for (var t = 0; t < 2; t++) {
+            var liTimeItem = document.createElement('li');
+            //增加图例项目
+            var legendLogo = document.createElement('div');
+            liTimeItem.appendChild(legendLogo);
+            //---//
+            var liTimeText = document.createElement('span');
+            liTimeText.innerHTML = dataCharts.data[t];
+            liTimeText.className = 'timeLogo';
+            liTimeItem.appendChild(liTimeText);
+            ulTime.appendChild(liTimeItem);
+        }
+        ulTime.children[0].children[0].className = 'legendLeft';
+        ulTime.children[1].children[0].className = 'legendRightF';
+        ulTime.children[1]['id'] = 'timeCompare';
+        ulTime.children[1]['checked'] = false;
+        fragmentTime.appendChild(ulTime);
+        document.getElementById('admEchart').appendChild(fragmentTime);
+        var timeCompare = document.getElementById('timeCompare');
+        //日期对比的控制
+        timeCompare.addEventListener('click', function () {
+            this['checked'] = !this['checked'];
+            var searchArr = [];
+            if (this['checked'] === true) {
+                this.children[0].className = 'legendRightB';
+                this.style.opacity = 1;
+                items.forEach(function (v) {
+                    if (v['checked'] === true) {
+                        searchArr.push(v.children[0]['title']);
+                    }
+                })
+                for (var i = 0; i < dataCharts.prevData.length; i++) {
+                    for (var j = 0; j < searchArr.length; j++) {
+                        if (dataCharts.prevData[i]['name'] === searchArr[j]) {
+                            option.series.push(dataCharts.prevData[i]);
+                        }
+                    }
+                }
+                myChart.setOption(option);
+            } else if (this['checked'] === false) {
+                this.style.opacity = 0.6;
+                this.children[0].className = 'legendRightF';
+                myChart.clear();
+                option.series.pop();
+                option.series.pop();
+                myChart.setOption(option);
+            }
+
+        })
+        // 绑定点击事件
+        var items = Array.prototype.slice.call(ul.children);
+        items.temp = [];
+        //颜色数组
+        var colorArr = ['red', 'blue', 'orange', 'purple', 'pink', 'yellow', 'green', 'lightblue', 'darkorange', 'lightgreen'];
+        items.forEach(function (v, i) {
+            v['checked'] = false;
+            // 给每个点击项固定一个颜色
+            for (var j = 0; j < colorArr.length; j++) {
+                if (j === i) {
+                    v['color'] = colorArr[j];
+                }
+            }
+            //给每个项添加点击事件
+            v.addEventListener('click', function () {
+                var flag = this.checked;
+                items.temp = items.filter(function (v) {
+                    return v['checked'] === true;
+                })
+                if (flag && items.temp.length === 1) {
+                    return
+                }
+                this.checked = !this.checked;
+                items.temp = items.filter(function (v) {
+                    return v['checked'] === true;
+                })
+                if (items.temp.length > 2) {
+//                    alert('filled');
+                    //多选时候的弹出层
+                    layer.msg('最多可选2个指标');
+                    this.checked = false;
+                    return
+                }
+
+                // 处理选中项目的字体为白色
+                items.forEach(function (v) {
+                    if (v['checked'] === true) {
+                        v.children[0].style.color = 'white';
+                    } else {
+                        v.children[0].style.color = '#ccc';
+                    }
+                })
+                //  处理颜色
+                // 怎样判断一个按钮是否被点击
+//                var that = null;
+
+                //异步加载数据
+                //用定时器模仿ajax
+                if (this['checked']) {
+                    this.className = this['color'];
+                    var title = this.children[0].title;
+                    var index = this.children[0].index;
+                    var timeController = document.getElementById('timeCompare');
+                    if (timeController.checked === true) {
+                        option.series.pop();
+                        option.series.pop();
+                        myChart.clear();
+                        option.series = dataCharts.currentData;
+                        var searchArr = [];
+                        items.forEach(function (v) {
+                            if (v['checked'] === true) {
+                                searchArr.push(v.children[0]['title']);
+                            }
+                        })
+                    }
+                    if (searchArr) {
+                        for (var i = 0; i < dataCharts.prevData.length; i++) {
+                            for (var j = 0; j < searchArr.length; j++) {
+                                if (dataCharts.prevData[i]['name'] === searchArr[j]) {
+                                    option.series.push(dataCharts.prevData[i]);
+                                }
+                            }
+                        }
+                    }
+
+                    setTimeout(function () {
+                        //显示点击对应的数据
+                        option.legend.selected[title] = true;
+                        //显示点击对应数据的纵坐标轴
+                        option.yAxis[index]['show'] = true;
+                        // 如果
+                        for (var l = 0; l < arr.length; l++) {
+                            if (option.yAxis[l]['position'] === 'left' && l !== index) {
+                                option.yAxis[index]['position'] = 'right';
+                                break;
+                            } else {
+                                option.yAxis[index]['position'] = 'left';
+                            }
+                        }
+                        myChart.setOption(option);
+                    }, 0)
+                } else {
+                    this.className = '';
+                    var title = this.children[0].title;
+                    var index = this.children[0].index;
+                    setTimeout(function () {
+                        option.legend.selected[title] = false;
+                        option.yAxis[index]['show'] = false;
+                        for (var k = 0; k < arr.length; k++) {
+                            option.yAxis[k]['position'] = 'left';
+                        }
+                        myChart.setOption(option);
+                    }, 0)
+                }
+
+
+            })
+        });
+        items[0].click();
+        items[1].click();
+    }
+    ;
+    //后台获取的数据
+    var dataCharts = {
+        data: ['2016.12.12', '2016.11.11'],
+        prevData: [
+            {
+                yAxisIndex: 0,
+                name: '消费',
+                type: 'line',
+                data: ['20', '30', '50', '30', '28', '29', '23'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top' //值显示
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'costPrev'
+            },
+            {
+
+                yAxisIndex: 1,
+                name: '媒体收入',
+                type: 'line',
+                data: ['30', '35', '40', '38', '39', '41', '38'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'media_incomePrev'
+            },
+            {
+                yAxisIndex: 2,
+                name: '列表页PV',
+                type: 'line',
+                data: ['10', '9', '20', '6', '9', '7', '12'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'list_pvPrev'
+            },
+            {
+                yAxisIndex: 3,
+                name: '列表页内容CTR',
+                type: 'line',
+                data: ['19', '20', '28', '22', '24', '31', '33'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'list_content_ctrPrev'
+            },
+            {
+                yAxisIndex: 4,
+                name: '列表页广告CTR',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'list_ad_ctrPrev'
+            },
+            {
+                yAxisIndex: 5,
+                name: '详情页PV',
+                type: 'line',
+                data: ['29', '19', '19', '19', '19', '19', '11'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'detail_pvPrev'
+            }, {
+                yAxisIndex: 6,
+                name: '详情页广告CTR',
+                type: 'line',
+                data: ['29', '19', '19', '19', '19', '19', '11'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'detail_ad_ctrPrev'
+            },{
+                yAxisIndex: 7,
+                name: '商品CTR',
+                type: 'line',
+                data: ['29', '19', '19', '19', '19', '19', '11'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'goods_ctrPrev'
+            },{
+                yAxisIndex: 8,
+                name: '商品成交量',
+                type: 'line',
+                data: ['29', '19', '19', '19', '19', '19', '11'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'goods_volPrev'
+            },{
+                yAxisIndex: 9,
+                name: '佣金',
+                type: 'line',
+                data: ['29', '19', '19', '19', '19', '19', '11'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        type: 'dotted'
+                    }
+                },
+                id: 'paymentPrev'
+            },
+        ],
+        currentData: [
+            {
+                yAxisIndex: 0,
+                name: '消费',
+                type: 'line',
+                data: ['200', '300', '500', '300', '280', '290', '230'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top' //值显示
+                    }
+                },
+                id: 'cost'
+            },
+            {
+                yAxisIndex: 1,
+                name: '媒体收入',
+                type: 'line',
+                data: ['300', '350', '400', '380', '390', '410', '380'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'media_income'
+            },
+            {
+                yAxisIndex: 2,
+                name: '列表页PV',
+                type: 'line',
+                data: ['100', '90', '200', '65', '99', '71', '120'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'list_pv'
+            },
+            {
+                yAxisIndex: 3,
+                name: '列表页内容CTR',
+                type: 'line',
+                data: ['190', '200', '280', '220', '240', '319', '330'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'list_content_ctr'
+            },
+            {
+                yAxisIndex: 4,
+                name: '列表页广告CTR',
+                type: 'line',
+                data: ['240', '140', '150', '100', '198', '140', '180'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: "list_ad_ctr"
+            },
+            {
+                yAxisIndex: 5,
+                name: '详情页PV',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'detail_pv'
+            },{
+                yAxisIndex: 6,
+                name: '详情页广告CTR',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'detail_ad_ctr'
+            },{
+                yAxisIndex: 7,
+                name: '商品CTR',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'goods_ctr'
+            },{
+                yAxisIndex: 8,
+                name: '商品成交量',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'goods_vol'
+            },{
+                yAxisIndex: 9,
+                name: '佣金',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+                id: 'payment'
+            },
+        ]
+    };
+    //实际画图的数据
+    var option = {
+        color: ["#f04e35", "#0077e5", "#ffc801", "#a75adc", "#ff91bb", "#99cc01", '#ADFF2F', '#BBFFFF', '#EE7621', '#98FB98'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'line',
+                lineStyle: {
+                    type: 'dotted',
+                    color: '#ccc'
+                }
+            },
+
+            formatter: function (params) {
+                var str;
+                for (var p = 0; p < params.length; p++) {
+                    if (params[p].value == null) {
+                        params[p].value = '-';
+                        params[p].data = '-';
+                    }
+                    if(params[p].seriesName != '列表页内容CTR'
+                        && params[p].seriesName != '列表页广告CTR'
+                        && params[p].seriesName != '详情页广告CTR'
+                        && params[p].seriesName != '商品CTR'
+                        && params[p].value != "-"){
+                        params[p].value =  splitK(params[p].value);
+                        params[p].data = splitK(params[p].data);
+                    }
+                    if (params[p].seriesName === '列表页内容CTR' && params[p].value !== "-") {
+                        params[p].value = (params[p].value*100).toFixed(2) + '%';
+                        params[p].data = (params[p].data*100).toFixed(2) + '%';
+                    }
+                    if (params[p].seriesName === '列表页广告CTR' && params[p].value !== "-") {
+                        params[p].value = (params[p].value*100).toFixed(2) + '%';
+                        params[p].data = (params[p].data*100).toFixed(2) + '%';
+                    }
+                    if (params[p].seriesName === '详情页广告CTR' && params[p].value !== "-") {
+                        params[p].value = (params[p].value*100).toFixed(2) + '%';
+                        params[p].data = (params[p].data*100).toFixed(2) + '%';
+                    }
+                    if (params[p].seriesName === '商品CTR' && params[p].value !== "-") {
+                        params[p].value = (params[p].value*100).toFixed(2) + '%';
+                        params[p].data = (params[p].data*100).toFixed(2) + '%';
+                    }
+                }
+                if (params.length === 1 && params[0].data !== '-') {
+                    str = '<ul id="tooltip">'
+                        + '<li id="tooltipBall">'
+                        + '<div style="visibility: hidden">占位</div>'
+                        + '<div style="color: ' + params[0]['color'] + '"><span>●</span></div>'
+                        + '</li>'
+                        + '<li>'
+                        + '<div style="visibility: hidden">占位</div>'
+                        + '<div style="color: ' + params[0]['color'] + '">' + params[0].seriesName + '</div>'
+                        + '</li>'
+                        + '<li>'
+                        + '<div class="tooltipData">' + params[0].name + '</div>'
+                        + '<div style="color: ' + params[0]['color'] + '">' + params[0].value + '</div>'
+                        + '</li>'
+                        + '</ul>';
+                }
+                if (params.length === 2) {
+                    if (params[0].data === '-' && params[1].data === '-') {
+                        return ""
+                    }
+                    //处理弹出框没有数据不显示问题
+                    var type1 = params[0].seriesName;
+                    var type2 = params[1].seriesName;
+                    if (type1 !== type2) {
+                        str = '<ul id="tooltip">'
+                            + '<li id="tooltipBall">'
+                            + '<div style="visibility: hidden">占位</div>'
+                            + '<div style="color: ' + params[0]['color'] + '"><span>●</span></div>'
+                            + '<div style="color:' + params[1]['color'] + ' "><span>●</span></div>'
+                            + '</li>'
+                            + '<li>'
+                            + '<div style="visibility: hidden">占位</div>'
+                            + '<div style="color: ' + params[0]['color'] + '">' + params[0].seriesName + '</div>'
+                            + '<div style="color: ' + params[1]['color'] + '">' + params[1].seriesName + '</div>'
+                            + '</li>'
+                            + '<li>'
+                            + '<div class="tooltipData">' + params[0].name + '</div>'
+                            + '<div style="color: ' + params[0]['color'] + '">' + params[0].value + '</div>'
+                            + '<div style="color: ' + params[1]['color'] + '">' + params[1].value + '</div>'
+                            + '</li>'
+                            + '</ul>';
+                    } else {
+                        str = '<ul id="tooltip">'
+                            + '<li id="tooltipBall">'
+                            + '<div style="visibility: hidden">占位</div>'
+                            + '<div style="color: ' + params[0]['color'] + '"><span>●</span></div>'
+                            + '</li>'
+                            + '<li>'
+                            + '<div style="visibility: hidden">占位</div>'
+                            + '<div style="color: ' + params[0]['color'] + '">' + params[0].seriesName + '</div>'
+                            + '</li>'
+                            + '<li>'
+                            + '<div class="tooltipData">' + params[0].name + '</div>'
+                            + '<div style="color: ' + params[0]['color'] + '">' + params[0].data + '</div>'
+                            + '</li>'
+                            + '<li>'
+                            + '<div class="tooltipData">' + params[1].name + '</div>'
+                            + '<div style="color: ' + params[0]['color'] + '">' + params[1].data + '</div>'
+                            + '</li>'
+                            + '</ul>';
+                    }
+                }
+                else if (params.length === 4) {
+//                    处理弹出框没有数据不显示的问题
+                    var hide = true;
+                    for (var p = 0; p < 4; p++) {
+                        if (params[p].data !== '-') {
+                            hide = false;
+                        }
+                    }
+                    if (hide) {
+                        return '';
+                    }
+                    for (var p = 0; p < params.length; p++) {
+                        var type = typeof params[p].value;
+                        if (type.indexOf('undefined') !== -1 || params[p].value === 'undefined%') {
+                            params[p].value = 'null';
+                        }
+                    }
+                    var type1 = params[0].value;
+                    var type2 = params[1].value;
+                    var type3 = params[2].value;
+                    var type4 = params[3].value;
+                    if (type1 === 'null' && type2 === 'null' && type3 === 'null' && type4 === 'null') {
+                        return str = ''
+                    }
+                    str = '<ul id="tooltip">'
+                        + '<li id="tooltipBall">'
+                        + '<div style="visibility: hidden">占位</div>'
+                        + '<div style="color: ' + params[0]['color'] + '"><span>●</span></div>'
+                        + '<div style="color: ' + params[1]['color'] + '"><span>●</span></div>'
+                        + '</li>'
+                        + '<li>'
+                        + '<div style="visibility: hidden">占位</div>'
+                        + '<div style="color: ' + params[0]['color'] + '">' + params[0].seriesName + '</div>'
+                        + '<div style="color: ' + params[1]['color'] + '">' + params[1].seriesName + '</div>'
+                        + '</li>'
+                        + '<li>'
+                        + '<div class="tooltipData">' + params[0].name + '</div>'
+                        + '<div style="color: ' + params[0]['color'] + '">' + params[0].value + '</div>'
+                        + '<div style="color: ' + params[1]['color'] + '">' + params[1].value + '</div>'
+                        + '</li>'
+                        + '<li>'
+                        + '<div class="tooltipData">' + params[1].name + '</div>'
+                        + '<div style="color: ' + params[0]['color'] + '">' + params[2].value + '</div>'
+                        + '<div style="color: ' + params[1]['color'] + '">' + params[3].value + '</div>'
+                        + '</li>'
+                        + '</ul>';
+                }
+                ;
+                return str;
+            },
+            backgroundColor: 'rgba(0,0,0,0)',
+            showDelay: 20,
+            position: function (point, params, dom, rect, size) {
+                var width = document.getElementById('admEchart').offsetWidth;
+                var x = point[0] > width / 2 ? point[0] - 400 : point[0];
+                var obj = [x, point[1]];
+                return obj;
+            }
+        },
+        legend: {
+            selected: {
+                '消费': false,
+                '媒体收入': false,
+                '列表页PV': false,
+                '列表页内容CTR': false,
+                '列表页广告CTR': false,
+                '详情页PV': false,
+                '详情页广告CTR': false,
+                '商品CTR': false,
+                '商品成交量': false,
+                '佣金': false,
+            }
+        },
+        grid: {
+            bottom: '8%',
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            splitLine: { //网格线
+                show: false,
+            },
+            data: ['周1', '周2', '周3', '周4', '周5', '周6', '周7'],
+//               data:tempArr,
+            //坐标轴轴线相关
+            axisLine: {
+                lineStyle: {
+                    color: '#ccc',
+                }
+            },
+            //坐标轴刻度相关
+            axisTick: {
+                show: false,
+            }
+
+        },
+        yAxis: [
+            {
+                show: false,
+                type: 'value',
+                name: '消费',
+                splitLine: {
+                    show: false,
+                },
+                //坐标轴线相关
+                axisLine: {
+                    lineStyle: {
+                        color: '#f04e35'
+//                        color:"#ccc",
+                    }
+                },
+                //坐标轴相关
+                axisTick: {
+                    show: false
+                },
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '媒体收入',
+//                max: 100,
+//                min: 0,
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#0077e5'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '列表页PV',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#ffc801'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '列表页内容CTR',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#a75adc'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (params) {
+                        return params*100 + '%';
+                    }
+                }
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '列表页广告CTR',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#ff91bb'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (params) {
+                        return params*100 + '%';
+                    }
+                }
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '详情页PV',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#99cc01'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            {
+                show: false,
+                type: 'value',
+                name: '详情页广告CTR',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#ADFF2F'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (params) {
+                        return params*100 + '%';
+                    }
+                }
+            },{
+                show: false,
+                type: 'value',
+                name: '商品CTR',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#BBFFFF'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    formatter: function (params) {
+                        return params*100 + '%';
+                    }
+                }
+            },{
+                show: false,
+                type: 'value',
+                name: '商品成交量',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#EE7621'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            },{
+                show: false,
+                type: 'value',
+                name: '佣金',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#98FB98'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+        ],
+        series: [
+            {
+                yAxisIndex: 0,
+                name: '消费',
+                type: 'line',
+                data: ['2000', '3000', '5000', '3000', '2800', '2900', '2300'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top', //值显示
+                    }
+                },
+            },
+            {
+                yAxisIndex: 1,
+                name: '媒体收入',
+                type: 'line',
+                data: ['300', '350', '400', '380', '390', '410', '380'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top',
+                    }
+                },
+            },
+            {
+                yAxisIndex: 2,
+                name: '列表页PV',
+                type: 'line',
+                data: ['100', '90', '200', '65', '99', '71', '120'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },
+            {
+                yAxisIndex: 3,
+                name: '列表页内容CTR',
+                type: 'line',
+                data: ['190', '200', '280', '220', '240', '319', '330'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top',
+                    }
+                },
+            },
+            {
+                yAxisIndex: 4,
+                name: '列表页广告CTR',
+                type: 'line',
+                data: ['240', '140', '150', '100', '198', '140', '180'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },
+            {
+                yAxisIndex: 5,
+                name: '详情页PV',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },{
+                yAxisIndex: 6,
+                name: '详情页广告CTR',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },{
+                yAxisIndex: 7,
+                name: '商品CTR',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },{
+                yAxisIndex: 8,
+                name: '商品成交量',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },{
+                yAxisIndex: 9,
+                name: '佣金',
+                type: 'line',
+                data: ['24', '14', '15', '10', '19', '14', '18'],
+                label: {
+                    normal: {
+                        show: false,
+                        position: 'top'
+                    }
+                },
+            },
+        ],
+        //工具栏
+        toolbox: {
+            show: false,
+            feature: {
+                saveAsImage: {
+                    type: 'png',
+                    pixelRatio: 2,
+
+                }
+            }
+
+        }
+    };
+    //页面加载进来的处理函数
+    function beforeTime() {
+
+        dataCharts.data[0] = nowTime.start.replace(/\//g, '.');
+        dataCharts.data[1] = lastTime.end.replace(/\//g, '.');
+        if(window.sessionStorage.getItem('mediasessiontimeStart') != null){
+            if (nowTime.start === nowTime.end) {
+                dataCharts.data[0] = nowTime.start;
+                dataCharts.data[1] = lastTime.start;
+                //处理导航栏数据
+                sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+            } else {
+                chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessCurrent);
+                chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessPrev);
+
+                //处理导航栏数据
+                sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+            }
+
+        }else {
+            chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessCurrent);
+            chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessPrev);
+        }
+        //给日历插件绑定监听函数
+        {
+            setTimeout(function(){
+                $(".ranges").on("click","li",function(e) {
+                    var content = e.target.innerHTML;
+                    var timeTarget = $("#topNow").children()[0];
+                    timeTarget.innerHTML = content;
+                    timeTarget.style.fontSize = 20 + "px";
+                })
+            },0)
+        }
+    }
+    ;
+
+    function sumCurrent(data) {
+        var req = JSON.parse(data);
+        if (req.status === 1) {
+            var today;
+            var last;
+//            if (req.data.length === 0) {
+//                today = '昨天'
+//            }
+//            else {
+//                today = req.data[0].begin;
+//            }
+            today = '昨天'
+
+            last = req.data[1].begin;
+            topRender(req.data[0], true, today);
+            topRender(req.data[1], false, last);
+        }
+
+    }
+    ;
+    var test_data = [{
+            cost: "121212",
+            date: "2017-11-07",
+            detail_ad_ctr: "0.12345",
+            detail_pv: "0",
+            goods_ctr: "0.123321",
+            goods_vol: "330",
+            list_ad_ctr: "0.0456",
+            list_content_ctr: "0.0566",
+            list_pv: "18027",
+            media_income: "2370.00",
+            payment: "30.00",
+        }, {
+            cost: "232323",
+            date: "2017-11-06",
+            detail_ad_ctr: "0.11111",
+            detail_pv: "0",
+            goods_ctr: "0.2222",
+            goods_vol: "330",
+            list_ad_ctr: "0.0333",
+            list_content_ctr: "0.0566",
+            list_pv: "18027",
+            media_income: "2370.00",
+            payment: "30.00",
+        },
+    ];
+    function chartAPIonSucessCurrent(data) {
+        dataCharts.data[0] = nowTime.start + "－" + nowTime.end;
+        dataCharts.data[1] = lastTime.start + "－" + lastTime.end;
+        setTimeout(function () {
+            document.querySelectorAll('.timeLogo')[0].innerHTML = dataCharts.data[0].replace(/\//g, '.');
+            document.querySelectorAll('.timeLogo')[1].innerHTML = dataCharts.data[1].replace(/\//g, '.');
+        }, 1000)
+        var req = JSON.parse(data);
+        var tempArr = [];
+        //给全局对象返回Current的数
+        var xCost = [], xMedia_income = [], xList_pv = [], xList_content_ctr = [], xList_ad_ctr = [], xDetail_pv = [], xDetail_ad_ctr = [], xGoods_ctr = [], xGoods_vol = [], xPayment = [];
+        if (req.status === 1) {
+//            var data = test_data;
+            var data = req.data[0];
+            for (var k in data) {
+                tempArr[k] = data[k]['date'];
+                xCost[k] = data[k]['cost'];
+                xMedia_income[k] = data[k]['media_income'];
+                xList_pv[k] = data[k]['list_pv'];
+                xList_content_ctr[k] = data[k]['list_content_ctr'];
+                xList_ad_ctr[k] = data[k]['list_ad_ctr'];
+                xDetail_pv[k] = data[k]['detail_pv'];
+                xDetail_ad_ctr[k] = data[k]['detail_ad_ctr'];
+                xGoods_ctr[k] = data[k]['goods_ctr'];
+                xGoods_vol[k] = data[k]['goods_vol'];
+                xPayment[k] = data[k]['payment'];
+            }
+        }
+        option.xAxis.data = tempArr;
+        for (var index = 0; index < dataCharts.currentData.length; index++) {
+            switch (dataCharts.currentData[index].id) {
+                case 'cost' :
+                    dataCharts.currentData[index].data = xCost;
+                    break;
+                case 'media_income' :
+                    dataCharts.currentData[index].data = xMedia_income;
+                    break;
+                case 'list_pv' :
+                    dataCharts.currentData[index].data = xList_pv;
+                    break;
+                case 'list_content_ctr' :
+                    dataCharts.currentData[index].data = xList_content_ctr;
+                    break;
+                case 'list_ad_ctr' :
+                    dataCharts.currentData[index].data = xList_ad_ctr;
+                    break;
+                case 'detail_pv' :
+                    dataCharts.currentData[index].data = xDetail_pv;
+                    break;
+                case 'detail_ad_ctr' :
+                    dataCharts.currentData[index].data = xDetail_ad_ctr;
+                    break;
+                case 'goods_ctr' :
+                    dataCharts.currentData[index].data = xGoods_ctr;
+                    break;
+                case 'goods_vol' :
+                    dataCharts.currentData[index].data = xGoods_vol;
+                    break;
+                case 'payment' :
+                    dataCharts.currentData[index].data = xPayment;
+                    break;
+            }
+        }
+        myChart.setOption(option);
+        sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), sumCurrent);
+
+    }
+    //        折线图分日Prev
+    function chartAPIonSucessPrev(data) {
+        var req = JSON.parse(data);
+        var tempArr = [];
+        var xCost = [], xMedia_income = [], xList_pv = [], xList_content_ctr = [], xList_ad_ctr = [], xDetail_pv = [], xDetail_ad_ctr = [], xGoods_ctr = [], xGoods_vol = [], xPayment = [];
+        if (req.status === 1) {
+//            var data = test_data;
+            var data = req.data[1];
+            for (var k in data) {
+                tempArr[k] = data[k]['date'];
+                xCost[k] = data[k]['cost'];
+                xMedia_income[k] = data[k]['media_income'];
+                xList_pv[k] = data[k]['list_pv'];
+                xList_content_ctr[k] = data[k]['list_content_ctr'];
+                xList_ad_ctr[k] = data[k]['list_ad_ctr'];
+                xDetail_pv[k] = data[k]['detail_pv'];
+                xDetail_ad_ctr[k] = data[k]['detail_ad_ctr'];
+                xGoods_ctr[k] = data[k]['goods_ctr'];
+                xGoods_vol[k] = data[k]['goods_vol'];
+                xPayment[k] = data[k]['payment'];
+            }
+        }
+        for (var index = 0; index < dataCharts.prevData.length; index++) {
+            switch (dataCharts.prevData[index].id) {
+                case 'cost' :
+                    dataCharts.currentData[index].data = xCost;
+                    break;
+                case 'media_income' :
+                    dataCharts.currentData[index].data = xMedia_income;
+                    break;
+                case 'list_pv' :
+                    dataCharts.currentData[index].data = xList_pv;
+                    break;
+                case 'list_content_ctr' :
+                    dataCharts.currentData[index].data = xList_content_ctr;
+                    break;
+                case 'list_ad_ctr' :
+                    dataCharts.currentData[index].data = xList_ad_ctr;
+                    break;
+                case 'detail_pv' :
+                    dataCharts.currentData[index].data = xDetail_pv;
+                    break;
+                case 'detail_ad_ctr' :
+                    dataCharts.currentData[index].data = xDetail_ad_ctr;
+                    break;
+                case 'goods_ctr' :
+                    dataCharts.currentData[index].data = xGoods_ctr;
+                    break;
+                case 'goods_vol' :
+                    dataCharts.currentData[index].data = xGoods_vol;
+                    break;
+                case 'payment' :
+                    dataCharts.currentData[index].data = xPayment;
+                    break;
+            }
+        }
+        myChart.setOption(option);
+    }
+
+//    处理导航栏数据
+    function sumAPIonSuccessCurrent(data) {
+        var req = JSON.parse(data);
+        if (req.status === 1) {
+            var time = {
+                'start': moment().format('YYYY/MM/DD'),
+                'end': moment().format('YYYY/MM/DD')
+            };
+            time = transfer(time); //当天可查看的最近一天，也就是昨天
+
+            if (time.start === nowTime.start) {
+                var today;
+                var last;
+                if (req.data.length === 0) {
+                    today = '昨天';
+                    last = req.data[1].begin;
+                } else {
+                    today = req.data[0].begin;
+                    last = req.data[1].begin;
+                }
+                topRender(req.data[0], true, '昨天');
+//                topRender(req.data[0], true, today);
+                topRender(req.data[1], false, last);
+                return
+            }
+
+            //顶部数据展示日期的格式处理
+            if (nowTime.start === nowTime.end) {
+                topRender(req.data[0], true, nowTime.start.replace(/\//g, '-'));
+            } else {
+                topRender(req.data[0], true, nowTime.start.replace(/\//g, '-') + '至' + nowTime.end.replace(/\//g, '-'));
+            }
+
+
+            if (lastTime.start === lastTime.end) {
+                topRender(req.data[1], false, lastTime.start.replace(/\//g, '-'));
+            } else {
+                topRender(req.data[1], false, lastTime.start.replace(/\//g, '-') + '至' + lastTime.end.replace(/\//g, '-'));
+            }
+        }
+    }
+
+    //  初始化折线图
+    //  程序执行
+    option.series = dataCharts.currentData;
+    myChart.setOption(option);
+//    beforeTime();
+    render(arr);
+    beforeTime();
+    // 图标中图例初始化函数
+    window.onresize = myChart.resize
+
+</script>
+
+<!--日历插件-->
+<script>
+    function searchDate_daterangepicker(startDate, endDate, maxDate) {
+        $('#searchDate').daterangepicker(
+            {
+                startDate: startDate,
+                endDate: endDate,
+                maxDate: maxDate, //最大时间
+                minDate: moment('1970-01-01'), //最小时间
+                dateLimit: {
+                    days: 365
+                }, //起止时间的最大间隔
+                showDropdowns: true,
+                showWeekNumbers: false, //是否显示第几周
+                timePicker: false, //是否显示小时和分钟
+                timePickerIncrement: 60, //时间的增量，单位为分钟
+                timePicker12Hour: false, //是否使用12小时制来显示时间
+                ranges: {
+//                    '今日': [moment().startOf('day'), moment()],
+                    '昨天': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                    '过去7天': [moment().subtract('days', 7), moment().subtract('days', 1)],
+                    '过去14天': [moment().subtract('days', 14), moment().subtract('days', 1)],
+                    '过去21天': [moment().subtract('days', 21), moment().subtract('days', 1)],
+                    '过去30天': [moment().subtract('days', 30), moment().subtract('days', 1)],
+                    '上个月': [new Date()
+                        .setFullYear(new Date().getMonth() == 0 ? new Date().getFullYear() - 1 : new Date().getFullYear(), new Date().getMonth() == 0 ? 11 : new Date().getMonth() - 1, 1),
+                        moment().subtract('days', new Date().getDate())]
+                },
+                showCustomRangeLabel: false,
+                alwaysShowCalendars: true,
+                linkedCalendars: false,
+
+                opens: 'right', //日期选择框的弹出位置
+                buttonClasses: ['btn btn-default'],
+                applyClass: 'btn-small btn-primary',
+                cancelClass: 'btn-small',
+
+                separator: ' to ',
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1,
+                    format: 'YYYY/MM/DD' //控件中from和to 显示的日期格式
+                }
+            },
+            function (start, end, label) {
+
+                $('#searchDate').val(start.format('YYYY/MM/DD') + ',' + end.format('YYYY/MM/DD'));
+//                layer.msg($('#searchDate').val());
+//日历插件选择的时间
+                var begin = start.format('YYYY/MM/DD');
+                var end = end.format('YYYY/MM/DD');
+                nowTime.start = begin;
+                nowTime.end = end;
+                lastTime = transfer(nowTime);//获取对比的时间
+
+                window.sessionStorage.setItem('mediasessiontimeStart', nowTime.start);
+                window.sessionStorage.setItem('mediasessiontimeEnd', nowTime.end);
+                window.sessionStorage.setItem('mediasessiontimeLastStart', lastTime.start);
+                window.sessionStorage.setItem('mediasessiontimeLastEnd', lastTime.end);
+                $('#table').bootstrapTable('refresh');//列表刷新
+                $('#table_goods').bootstrapTable('refresh');
+
+                if (nowTime.start === nowTime.end) {
+                    dataCharts.data[0] = nowTime.start;
+                    dataCharts.data[1] = lastTime.start;
+                    //处理导航栏数据
+                    sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+                } else {
+                    chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessCurrent);
+                    chartAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(), chartAPIonSucessPrev);
+
+                    //处理导航栏数据
+                    sumAPI(nowTime.start, nowTime.end, lastTime.start, lastTime.end, $("#media_check_custom_select").val(),sumAPIonSuccessCurrent);
+                }
+
+//刷新
+                refresh_echarts();
+            })
+       }
+
+    searchDate_daterangepicker(nowTime.start, nowTime.end, nowTime.end);
+
+
+</script>
+
+
+<!--列表集合-->
+<script>
+//热门文章排行榜列表
+        var tagCode = {};
+        articleTagsAPI(nowTime.start, nowTime.end, function (result) {
+            var req = JSON.parse(result);
+            if (req.status == 1) {
+                for (var i in req.data) {
+                    tagCode[req.data[i].tag_code]= req.data[i].tag_name;
+                }
+            } else {
+                layer.msg('获取文章分类失败');
+            }
+        });
+
+        var ListPageConfig = {
+            tableId: '#table',   // 表格id
+            func: function (data) {
+            },
+            executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+                bindTableFilterAction('tag_name');
+            },
+            tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+            table: {
+                url: '/contentreport/article',
+                queryParams: function (params) {
+                    params.begin = nowTime.start;
+                    params.end = nowTime.end;
+                    params.tag_code = $("input[name=tag_name]:checked").val();
+                    return params;
+                },
+                height: undefined,//定义表格的高度
+                toolbar: '#toolbar',
+                showColumns: false,//是否显示 内容列下拉框
+                sortName: 'clk',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+                sortOrder: 'desc',
+                pagination: true,//	设置为 true 会在表格底部显示分页条
+                paginationLoop: false,//	设置为 true 启用分页条无限循环的功能。
+                onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+                sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+                pageNumber: 1,//如果设置了分页，首页页码
+                showPaginationSwitch: false,//是否显示 数据条数选择框
+                paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+                paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+                paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+                pageSize: 10,
+                striped: true,//设置为 true 会有隔行变色效果
+                cookie: true,
+                cookieIdTable: 'replacebyListJS',
+                cookiesEnabled: ['bs.table.pageNumber'],
+                cookiePath: '/',
+                pageList: [10, 20, 50],
+                responseHandler:function (res) {
+                    return res.data;
+                },
+                columns: [{
+                    field: 'rank',
+                    title: '排名',
+                    width: '100px',
+                    align: 'center',
+                }, {
+                    field: 'type',
+                    title: '文章类型',
+                },{
+                    field: 'title',
+                    title: '标题',
+                    formatter: function (value, row, index) {
+                        return '<span class="cutValue">' + cutstrbyChar(value, 28) + '</span>'
+                    },
+                    events: {
+                        'mouseenter .cutValue': function (e, value, row, index) {
+                            if (getCharLength(value) > 28) {
+                                layer.tips(value, e.target, {
+                                    tips: [1, '#353538'],
+                                    area: ['auto', 'auto']
+                                });
+                            }
+                        },
+                        'mouseleave .cutValue': function (e, value, row, index) {
+                            if (getCharLength(value) > 28) {
+                                layer.closeAll()
+                            }
+                        }
+                    }
+                }, {
+                    field: 'tag_name',
+                    title: '分类' + jointTableFilter('tag_name', tagCode),
+
+                }, {
+                    field: 'clk',
+                    title: '阅读量',
+                    formatter:function (params) {
+                        if(params){
+                            return splitK(params);
+                        }
+                    },
+                },{
+                    field: 'avg_time_length',
+                    title: '平均阅读时长(秒)',
+                    formatter:function (params) {
+                        if(params){
+                            params = parseFloat(params).toFixed(2);
+                            return splitK(params);
+                        }
+                    },
+                },{
+                    field: 'avg_readover',
+                    title: '完成度',
+                    formatter:function (params) {
+                        if(params){
+                            return splitK(params*100) + '%';
+                        }
+                    },
+                },
+                ]
+            },
+
+        };
+
+$(document).ready(function () {
+
+        $('#table_goods').bootstrapTable({
+            url: '/contentreport/goods',
+            queryParams: function (params) {
+                params.begin = nowTime.start;
+                params.end = nowTime.end;
+                return params;
+            },
+            tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+            height: undefined,//定义表格的高度
+            toolbar: '#toolbar',
+            showColumns: false,//是否显示 内容列下拉框
+            sortName: 'clk',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            pageSize: 10,
+            striped: true,//设置为 true 会有隔行变色效果
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            responseHandler:function (res) {
+                return res.data;
+            },
+            columns: [{
+                    field: 'rank',
+                    title: '排名',
+                    width: '100px',
+                    align: 'center',
+            }, {
+                    field: 'goods_id',
+                    title: '商品ID',
+                    formatter: function (value, row, index) {
+                        return '<span class="cutValue">' + cutstrbyChar(value, 28) + '</span>'
+                    },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                    field: 'name',
+                    title: '商品名称',
+                    formatter: function (value, row, index) {
+                        return '<span class="cutValue">' + cutstrbyChar(value, 28) + '</span>'
+                    },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                    field: 'price',
+                    title: '价格',
+                    formatter:function (params) {
+                        if(params){
+                            return splitK(params);
+                        }
+
+
+                    },
+            }, {
+                    field: 'rato',
+                    title: '收入比率',
+                    formatter:function (params) {
+                        if(params){
+                            return splitK(params*100) + '%';
+                        }
+
+                    },
+            }, {
+                    field: 'clk',
+                    title: '点击量',
+                    formatter:function (params) {
+                        if(params){
+                            return splitK(params);
+                        }
+
+                    },
+            },
+            ]
+        });
+    });
+
+</script>
+
+<!--下载列表集合-->
+<script>
+    //下载报表1 内容合作 日期 媒体
+    $("#downloadTable1").on('click', function () {
+        var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+        var begin = searchDate[0].replace(/\//g, '');
+        var end = searchDate[1].replace(/\//g, '');
+        var media = $("#media_check_custom_select").val();
+        var url = '/contentreport/download?type=content&begin=' + begin + '&end=' + end + '&media=' + media;
+        window.open(encodeURI(url));
+    });
+    //下载报表2 热门文章
+    $("#downloadTable2").on('click', function () {
+        var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+        var begin = searchDate[0].replace(/\//g, '');
+        var end = searchDate[1].replace(/\//g, '');
+        var url = '/contentreport/download?type=article&begin=' + begin + '&end=' + end + '&offset=0&limit=50';
+        window.open(encodeURI(url));
+    });
+    //下载报表3 热门商品
+    $("#downloadTable3").on('click', function () {
+        var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+        var begin = searchDate[0].replace(/\//g, '');
+        var end = searchDate[1].replace(/\//g, '');
+        var url = '/contentreport/download?type=goods&begin=' + begin + '&end=' + end + '&offset=0&limit=50';
+        window.open(encodeURI(url));
+    });
+</script>
+
+<!--处理函数集合-->
+<script>
+
+
+    // 自适应浏览器大小
+    function refresh_echarts() {
+        window.onresize = function () {
+            myChart.resize();
+        }
+    }
+
+    var auth = getAuthorityByUrl('/dashboard/contentview');
+    function checkAuthority() {
+        if (auth == 0) {
+
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            toFirstLegalPage();
+        }
+    }
+
+    checkAuthority();
+</script>
+
+<script type="text/javascript" src="/js/bootstrap-table.js?v=20171027"></script>
+<script type="text/javascript" src="/js/list3.js?v=20170407"></script>
+
+<script type="text/javascript" src="/js/dl-custom-filter.js"></script>
+<script type="text/javascript" src="/js/layer/layer.js"></script>
+<script type="text/javascript" src="/js/bootstrap-table-modify.js?v=20170927"></script>
+<script type="text/javascript" src="/js/bootstrap-table-zh-CN.js"></script>
+
+<script type="text/javascript" src="/js/bootstrap-table-cookie.js"></script>
+<!--<script type="text/javascript" src="/js/bootstrap-editable.js"></script>-->
+<script type="text/javascript" src="/js/bootstrap-table-editable.js"></script>
+<!--<script type="text/javascript" src="/js/bootstrap-validation.js"></script>-->
+
+<!--<script type="text/javascript" src="/js/bootstrap-switch.js"></script>-->
+<!--<script type="text/javascript" src="/js/dl-custom-filter.js"></script>-->

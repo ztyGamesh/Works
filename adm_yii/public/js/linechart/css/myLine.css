@@ -1,0 +1,123 @@
+/*准备工作，这部分的css代码不需要嵌入开发环境中*/
+*{
+    margin: 0;
+    padding: 0;
+}
+ul,li{
+    list-style: none;
+}
+html,body{
+    height: 100%;
+}
+/*折线图背景start*/
+#line-container {
+    height: 378px;
+    background-color: #fafafa;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: center;
+    /*background-color: skyblue;*/
+}
+#main{
+    width: 100%;
+    height: 330px;
+    /*padding-bottom: 10px;*/
+    border-bottom: 1px solid #c3c3c3;
+}
+/*折线图背景end*/
+
+/*自定义图例样式start*/
+#myLegend {
+    position: absolute;
+    top: 6%;
+    left: 45%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    display: flex;
+}
+#myLegend li+li {
+    border-left: 1px solid #ccc;
+}
+#myLegend li {
+    height: 100%;
+}
+#myLegend li span {
+    height: 100%;
+    padding: 4px 10px;
+    display: block;
+}
+/*自定义图例样式end*/
+#myTimeControl {
+    position: absolute;
+    display: flex;
+    bottom: 18px;
+    left: 50%;
+    /*border: 1px solid #000;*/
+    transform: translateX(-50%);
+}
+#myTimeControl li+li {
+    /*border-left: 1px solid #000;*/
+}
+#myTimeControl li span {
+    padding: 0 20px 0 36px;
+    color:#c3c3c3;
+}
+#timeIcon0 ,#timeIcon1{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 11px;
+}
+#timeIcon0 {
+    background-image:url("../imgs/focusCurrent.png");
+}
+#timeIcon1 {
+    background-image:url("../imgs/focusCompare.png");
+}
+
+
+/*tooltip测试css*/
+#tooltip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-width: 200px;
+    min-height: 38px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 28px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+#tooltip > li > div {
+    font-size: 12px;
+    line-height: 22px;
+    height: 22px;
+    text-align: center;
+    /*background-color: red;*/
+}
+
+#tooltip>li:nth-child(2)>div {
+    text-align: left;
+}
+
+.tooltipData {
+    color: #333;
+    /*color: skyblue;*/
+    /*background-color: red;*/
+}
+div:nth-child(1).tooltipData {
+    margin-left: 20px;
+}
+#tooltipBall {
+    position: absolute;
+    left: 0;
+}

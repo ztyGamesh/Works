@@ -1,0 +1,37 @@
+.price_meg, .frequency_msg {
+    display: inline-block;
+    font-size: 12px;
+    margin: 5px 0;
+    color: #777;
+}
+
+.form-control.file-caption.kv-fileinput-caption {
+    height: 30px;
+}
+
+.popover {
+    max-width: 476px;
+}
+
+.colorpicmsg {
+    color: #666;
+}
+
+.id_type_box{
+    height: 40px;
+    line-height: 40px;
+}
+.id_type_label{
+    /*margin-left: 10%;*/
+}
+.id_type_input_box{
+    margin-top: 8px;
+}
+.id_type_input_meida{
+    margin-left: 16px!important;
+    margin-right: 5px!important;
+}
+.id_type_input_ad{
+    margin-left: 50px!important;
+    margin-right: 5px;
+}

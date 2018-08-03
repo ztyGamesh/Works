@@ -1,0 +1,385 @@
+
+<link rel = "stylesheet" href = "/css/bootstrap-table.css?v=20170719">
+<link rel = "stylesheet" href = "/css/bootstrap-editable.css">
+<link rel = "stylesheet" href = "/css/bootstrap-switch.min.css"/>
+
+<link rel = "stylesheet" href = "/css/datepicker.css"/>
+
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/js/echarts.js"></script>
+<script type="text/javascript" src="/js/china.js"></script>
+<script type="text/javascript" src="/js/bootstrap-tableFilter-deepleaper.js?v=20170502"></script>
+<?php if($this->item['controller']  == "Application\Controller\Stat" && $this->item['action'] =="geo")   {  ?>
+ 	<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <span>媒体分类: </span>
+                    <select name="mediaclass" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['mediaclass_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>站点: </span>
+                    <select name="media" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['media_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>广告位: </span>
+                    <select name="slot" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['slot_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	  (function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val('2015/12/1');
+	   $('#end_date').val('2016/12/1');
+	 })();
+	</script>
+
+	<div id="main2" style="width: 600px;height:400px;">dd</div>
+	<script type="text/javascript">
+
+			var myChart = echarts.init(document.getElementById('main2'));
+			 // 指定图表的配置项和数据
+	   
+			 (function() {
+			 	alert("dd");
+			  })();
+	</script>
+
+
+<?php } else if($this->item['controller']  == "Application\Controller\Stat" && $this->item['action'] =="hour")   {  ?>
+ 	<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <span>媒体分类: </span>
+                    <select name="mediaclass" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['mediaclass_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>站点: </span>
+                    <select name="media" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['media_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>广告位: </span>
+                    <select name="slot" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['slot_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	  (function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val('2015/12/1');
+	   $('#end_date').val('2016/12/1');
+	 })();
+	</script>
+
+	<div id="main2" style="width: 600px;height:400px;">dd</div>
+	<script type="text/javascript">
+
+			var myChart = echarts.init(document.getElementById('main2'));
+			 // 指定图表的配置项和数据
+	   
+			 (function() {
+			 	alert("dd");
+			  })();
+	</script>
+
+<?php } else if($this->item['controller']  == "Application\Controller\Stat" && $this->item['action'] =="geo")   {  ?>
+ 	<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <span>媒体分类: </span>
+                    <select name="mediaclass" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['mediaclass_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>站点: </span>
+                    <select name="media" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['media_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>广告位: </span>
+                    <select name="slot" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['slot_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	  (function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val('2015/12/1');
+	   $('#end_date').val('2016/12/1');
+	 })();
+	</script>
+
+	<div id="main2" style="width: 600px;height:400px;">dd</div>
+	<script type="text/javascript">
+
+			var myChart = echarts.init(document.getElementById('main2'));
+			 // 指定图表的配置项和数据
+	   
+			 (function() {
+			 
+			  })();
+	</script>
+
+
+
+
+<?php } else if($this->item['controller']  == "Application\Controller\Stat" && $this->item['action'] =="slot")   {  ?>
+ 	<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <span>媒体分类: </span>
+                    <select name="mediaclass" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['mediaclass_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>站点: </span>
+                    <select name="media" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['media_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>广告位: </span>
+                    <select name="slot" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['slot_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	  (function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val('2015/12/1');
+	   $('#end_date').val('2016/12/1');
+	 })();
+	</script>
+
+	<div id="main2" style="width: 600px;height:400px;">dd</div>
+	<script type="text/javascript">
+
+			var myChart = echarts.init(document.getElementById('main2'));
+			 // 指定图表的配置项和数据
+	   
+			 (function() {
+			 	alert("dd");
+			  })();
+	</script>
+
+<?php } else if($this->item['controller']  == "Application\Controller\Stat" && $this->item['action'] =="expenses")   {  ?>
+ 	<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <span>媒体分类: </span>
+                    <select name="mediaclass" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['mediaclass_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>站点: </span>
+                    <select name="media" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['media_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                <div class="form-group">
+                    <span>广告位: </span>
+                    <select name="slot" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<option value="全部">全部</option>
+					<?php foreach ($this->item['slot_menu']  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+                </div>
+                
+                
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	  (function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val('2015/12/1');
+	   $('#end_date').val('2016/12/1');
+	 })();
+	</script>
+
+	<div id="main2" style="width: 600px;height:400px;">dd</div>
+	<script type="text/javascript">
+
+			var myChart = echarts.init(document.getElementById('main2'));
+			 // 指定图表的配置项和数据
+	   
+			 (function() {
+			 	alert("dd");
+			  })();
+	</script>
+	
+<?php } else {?>
+	<!--
+    
+	-->
+<?php } ?>

@@ -1,0 +1,140 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<script>
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/order/ad',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortOrder: 'desc',
+
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '广告投放名称'
+            }, {
+                field: 'pause',
+                title: '状态'
+
+            }, {
+                field: 'order_name',
+                title: '订单名称'
+
+            }, {
+                field: 'sell_type',
+                title: '结算方式'
+
+            }, {
+                field: 'slot_name',
+                title: '广告位名称'
+
+            }, {
+                field: 's_e',
+                title: '投放周期'
+            }, {
+                field: 'price',
+                title: '实际计价'
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        },
+        url: {
+            add: '/order/adadd',         //添加 数据 html 地址
+            detail: '/order/addetail',         //编辑数据 html 地址
+            edit: '/order/adedit',         //编辑数据 html 地址
+            del: '/order/addel'          //删除数据地址
+
+        },
+        action: {
+            detail: true,
+            edit: true,
+            del: true
+        },
+        title: {
+            addTitle: '添加投放',
+            editTitle: '编辑投放',
+            detailTitle: '投放详情'
+        },
+        showDetail: false         //是否显示详细信息按钮
+    };
+
+    var auth = getAuthorityByUrl('/order/ad');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                detail: false,
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: true,
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+</script>
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加广告投放
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="广告投放" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+    <div class="pull-left paddingleft10" style="display: inline-block;height: 31px;line-height: 31px;">
+        <input type="radio" name="update" id="update1" value="1" checked="checked"> &nbsp;&nbsp;暂停
+        <input type="radio" name="update" id="update2" value="2">&nbsp;&nbsp;开启
+    </div>
+    <div class="btn-group pull-left paddingleft10">
+        <a class="btn deepleaper-btn-normal" id="adUpdatePause">修改投放状态</a>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter3.phtml');
+?>
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

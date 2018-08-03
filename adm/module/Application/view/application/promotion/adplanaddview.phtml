@@ -1,0 +1,428 @@
+<link rel="stylesheet" href="/css/datepicker.css"/>
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="/css/dlMultiMenu.css?v=20170814">
+<link rel="stylesheet" href="/css/targetingadd.css?v=20170315">
+<link rel="stylesheet" href="/css/DL-keyword.css?v=20170605">
+
+<?php
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/promotion/adgrouplistview"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name linkable"><a href="#"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span class="user-message-name">添加广告计划</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告计划名称</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control dl-notNull" id="planName">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告形式</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="fetchmediaadtype" >
+<!--                    <option value="29076f0d-a923-47d4-bfef-2e3cf28fc099">动态信息流</option>-->
+<!--                    <option value="c96089f7-9cff-4149-997f-bb03d617cda0">固定信息流</option>-->
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+<!--        <div class="form-group ">-->
+<!--            <label class="col-md-2 col-md-offset-1  control-label Dl-required">媒体定向</label>-->
+<!--            <div class="col-md-7">-->
+<!--                <select class="selectpicker" data-width="100%" id="media_selectpicker">-->
+<!--                    <option value="0">不限</option>-->
+<!--                    <option value="1">自定义</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--<!--            <div style=" display: none; width: 300px; height: 200px; position: absolute;z-index: 999; border: 1px solid; margin-top: 35px;margin-left: 240px; background-color: #ffffff;">-->
+<!--<!--                <div style="border-bottom: 1px solid; height: 30px; line-height: 30px; font-size: 14px; padding-left: 6px;">媒体列表</div>-->
+<!--<!--                <div></div>-->
+<!--<!--            </div>-->
+<!--            <span class="help-block col-md-7 col-md-offset-3"></span>-->
+<!--        </div>-->
+<!--        <div class="form-group" id="media_orientation" style="display: none">-->
+<!--            <label class="col-md-2 col-md-offset-1  control-label">选择定向</label>-->
+<!--            <div class="col-sm-6 ">-->
+<!--                <select id="media_select" multiple="multiple">-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="row Dl-part-title">
+            <div class="col-md-10 col-md-offset-1">
+                <span class="identifier">设置投放定向</span>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">地域</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="areaCheck">
+                    <option value="0">不限</option>
+                    <option value="1">省市</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group" id="area-group" style="display: none">
+            <label class="col-md-2 col-md-offset-1  control-label"></label>
+            <div class="col-sm-6 ">
+                <select id="area" multiple="multiple">
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">平台</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="platCheck">
+                    <option value="0">不限</option>
+                    <option value="1">自定义</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group" id="plat-group" style="display: none">
+            <label class="col-md-2 col-md-offset-1  control-label"></label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="customplatCheck" multiple title="落地页平台可多选">
+                    <option value="ANDROID">android</option>
+                    <option value="IOS">ios</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">网络</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="networkCheck">
+                    <option value="0">不限</option>
+                    <option value="1">自定义</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group" id="network-group" style="display: none">
+            <label class="col-md-2 col-md-offset-1  control-label"></label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="customnetwork" multiple title="自定义网络可多选">
+                    <option value="WIFI">WIFI</option>
+                    <option value="4G">4G</option>
+                    <option value="UNKNOWN">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" id="mediaWrapper">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">媒体定向</label>
+            <div class="col-md-7" style="color: black!important;">
+                <select class="selectpicker" data-width="100%" multiple id='media' title="默认定向到全部媒体" style="color: black!important;">
+<!--                    <option value="" selected>无媒体数据</option>-->
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group keywords">
+            <label class="col-md-2 col-md-offset-1 control-label">关键词设置</label>
+            <div class="col-md-7 ">
+                <div class="input-group">
+                    <input id="keywordstatus" type="text" class="form-control dl-notNull" disabled
+                           value="已有0个关键词，0个否定关键词">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="set_btn" type="button"
+                                style="border-radius: 0 4px 4px 0;border-left: none;" data-toggle="modal"
+                                data-target="#keywordModal">设置</button>
+                    </span>
+                    <div style="position: absolute;right: -310px;top: 9px; width: 300px;z-index:1;cursor: help">
+                        <span id="KeywordsHint" class="glyphicon glyphicon glyphicon-question-sign"
+                              data-container="body"
+                              data-toggle="popover" data-placement="top" data-trigger="focus" title="关键词填写说明"
+                              data-content="为了保证投放效果，填写的关键词需要与推广的产品相关联，并且保证计划下关键词数在1000个以内。"></span>
+                    </div>
+                </div>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group channelCheck">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">频道分类定向</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="channelCheck">
+                    <option value="0">不限</option>
+                    <option value="1">自定义</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+<!-- 参考参考参考参考参考参考参考-->
+        <div class="form-group" id="channel-group" style="display: none">
+            <label class="col-md-2 col-md-offset-1  control-label">选择定向</label>
+            <div class="col-sm-6 ">
+                <select id="customchannel" multiple="multiple">
+                </select>
+            </div>
+        </div>
+
+<!--广告行为定向-->
+        <div class="form-group advertising-behavior-orientation">
+            <label class="col-md-2 col-md-offset-1 control-label ">广告行为定向</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="advertising-behavior-orientation">
+                    <option value="0">不限</option>
+                    <option value="1">自定义</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group" id="ad-behavior-group" style="display: none ">
+            <label class="col-md-2 col-md-offset-1  control-label">选择定向</label>
+            <div class="col-md-7 ">
+                <div id="advertising-behavior-orientation-title">自定义广告行为定向可多选</div>
+                <div id="dl-list" class=""></div>
+            </div>
+        </div>
+
+        <div class="row Dl-part-title">
+            <div class="col-md-10 col-md-offset-1">
+                <span class="identifier">设置投放预算</span>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required" for="searchDate">投放周期</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control" id="searchDate">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">日预算(元)</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control" id="budget" placeholder="可输入金额范围：0.01~9999999999.99">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">计费方式</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="bid_type">
+                    <option value="cpm" selected>cpm(元/千次展示)</option>
+                    <option value="cpc">cpc(元/次点击)</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">出价</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control" id="price" placeholder="可输入金额范围：0.01~9999999999.99">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+            <!--            <div class="col-md-7  col-md-offset-3">-->
+            <!--                <span class="price_meg">建议出价*元/CPM，可以获得80%媒体的竞价资格</span>-->
+            <!--            </div>-->
+        </div>
+        <div class="row Dl-part-title">
+            <div class="col-md-10 col-md-offset-1">
+                <span class="identifier">高级设置</span>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1 control-label">计划频次控制(次 / 每人每天)</label>
+            <div class="col-md-7">
+                <input type="text" class="form-control" id="frequency" placeholder="单个人每天最多看多少次广告 不填写时使用系统默认5次上限">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+<!--            <div class="col-md-7  col-md-offset-3">-->
+<!--                <span class="frequency_msg"></span>-->
+<!--            </div>-->
+        </div>
+
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1 control-label ">投放速度</label>
+            <div class="col-md-7">
+                <select class="selectpicker" data-width="100%" id="speed">
+                    <option value="cs">匀速投放</option>
+                    <option value="asap">快速投放</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+</div>
+
+<div class="row submit_box">
+    <div class="submit_btn_wrapper">
+        <div class="submit_btn" id="cancel">
+            返回列表
+        </div>
+        <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+            保存并继续
+        </div>
+    </div>
+</div>
+
+<!-- 设置关键词 -->
+<div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="setkeywordsModalLabel"
+     aria-hidden="true" aria-describedby="设置关键词模态框">
+    <div class="modal-dialog" style="margin-top: 100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="setkeywordsModalLabel">添加关键词
+                    <span class="titledes">请您认真复核将使用的关键词，确保其不违法、侵权，且与您的网页信息相关！</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#keyword" role="tab" data-toggle="tab">添加关键词</a>
+                        </li>
+                        <li role="presentation"><a href="#denykeyword" role="tab" data-toggle="tab">添加否定关键词</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="keyword">
+                        <div class="dl-keyword">
+                            <div class="matchWrapper">
+                                <span class="matchTitle">匹配方式</span>
+
+                                <div class="matchTitleExplain">
+                                    <span class="glyphicon glyphicon glyphicon-question-sign matchHint"
+                                          data-toggle="popover" data-trigger="focus" title="匹配方式说明"></span>
+                                </div>
+                                ：
+                                <input type="radio" name="keywordmatch" value="1" checked>&nbsp;<span
+                                    class="radioLabel">精确匹配</span>
+                                &nbsp; &nbsp; &nbsp;
+                                <input type="radio" name="keywordmatch" value="2">&nbsp;<span
+                                    class="radioLabel">包含匹配</span>
+                            </div>
+
+                            <div class="keyword-selector-tab">
+                                <ul class="ctrl-group-keyword-tab-navigator">
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel">
+                                        <span>关键词<span id="keywordnum" dl_keynum=""></span></span>
+                                    </li>
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel deleteAll"
+                                        id="keyworddeleteAll">
+                                        <span>全部删除</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="ctrl-group-keyword-text-wrapper">
+                                <div>
+                                    <div class="ctrl-group-keyword-text-num-line" id="ctrl-group-keyword-text-num-line">
+                                        1
+                                    </div>
+                                    <div class="ctrl-group-keyword-text-container">
+                                        <div class="group-keyword">
+                                    <textarea class="ctrl-group-keyword" id="ctrl-group-keyword" spellcheck="false"
+                                              data-keyword="" data-keyword-prepare=""
+                                              onkeyup="this.value=this.value.replace(/,/g,'')"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="denykeyword">
+                        <div class="dl-keyword">
+                            <div class="matchWrapper">
+                                <span class="matchTitle">匹配方式</span>
+                                <div class="matchTitleExplain">
+                                    <span class="glyphicon glyphicon glyphicon-question-sign matchHint"
+                                          data-toggle="popover" data-trigger="focus" title="匹配方式说明"></span>
+                                </div>
+                                ：
+                                <input type="radio" name="denykeywordmatch" id="match1" value="1" checked disabled>&nbsp;<span
+                                    class="radioLabel">精确匹配</span>
+                            </div>
+
+                            <div class="keyword-selector-tab">
+                                <ul class="ctrl-group-keyword-tab-navigator">
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel">
+                                        <span>否定关键词<span id="denykeywordnum" dl_denykeynum=""></span></span>
+                                    </li>
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel deleteAll"
+                                        id="denykeyworddeleteAll">
+                                        <span>全部删除</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="ctrl-group-keyword-text-wrapper">
+                                <div>
+                                    <div class="ctrl-group-keyword-text-num-line"
+                                         id="denyctrl-group-keyword-text-num-line">
+                                        1
+                                    </div>
+                                    <div class="ctrl-group-keyword-text-container">
+                                        <div class="group-keyword">
+                                    <textarea class="ctrl-group-keyword" id="denyctrl-group-keyword" spellcheck="false"
+                                              data-keyword="" data-keyword-prepare=""
+                                              onkeyup="this.value=this.value.replace(/,/g,'')"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="keywordSubmit">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+//    获取广告形式的内容，暂时只有动态信息流 | 固定信息流
+    fetchmediaadtypeAPI(fetchmediaadtypeAPIonSuccess);
+    function fetchmediaadtypeAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1){
+            var data = req.data;
+            var option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].slot_class + '">';
+                option += data[i].name;
+                option += '</option>';
+            }
+            $('#fetchmediaadtype').html(option);
+        }else{
+            layer.msg(req.msg);
+        }
+    }
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>
+<?php
+echo $this->partial('layout/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script src="/js/bootstrap-editable.js" type="text/javascript"></script>
+<script src="/js/application/promotion/adplan_targetingadd.js?v=20170512" type="text/javascript"></script>
+<script src="/js/DL-keyword.js?v=20170503" type="text/javascript"></script>
+<script src="/js/dlMultiMenu.js?v=20170814" type="text/javascript"></script>
+<script src="/js/application/promotion/adplanaddview.js?v=20170727" type="text/javascript"></script>

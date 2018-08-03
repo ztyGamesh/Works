@@ -1,0 +1,62 @@
+<h1><?php echo $translate('An error occurred') ?></h1>
+<h2><?php echo $message ?></h2>
+
+<?php if (isset($display_exceptions) && $display_exceptions): ?>
+
+<?php if(isset($exception) && $exception instanceof Exception): ?>
+<hr/>
+<h2><?php echo $translate('Additional information') ?>:</h2>
+<h3><?php echo get_class($exception); ?></h3>
+<dl>
+    <dt><?php echo $translate('File') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $exception->getFile() ?>:<?php echo $exception->getLine() ?></pre>
+    </dd>
+    <dt><?php echo $translate('Message') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $escapeHtml($exception->getMessage()) ?></pre>
+    </dd>
+    <dt><?php echo $translate('Stack trace') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $escapeHtml($exception->getTraceAsString()) ?></pre>
+    </dd>
+</dl>
+<?php
+    $e = $exception->getPrevious();
+    if ($e) :
+?>
+<hr/>
+<h2><?php echo $translate('Previous exceptions') ?>:</h2>
+<ul class="unstyled">
+    <?php while($e) : ?>
+    <li>
+        <h3><?php echo get_class($e); ?></h3>
+        <dl>
+            <dt><?php echo $translate('File') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $e->getFile() ?>:<?php echo $e->getLine() ?></pre>
+            </dd>
+            <dt><?php echo $translate('Message') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $escapeHtml($e->getMessage()) ?></pre>
+            </dd>
+            <dt><?php echo $translate('Stack trace') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $escapeHtml($e->getTraceAsString()) ?></pre>
+            </dd>
+        </dl>
+    </li>
+    <?php
+        $e = $e->getPrevious();
+        endwhile;
+    ?>
+</ul>
+<?php endif; ?>
+
+<?php else: ?>
+
+<h3><?php echo $translate('No Exception available') ?></h3>
+
+<?php endif ?>
+
+<?php endif ?>

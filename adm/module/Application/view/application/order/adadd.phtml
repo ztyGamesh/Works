@@ -1,0 +1,897 @@
+<link rel="stylesheet" href="/css/jquery-ui-1.10.0.custom.css">
+<script src="/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/order/ad">广告投放管理</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加广告投放</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+
+<form id="edit" method="post" action="/order/adadd" class="form-horizontal" novalidate="novalidate"
+      onsubmit="return adaddVilidate();">
+
+    <div style="width:100%;height:79px;padding-top: 10px">
+        <?php if (isset($this->form['error'])) { ?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <strong>错误信息：</strong> <?php echo $this->form['error']; ?>
+            </div>
+        <?php } ?>
+    </div>
+
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">广告投放属性:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input type="radio" name="class" id="optionsRadios1" value="1" checked="true"> &nbsp;&nbsp;正常投放
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <input type="radio" name="class" id="optionsRadios2" value="2">&nbsp;&nbsp;配送
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <input type="radio" name="class" id="optionsRadios3" value="3">&nbsp;&nbsp;补量
+
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">广告投放名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" value="<?php echo $name; ?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <select id="order" name="order" class="form-control selectpicker">
+                <option value="选择订单">选择订单</option>
+                <?php
+                foreach ($this->order_menu as $key => $val):?>
+                    <option
+                        value="<?php echo $key ?>" <?php if ($this->item['order'] == $key) echo 'selected="selected"' ?>><?php echo $val; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">媒体名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <select id="selF" class="form-control selectpicker" name="media">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">广告位名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <select id="selT" class="form-control  selectpicker" name="adslot">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">模板:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <select id="selC" class="form-control  selectpicker" name="template">
+                <option value="">请选择</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">素材:<span style="color:red"> *</span></label>
+        <div class="col-sm-5" style="padding-right: 0">
+            <select id="material" name="material" class="form-control selectpicker">
+                <option value="">请选择</option>
+            </select>
+        </div>
+        <div class="col-sm-1" style="padding-left: 0;">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button id="addMateriel" class="btn btn-default" type="button"
+                            style="width: 100%;-webkit-border-radius: 0 4px 4px 0 ;-moz-border-radius: 0 4px 4px 0 ;border-radius: 0 4px 4px 0 ;">＋添加</button>
+                </span>
+            </div>
+        </div>
+        <small class="help-block" style="display: block;"></small>
+    </div>
+    <!--
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">展现监测:</label>
+        <div class="col-sm-6 ">
+           <input id="imp_monitor" class="form-control" type="text" name="imp_monitor"  value="<?php echo $this->item['imp_monitor']; ?>">
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">点击监测:</label>
+        <div class="col-sm-6 ">
+            <input id="cli_monitor" class="form-control" type="text" name="cli_monitor"  value="<?php echo $this->item['cli_monitor']; ?>">
+        </div>
+    </div>
+    
+    -->
+
+
+    <div class="form-group hidden">
+        <label class="col-sm-3 control-label">第三方点击监测地址:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="landing" class="form-control" type="text" name="landing" placeholder="请以http://或https://开头"
+                   value="<?php echo $this->item['landing']; ?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">第三方曝光监测地址:</label>
+        <div class="col-sm-6 ">
+            <input id="link_exposure" class="form-control" type="text" name="monitoring_url"
+                   placeholder="请以http://或https://开头" value="">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group" id="linkWrapper">
+        <label class="col-sm-3 control-label">目标url:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="link" class="form-control" type="text" name="link" placeholder="请以http://或https://开头"
+                   value="<?php echo $this->item['link']; ?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">结算方式:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input style="margin-right:10px" type="radio" name="sell_type" id="selltypeRadios1" value="1"
+                   checked="true"
+                   disabled>CPD
+            <input style="margin-left:32px;margin-right:10px" type="radio" name="sell_type" id="selltypeRadios2"
+                   value="2" disabled>轮播
+            <!--            <input style="margin-left:32px;margin-right:10px" type="radio" name="sell_type" id="selltypeRadios3"-->
+            <!--                   value="3" disabled>CPM-->
+            <input type="hidden" name="sell_type" id="sell_type_value" value="1">
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">投放周期:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input type="text" name="s" id="s" class="form-control" value="<?php echo $this->item['s']; ?>"
+                   style="width:100px;display:inline-block">
+            <input type="text" name="e" id="e" class="form-control" value="<?php echo $this->item['e']; ?>"
+                   style="width:100px;display:inline-block">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">排期设定:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <button type="button" id="setSchedule" class="btn btn-primary btn-small btn-block">设置排期详情</button>
+            <input type="hidden" id="selected" name="selects">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">样式刊例价:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <div class="col-sm-6">
+                <span id="klj">＊</span><span id="kljUnit">元/天</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">实际计费单价:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="price" type="text" name="price" class="form-control">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+        <label id="actual_price_unit">元/天</label>
+    </div>
+
+    <div id="attr_1">
+        <div class="form-group hidden">
+            <label class="col-sm-3 control-label">总预算:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <input type="text" name="budget" id="budget" class="form-control"
+                       value="<?php echo $this->item['budget']; ?>">
+                <small class="help-block" style="display: block;"></small>
+            </div>
+        </div>
+    </div>
+
+    <div id="attr_2" style="display: none">
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">选择定向:</label>
+            <div class="col-sm-6 ">
+                <select id="material" name="targeting" class="form-control  dropup" data-live-search="true">
+                    <?php
+                    foreach ($this->targeting_menu as $key => $val):?>
+                        <option
+                            value="<?php echo $key ?>" <?php if ($this->item['targeting'] == $key) echo 'selected="selected"' ?>><?php echo $val; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">CPM单价:</label>
+            <div class="col-sm-6 ">
+                <input type="text" name="cpm_price" id="cpm_price" class="form-control"
+                       value="<?php echo $this->item['cpm_price']; ?>">
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">日投放量:</label>
+            <div class="col-sm-6 ">
+                <input type="text" name="quota_daily" id="quota_daily" class="form-control"
+                       value="<?php echo $this->item['quota_daily']; ?>">
+
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">投放优先级:</label>
+            <div class="col-sm-6 ">
+                1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9
+            </div>
+            <div class="col-sm-6 ">
+                <div id="slider"></div>
+                <input id="slider_value" type="text" name="priority" type="hidden"/>
+            </div>
+            <div class="col-sm-12 ">
+                <label class="col-sm-3 control-label"></label>
+                最低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">投放速度:</label>
+            <div class="col-sm-6 ">
+                <input type="radio" name="speed" id="optionsSpeedRadios1" value="1" checked> &nbsp;&nbsp;尽快投放
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <input type="radio" name="speed" id="optionsSpeedRadios2" value="2">&nbsp;&nbsp;按流量平均投放
+                <input type="radio" name="speed" id="optionsSpeedRadios3" value="3">&nbsp;&nbsp;按小时平均投放
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label"></label>
+        <div class="col-sm-6 ">
+            <div style="padding-left:40px;">
+
+                <button type="button"
+                        style="width:120px;line-height:30px;background:#4183cd;font-size:12px;color:#fff;border-radius: 26px;margin-right:30px;"
+                        onclick="javascript:window.location.href='/order/ad'">取消
+                </button>
+                <button type="submit"
+                        style="width:120px;line-height:30px;background:#4183cd;font-size:12px;color:#fff;border-radius: 26px;">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+<link rel="stylesheet" href="/css/bootstrap-editable.css">
+
+<script type="text/javascript">
+    checkActionAuth('/order/ad', 2);
+    var linkWrapperIsShow = true; //是否显示目标url
+
+    $('#name').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#name'), '请输入广告投放名称');
+        } else {
+            vaSuccess($('#name'));
+        }
+    });
+    $('#material').change(function () {
+        if (vaIsNotNull($(this).val())) {
+            vaSuccess($(this));
+        }
+    });
+    //    $('#landing').blur(function () {
+    //        if (!vaIsNotNull($(this).val())) {
+    //            vaError($('#landing'), '地址不能为空');
+    //        } else if (!vaIsUrl($('#landing').val())) {
+    //            vaError($('#landing'), '地址应以http://或者https://开头');
+    //        } else {
+    //            vaSuccess($('#landing'));
+    //        }
+    //    });
+    $('#link_exposure').blur(function () {
+        if (vaIsNotNull($(this).val()) && (!vaIsUrl($(this).val()))) {
+            vaError($('#link_exposure'), '第三方曝光监测地址应以http://或者https://开头');
+        } else {
+            vaSuccess($('#link_exposure'));
+        }
+    });
+    $('#link').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#link'), '地址不能为空');
+        } else if (!vaIsUrl($('#link').val())) {
+            vaError($('#link'), '地址应以http://或者https://开头');
+        } else {
+            vaSuccess($('#link'));
+        }
+    });
+    //    $('#budget').blur(function () {
+    //        if (!vaIsNotNull($(this).val())) {
+    //            vaError($('#budget'), '请输入总预算');
+    //        } else if (!vaIsMoney($(this).val())) {
+    //            vaError($('#budget'), '总预算输入格式有误，最多支持小数点后两位');
+    //        } else {
+    //            vaSuccess($('#budget'));
+    //        }
+    //    });
+    $('#price').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#price'), '请输入实际计费单价');
+        } else if (!vaIsMoney($(this).val())) {
+            vaError($('#price'), '输入格式有误，最多支持小数点后两位');
+        } else if ($("#selC").val() == '' || $("#selC").val() == '选择样式') {
+            vaError($('#price'), '请正确选择模版');
+        } else if (!vaPrice($(this))) {
+            vaError($('#price'), '实际计费单价需要小于等于样式刊例价');
+        } else {
+            vaSuccess($('#price'));
+        }
+    });
+    function vaPrice(obj) {
+        //        获取刊例价
+        var klj = <?php echo json_encode($this->template_price);?>;
+        for (var i in klj) {
+            if (i == $("#selC").val()) {
+                console.log("实际计价：" + obj.val());
+                console.log("刊例价：" + parseFloat(klj[i]));
+                if (parseFloat(obj.val()) <= parseFloat(klj[i])) {
+                    console.log('通过实际计价与刊例价的验证，刊例价为：' + klj[i]);
+                    return true;
+                } else {
+                    console.log('未通过实际计价与刊例价的验证，刊例价为：' + klj[i])
+                }
+            }
+        }
+        return false;
+    }
+
+    // 至少选择一天的排期
+    function vaSelectedNotNull(obj) {
+        var selected = obj.split(',');
+        for (var i = 0; i < selected.length; i++) {
+            if (selected[i] != '0') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //校验规则：渠道不能空；手机号码可以空、校验格式；
+    function adaddVilidate() {
+        $("#Deepleaper_loading").show();
+//        checkselT();
+        var name = $('#name');
+        var nameVal = name.val();
+        var landing = $('#landing');
+        var landingVal = landing.val();
+        var link_exposure = $('#link_exposure');
+        var link_exposureVal = link_exposure.val();
+        var link = $('#link');
+        var linkVal = link.val();
+//        var budget = $('#budget');
+//        var budgetVal = budget.val();
+        var price = $('#price');
+        var priceVal = price.val();
+        if (!vaIsNotNull(nameVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(name, '请输入广告投放名称');
+            return false;
+//        } else if (!vaIsNotNull(landingVal)) {
+//            vaError(landing, '地址不能为空');
+//            return false;
+//        } else if (!vaIsUrl(landingVal)) {
+//            vaError(landing, '地址应以http://或者https://开头');
+//            return false;
+        } else if (!vaIsNotNull($("#material").val())) {
+            $("#Deepleaper_loading").hide();
+            vaError($("#material"), '素材不能为空');
+            return false;
+        } else if (vaIsNotNull(link_exposureVal) && (!vaIsUrl(link_exposureVal))) {
+            $("#Deepleaper_loading").hide();
+            vaError(link_exposure, '第三方曝光监测地址应以http://或者https://开头');
+            return false;
+        } else if (!vaIsNotNull(linkVal) && linkWrapperIsShow) {
+            $("#Deepleaper_loading").hide();
+            vaError(link, '地址不能为空');
+            return false;
+        } else if (!vaIsUrl(linkVal) && linkWrapperIsShow) {
+            $("#Deepleaper_loading").hide();
+            vaError(link, '地址应以http://或者https://开头');
+            return false;
+        } else if (!vaIsNotNull($("#selected").val()) || !vaSelectedNotNull($('#selected').val())) {
+            $("#Deepleaper_loading").hide();
+            vaError($("#selected"), '请进行排期设定');
+            return false;
+//        } else if (!vaIsNotNull(budgetVal)) {
+//            vaError(budget, '请输入总预算');
+//            return false;
+//        } else if (!vaIsMoney(budgetVal)) {
+//            vaError(budget, '总预算输入格式有误，最多支持小数点后两位');
+//            return false;
+        } else if (!vaIsNotNull(priceVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(price, '请输入实际计费单价');
+            return false;
+        } else if (!vaIsMoney(priceVal)) {
+            $("#Deepleaper_loading").hide();
+            vaError(price, '输入格式有误，最多支持小数点后两位');
+            return false;
+        } else if ($("#selC").val() == '' || $("#selC").val() == '选择样式') {
+            $("#Deepleaper_loading").hide();
+            vaError(price, '请正确选择模版');
+            return false;
+        } else if (!vaPrice(price)) {
+            $("#Deepleaper_loading").hide();
+            vaError(price, '实际计费单价需要小于等于样式刊例价');
+            return false;
+        } else {
+            $("#Deepleaper_loading").hide();
+            return true;
+        }
+    }
+
+
+    $(function () {
+        function objInit(obj) {
+            return $(obj).html("<option value=''>请选择</option>");
+        }
+
+        //    var arrData = {
+//             厂商1:{品牌1_1: "型号1_1_1, 型号1_1_2", 品牌1_2: "型号1_2_1, 型号1_2_2"},
+//             厂商2:{品牌2_1: "型号2_1_1, 型号2_1_2", 品牌2_2: "型号2_2_1, 型号2_2_2"}
+//             
+//         };
+        //      {"媒体":
+//        {"广告位":
+// 				{"模板":"13fcddec-7a79-483a-864a-fc298ef3f548",
+// 				"模板":"7706b033-8d41-415b-8ac1-c18f013bbbd2"},
+//        	"广告位":
+//        		{"模板":"18525855-0f54-4304-9fa2-01b39db095e8"}}} 
+
+        var arrData =<?php echo $this->mst_select;?>;//媒体、广告位、模版信息
+        var arrsellData =<?php echo $this->slotsell_menu;?>;//广告售卖类型
+        console.log('arrsellData:' + arrsellData);
+        //新增广告位uid与售卖类型映射关系的数组
+        var arrselluiddata =<?php echo $this->slotsell_uid_menu;?>;
+
+        $.each(arrData, function (pF) {
+            $("#selF").append("<option>" + pF + "</option>");
+        });
+
+        $("#selF").change(function () {
+            objInit("#selT");
+            objInit("#selC");
+            objInit("#material");
+            $('#klj').html('*');
+            $.each(arrData, function (pF, pS) {
+                if ($("#selF option:selected").text() == pF) {
+                    //遍历数据增加品牌项
+                    $.each(pS, function (pT, pC) {
+                        $("#selT").append('<option uid=' + pC.uid + ' value = ' + pC.uid + '>' + pT + '</option>');
+                    });
+
+                    //品牌列表change事件
+                    $("#selT").change(function () {
+                        $('#klj').html('*');
+                        reChooseSchedule();
+                        objInit("#selC");
+                        objInit("#material");
+                        $.each(pS, function (pT, pC) {
+                            if ($("#selT option:selected").text() == pT) {
+
+                                $.each(pC.template, function (pA, pB) {
+                                    $("#selC").append('<option value="' + pB + '">' + pA + '</option>');
+                                });
+                            }
+                        });
+
+                        // 变更售卖类型
+                        $.each(arrsellData, function (pS, pN) {
+//                            console.log('ps:'+pS);
+//                            console.log('pn:'+pN);
+                            if ($("#selT option:selected").text() == pS) {
+                                switch (pN) {
+                                    case '1':
+                                        $('#selltypeRadios2').removeProp('checked');
+                                        $('#selltypeRadios1').prop('checked', 'true');
+                                        $('#sell_type_value').val(1);
+                                        $('#kljUnit').html('元／天');
+                                        $('#actual_price_unit').html('元／天')
+//                                        $('#attr_1').show();
+//                                        $('#attr_2').hide();
+                                        break;
+                                    case '2':
+                                        $('#selltypeRadios1').removeProp('checked');
+                                        $('#selltypeRadios2').prop('checked', 'true');
+                                        $('#sell_type_value').val(2);
+                                        $('#kljUnit').html('元／轮播');
+                                        $('#actual_price_unit').html('元／轮播')
+//                                        $('#attr_1').show();
+//                                        $('#attr_2').hide();
+                                        break;
+//                                    case '3':
+//                                        $('#selltypeRadios3').attr('checked', 'true');
+//                                        $('#sell_type_value').val(3);
+//                                        $('#selltypeRadios2').attr('checked', 'true');
+//                                        $('#sell_type_value').val(2);
+//                                        $('#attr_1').hide();
+//                                        $('#attr_2').show();
+//                                        break;
+                                    default:
+                                }
+
+                            }
+                        });
+                        $(".selectpicker").selectpicker('refresh');
+                    });
+
+                }
+            });
+            $(".selectpicker").selectpicker('refresh');
+        });
+//        模版改变， 刊例价改变 目标url状态改变
+        $("#selC").change(function () {
+            objInit("#material");
+            var template_price = <?php echo json_encode($this->template_price);?>;
+            for (var i in template_price) {
+                if (i == $("#selC").val()) {
+                    $("#klj").html(parseFloat(template_price[i]));
+                }
+            }
+
+            var template_click = <?php echo json_encode($this->template_click);?>;
+            for (var i in template_click) {
+                if (i == $("#selC").val()) {
+                    if (template_click[i] == 0) {
+                        $("#linkWrapper").hide();
+                        linkWrapperIsShow = false;
+                        console.log('样式不支持点击，隐藏link');
+                    } else if (template_click[i] == 1) {
+                        $("#linkWrapper").show();
+                        linkWrapperIsShow = true;
+                        console.log('样式支持点击，显示link');
+                    } else {
+                        console.log('根据样式匹配 是否支持点击 失败！')
+                    }
+                }
+            }
+            //        查询素材列表，渲染
+            getmaterialbytemplateAPI($("#selC").val(), getmaterialbytemplateAPIonSuccess);
+        });
+        function getmaterialbytemplateAPIonSuccess(result) {
+            var res = JSON.parse(result);
+            if (res.status == '1' && res.data !== null) {
+                objInit("#material");
+                $.each(res.data, function (key, value) {
+                    $("#material").append('<option value="' + key + '">' + value + '</option>');
+                });
+                $(".selectpicker").selectpicker('refresh');
+            }
+        }
+    });
+</script>
+<script>
+    $(function () {
+
+        bindRangeDatepicker($('#s'), $('#e'));
+
+        $("#slider").slider({
+            value: 3,
+            min: 1,
+            max: 9,
+            step: 1,
+            slide: function (event, ui) {
+                $("#slider_value").val(ui.value);
+            }
+        });
+//    订单改变，周期日期限制要改变
+        $("#order").change(function () {
+            var uid = $(this).val();
+            if (uid == '选择订单') {
+                $("#s").val('');
+                $("#e").val('');
+            } else {
+                getorderinfoAPI(uid, getorderinfoAPISuccess);
+            }
+
+            function getorderinfoAPISuccess(result) {
+                var res = JSON.parse(result);
+                if (res.status == '1') {
+                    var order_s = diffDays(res.data.s);
+                    var order_e = diffDays(res.data.e);
+                    $("#s").datepicker("setStartDate", res.data.s);
+                    $("#e").datepicker("setEndDate", res.data.e);
+                    bindRangeDatepicker($('#s'), $('#e'), new Date(res.data.s), new Date(res.data.e));
+                } else {
+                    alert('订单周期查询错误：' + res.msg);
+                }
+            }
+
+        });
+    });
+
+</script>
+<!--排期设定-->
+<link rel="stylesheet" href="/css/dialog/dialog.css">
+<div class="dialog_wrapper" id="dialog_wrapper" style="display: none;">
+    <div class="dialog_box">
+        <div class="date_box">
+            <div class="attention">
+                <!--                注：修改排期时，距离投放日期开始前3天排期不能修改-->
+            </div>
+            <div id="data_wrapper">
+                <div class="dates_wrapper">
+                </div>
+            </div>
+
+            <div class="btn_box">
+                <input type="button" value="确认" id="stock_submit">
+                <input type="button" class="hidden" value="清空" id="stock_cancle">
+                <input type="button" value="取消" id="stock_cancel">
+            </div>
+        </div>
+        <img src="/images/left_btn_dialog.png" class="left_btn_dialog" id="left_btn_dialog">
+        <img src="/images/right_btn_dialog.png" class="right_btn_dialog" id="right_btn_dialog">
+    </div>
+</div>
+<script type="text/javascript">
+    var sell_type = '1'; //结算方式
+    var isScheduledFlag = false; //是否设定好了排期
+
+    //如果广告位类型 / 投放周期改变，需要清空排期存储域＃selected ，并isScheduledFlag设为false
+    function reChooseSchedule() {
+        $("#selected").val("");
+        isScheduledFlag = false;
+    }
+    $("#s").change(reChooseSchedule);
+    $("#e").change(reChooseSchedule);
+    //    查看排期按钮
+    $("#setSchedule").bind('click', function () {
+        if (isScheduledFlag) {
+            $("#dialog_wrapper").show();
+        } else {
+            var ad = '';
+            var slot = $("#selT option:selected").attr('uid');
+            var start = $("#s").val();
+            var end = $("#e").val();
+            if (slot == undefined) {
+                vaError($("#setSchedule"), '请先选择广告位名称');
+            } else if (start == '' && end == '') {
+                vaError($("#setSchedule"), '请输入正确的投放周期');
+            } else {
+                vaSuccess($("#setSchedule"));
+//                var layerLoading = layer.load(2);
+                $("#Deepleaper_loading").show();
+                media_slotinventory(slot, ad, start, end, media_slotinventorySuccess);
+            }
+        }
+    });
+    function media_slotinventorySuccess(result) {
+        var res = JSON.parse(result);
+        if (res.status == '1') {
+            var data = res.data;
+            var slot_inventory = data.slot_inventory; //slot_inventory广告位总量 作为分母
+            var inventory = getJsonValue(data.inventory);//inventory 库存量 作为分子
+            var available_date = getJsonValue(data.available_date); //可编辑标识 0不可 1可以
+            var total = getJsonLength(data.inventory);//total 总条数
+            var pages = Math.ceil(total / 16);//总页数，每页16条
+            var dataArray = getJsonKey(data.inventory);//日期数组
+            sell_type = data.sell_type;//结算方式 1:CPD  2:轮播
+            $("#data_wrapper").html('');
+            var data_page = "";
+            var data_flag = 0;
+            if (sell_type == '2') {//轮播
+                for (var i = 0; i < pages; i++) {
+                    if (i == 0) {
+                        data_page += '<div class="dates_wrapper display_block">';
+                    } else {
+                        data_page += '<div class="dates_wrapper display_none">';
+                    }
+                    for (var j = 0; j < 16; j++) {
+                        if (data_flag < dataArray.length) {//非空单元格
+                            if (available_date[data_flag] == 1 && (inventory[data_flag] > 0 || selects[data_flag] > 0)) {//可以编辑
+                                var data_content = '<div class="date_content ">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="stock backcolorCan">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                    + '<input type="text" class="purchase canSubmit" placeholder="购买量" maxlength="1" inventory="' + inventory[data_flag] + '" onblur="checkPurchase(this);">'
+                                    + '</div>';
+                            } else if (available_date[data_flag] == 0 || available_date[data_flag] == 1) {//不可编辑
+                                var data_content = '<div class="date_content eneditable">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="stock backcolorCant">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                    + '<input type="text" class="purchase canSubmit backcolorCant" placeholder="不可买" disabled="disabled">'
+                                    + '</div>';
+                            } else {
+                                console.log('可编辑标识识别错误！');
+                            }
+
+                            data_page += data_content;
+                            data_flag += 1;
+                        } else {//空单元格
+                            var data_content = '<div class="date_content">'
+                                + '<div class="time" style="visibility: hidden">' + dataArray[data_flag] + '</div>'
+                                + '<div class="stock backcolorCan" style="visibility: hidden">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                + '<input type="text" class="purchase" placeholder="购买量" style="visibility: hidden">'
+                                + '</div>';
+                            data_page += data_content;
+                        }
+                    }
+                    data_page += '</div>';
+                }
+                $("#data_wrapper").html(data_page);
+                $("#dialog_wrapper").show();
+//                layer.closeAll('loading');
+                $("#Deepleaper_loading").hide();
+            } else if (sell_type == 1) {//CPD
+                for (var i = 0; i < pages; i++) {
+                    if (i == 0) {
+                        data_page += '<div class="dates_wrapper display_block">';
+                    } else {
+                        data_page += '<div class="dates_wrapper display_none">';
+                    }
+                    for (var j = 0; j < 16; j++) {
+                        if (data_flag < dataArray.length) {//非空单元格
+                            if (available_date[data_flag] == 1 && inventory[data_flag] != 0) {//可以编辑
+                                var data_content = '<div class="date_content ">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="checkbox"><label class="buy_label"><input type="checkbox" class="buy canSubmit">购买</label></div>'
+                                    + '</div>';
+                            } else if (available_date[data_flag] == 0 || inventory[data_flag] == 0) {//不可编辑
+                                var data_content = '<div class="date_content eneditable">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="checkbox"><label class="buy_label"><input type="checkbox" class="buy canSubmit" disabled="disabled">不可买</label></div>'
+                                    + '</div>';
+                            } else {
+                                console.log('可编辑标识识别错误！');
+                            }
+
+                            data_page += data_content;
+                            data_flag += 1;
+                        } else {//空单元格
+                            var data_content = '<div class="date_content">'
+                                + '<div class="time" style="visibility: hidden">' + dataArray[data_flag] + '</div>'
+                                + '<div class="checkbox"  style="visibility: hidden"><label class="buy_label"><input type="checkbox" class="buy">购买</label></div>'
+                                + '</div>';
+                            data_page += data_content;
+                        }
+                    }
+                    data_page += '</div>';
+                }
+                $("#data_wrapper").html(data_page);
+                $("#dialog_wrapper").show();
+//                layer.closeAll('loading');
+                $("#Deepleaper_loading").hide();
+            }
+        } else {
+//            layer.closeAll('loading');
+            $("#Deepleaper_loading").hide();
+            alert("请求失败，返回信息：" + res.msg);
+        }
+    }
+    //    校验库存输入字段
+    function checkPurchase(arg) {
+        arg.value = arg.value.replace(/\D/g, '0');
+        if (arg.value > (parseInt(arg.getAttribute('inventory')) + parseInt(arg.getAttribute('selects')))) {
+            layer.msg('购买量不能大于库存');
+            arg.value = '0';
+        }
+    }
+    //    确认按钮
+    $("#stock_submit").bind('click', function () {
+        var selectedArray = [];
+        if (sell_type == '2') {
+            var canSubmit = $(".canSubmit");
+            for (var i = 0; i < canSubmit.length; i++) {
+                var selectedValue = 0;
+                if (canSubmit[i].value !== "") {
+                    selectedValue = parseInt(canSubmit[i].value);
+                }
+                selectedArray.push(selectedValue);
+            }
+        } else if (sell_type == '1') {
+            var canSubmit = $(".canSubmit");
+            for (var i = 0; i < canSubmit.length; i++) {
+                var selectedValue = 0;
+                if (canSubmit[i].checked) {
+                    selectedValue = 1;
+                }
+                selectedArray.push(selectedValue);
+            }
+        }
+        //库存排期设定保存在隐藏域中，form表单提交
+        $("#selected").val(selectedArray);
+        $("#dialog_wrapper").hide();
+        isScheduledFlag = true;
+
+    });
+
+    function setPopupValueBySelectedArray() {
+        var selected = $('#selected').val().split(',');
+        console.log(selected);
+        if (sell_type == '2') {
+            var objList = $('#data_wrapper input[type=text]');
+            for (var i = 0; i < selected.length; i++) {
+                $(objList[i]).val(selected[i]);
+            }
+        } else if (sell_type == '1') {
+            var objList = $('#data_wrapper input[type=checkbox]');
+            for (var i = 0; i < selected.length; i++) {
+                if (selected[i] == '1') {
+                    $(objList[i]).prop('checked', 'checked');
+                } else {
+                    $(objList[i]).removeProp('checked');
+                }
+            }
+        }
+    }
+
+    //    清空按钮
+    $("#stock_cancle").bind('click', function () {
+        isScheduledFlag = false;
+        $("#dialog_wrapper").hide();
+        $("#data_wrapper").html('');
+        $("#selected").val("");
+    });
+
+    $("#stock_cancel").bind('click', function () {
+        // 取消按钮
+        $("#stock_cancel").bind('click', function () {
+            $("#dialog_wrapper").hide();
+            setPopupValueBySelectedArray();
+        });
+    });
+
+    //    排期左翻
+    $("#left_btn_dialog").bind('click', function () {
+        var now_wrapper = $(".display_block");
+        if (now_wrapper.prev(".dates_wrapper").length !== 0) {
+            now_wrapper.removeClass('display_block').addClass('display_none');
+            now_wrapper.prev(".dates_wrapper").removeClass('display_none').addClass('display_block');
+        } else {
+            console.log('别按了我的哥，左边没啥了')
+        }
+    });
+    //    排期右翻
+    $("#right_btn_dialog").bind('click', function () {
+        var now_wrapper = $(".display_block");
+        if (now_wrapper.next(".dates_wrapper").length !== 0) {
+            now_wrapper.removeClass('display_block').addClass('display_none');
+            now_wrapper.next(".dates_wrapper").removeClass('display_none').addClass('display_block');
+        } else {
+            console.log('别按了我的哥，右边没啥了')
+        }
+    });
+
+</script>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="/js/application/order/adadd.js"></script>

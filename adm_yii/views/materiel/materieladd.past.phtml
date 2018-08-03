@@ -1,0 +1,164 @@
+
+<form id="edit" method="post" action="/materiel/materielsave" class="form-horizontal list-form" novalidate="novalidate" enctype="multipart/form-data">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">素材名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" maxlength="50" value="<?php echo $name;?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    
+     <div class="form-group ">
+        <label class="col-sm-3 control-label">素材的位类型:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <select id="type" name="type" class="form-control selectpicker " data-live-search="true">
+				<?php foreach($type_menu as $key => $val):?>
+				<option value="<?php echo $key?>" <?php if($item['type'] ==$key) echo 'selected="selected"'?>><?php echo $val;?></option>
+				<?php endforeach;?>
+            </select>
+        </div>
+    </div>
+    
+    <div class="type_norm form-group ">
+        <label class="col-sm-3 control-label">选择上传文件</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[filename]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+
+    <div class="type_norm form-group ">
+        <label class="col-sm-3 control-label">选择上传视频文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" id="exampleInputFile" accept="video/mp4" name="file[b_mp4]">
+            <!--<img src="" />-->小于5MB，限mp4格式
+        </div>
+    </div>
+
+    <div class="type_norm form-group ">
+        <label class="col-sm-3 control-label">默认宽度(PX)</label>
+        <div class="col-sm-6 ">
+            <input id="w" class="form-control" type="text" name="w"  value="<?php echo $item['w'];?>">
+        </div>
+    </div>
+    
+    <div class="type_norm form-group ">
+        <label class="col-sm-3 control-label">默认高度(PX)</label>
+        <div class="col-sm-6 ">
+            <input id="h" class="form-control" type="text" name="h"  value="<?php echo $item['h'];?>">
+        </div>
+    </div>
+    
+     <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件720*1280</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[s_720_1280]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+    
+     <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件1242*2208</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[s_1242_2208]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+    
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件480*800</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[s_480_800]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+    
+     <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件640*960</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[s_640_960]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+    
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件768*1024</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif"  name="file[s_768_1024]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+    
+     <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件1536*2048</label>
+        <div class="col-sm-6 ">
+           
+            <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_1536_2048]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+        </div>
+    </div>
+
+     <div class="type_banner form-group " style="display:none">
+         <label class="col-sm-3 control-label">选择上传文件</label>
+         <div class="col-sm-6 ">
+
+             <input  type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[filename]">
+             <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+         </div>
+    </div>
+
+
+    <div class="type_banner form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传视频文件</label>
+        <div class="col-sm-6 ">
+            <input  type="file" id="exampleInputFile" accept="video/mp4" name="file[b_mp4]">
+            <!--<img src="" />-->小于5MB，限mp4格式
+        </div>
+    </div>
+    
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/materiel/materiel', 2);
+
+    $('#name').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#name'),'素材名称不能为空');
+        }else{
+            vaSuccess($('#name'));
+        }
+    });
+
+
+    $(function(){
+        $("#type").change(function(){
+        	var checkValue=$("#type").val();
+        	
+        	if (checkValue == 'App_开屏') {
+        		$(".type_norm").hide();
+        		$(".type_splash").show();
+        		$(".type_banner").hide();
+        	} 
+        	else if (checkValue == 'App_横幅') { 
+        		$(".type_norm").hide();
+        		$(".type_splash").hide();
+        		$(".type_banner").show();
+        	} else {
+        		$(".type_norm").show();
+        		$(".type_splash").hide();
+        		$(".type_banner").hide();
+        	}
+        });
+   
+    });
+</script>

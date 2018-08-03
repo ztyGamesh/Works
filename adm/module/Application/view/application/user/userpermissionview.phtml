@@ -1,0 +1,272 @@
+<!--媒体账户管理列表界面-->
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加媒体/平台账户
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" class="form-control" placeholder="搜索媒体账户" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<script>
+    var user_status = {'0': '启用', '1':'冻结', '2': '暂停'};
+    var media_type = {'media': '媒体', 'adx': 'Ad Exchange'};
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+        },
+        executeFilterBind: function (data) {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('media_type');
+            bindTableFilterAction('pause');
+        },
+        url: {
+            info: '/user/userview',           //查看页面
+            add: '/user/adduserview',         //添加页面
+            edit: '/user/updateuserview',         //修改页面
+            colModify: '/user/changeuserstatus', //状态(启用/冻结)修改接口
+            del: '/user/userdel'         //删除接口
+        },
+        title: {
+            addTitle: '添加用户权限',
+            editTitle: '修改用户权限'
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {
+            info: true,
+            edit: true,
+            pause: true
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/user/childuser?uid=<?php echo $this->user_id ?>',//服务器数据的加载地址
+            queryParams: function (params) {
+                params.search = $("input[name=search]").val();
+                params.media_type = $("input[name=media_type]:checked").val();
+                params.pause = $("input[name=pause]:checked").val();
+                return params;
+            },//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                console.log(res);
+                return res;
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: '[30, 50, 100]',//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: false,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            },
+            onMouseoverRow:function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display','inline-block');
+            },
+            onMouseoutRow:function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display','none');
+            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '帐号名',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+
+            }, {
+                field: 'media_type',   //需要修改的地方
+                title: '账户类型' + jointTableFilter('media_type', media_type),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'media':
+                            return '媒体';
+                            break;
+                        case 'adx':
+                            return 'Ad Exchange';
+                            break;
+                        default:
+                            return value;
+                    }
+                }
+
+            },
+                {
+                field: 'pause',
+                title: '状态' + jointTableFilter('pause', user_status),
+                sortable: true,
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case '0':
+                            return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" style="margin-right: 5px;" src="../img/icon/icon_pause.png" title="暂停"><img class="status_modify status_freeze" src="../img/icon/icon_freeze.png" title="冻结">';
+                            break;
+                        case '1':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">冻结</span><img class="status_modify status_start" style="margin-right: 5px;" src="../img/icon/icon_start.png" title="启用"><img class="status_modify status_pause" src="../img/icon/icon_pause.png" title="暂停">';
+                            break;
+                        case '2':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_freeze" style="margin-right: 5px;" src="../img/icon/icon_freeze.png" title="冻结"><img class="status_modify status_start" src="../img/icon/icon_start.png" title="启用">';
+                            break;
+                        default:
+                            return value;
+                    }
+                },
+                events: {
+                    'click .status_start': function (e, value, row, index) {//status开关
+                        switchStatus(0, row);
+                    },
+                    'click .status_pause': function (e, value, row, index){
+                        switchStatus(2, row);
+                    },
+                    'click .status_freeze': function (e, value, row, index){
+                        switchStatus(1, row);
+                    },
+                },
+                width: '130px'
+            }, {
+                field: 'mail',
+                title: '邮箱'
+            }, {
+                field: 'tel',
+                title: '手机号码'
+
+            }, {
+                field: 'allow_platform_role',
+                title: '系统权限',
+                formatter: function (value, row, index) {
+                    var val = value.replace('selfsupport', '自营').replace('alliance', '联盟');
+                    if (value !== '') {
+                        return val;
+                    } else {
+                        return '-';
+                    }
+                }
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents'
+            }]
+        }
+    };
+
+
+    var auth = getAuthorityByUrl('/user/userpermissionview');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                info: false,
+                edit: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                info: true,
+                edit: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                info: true,
+                edit: true
+            };
+        }
+    }
+    checkAuthority();
+    hideChangeBtnIfNeed(auth);
+    console.log(ListPageConfig.action);
+    //状态切换
+    function switchStatus(pause, row) {
+        $.ajax({
+            type: 'POST',
+            url: ListPageConfig.url.colModify,
+            cache: false,
+            async: true,
+            data: {
+                'uid': row.uid,
+                'field': 'pause',
+                'val': pause
+            },
+            success: function (data) {
+                if (!data.status) {
+                    layer.msg(data.msg);
+                } else {
+                    $(ListPageConfig.tableId).bootstrapTable('refresh');
+                }
+            },
+            dataType: 'json'
+        });
+    }
+</script>
+
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->partial('layout/listAd.phtml');
+?>

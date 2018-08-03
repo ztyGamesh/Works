@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- 网络应用以全屏幕模式运行 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="full-screen" content="yes">
+    <!-- 隐藏状态栏 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!-- 告诉设备忽略将页面中的数字识别为电话号码 -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>智荐信息流</title>
+    <style type="text/css">
+        body, p {
+            margin: 0;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .toolbar {
+            border-bottom: 1px dashed #000000;
+            background-color: #ffffff;
+            position: fixed;
+            height: 112px;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .btn {
+            display: block;
+            margin: 5px;
+            height: 28px;
+            line-height: 28px;
+            font-size: 12px;
+            color: #fff;
+            text-align: center;
+            background-color: #41464b;
+            -webkit-box-shadow: 0 2px 6px 0 transparent;
+            -moz-box-shadow: 0 2px 6px 0 transparent;
+            -ms-box-shadow: 0 2px 6px 0 transparent;
+            -o-box-shadow: 0 2px 6px 0 transparent;
+            box-shadow: 0 2px 6px 0 transparent;
+            outline: none;
+            -webkit-border-radius:0;
+            -moz-border-radius:0;
+            border-radius:0;
+            padding: 5px 10px;
+        }
+
+        .status {
+            font-size: 12px;
+            height: 16px;
+            line-height: 16px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="toolbar">
+    <a type="button" id="normalRequest" class="btn">请求(模拟上拉加载 数据添加到列表底部)</a>
+    <a type="button" id="changeIdRequest" class="btn">更换用户(模拟新用户请求 清空并重新加载)</a>
+    <p class="status">请求状态：<span id="status"></span></p>
+</div>
+<div id="content" style="margin-top: 112px;"></div>
+<script src="http://ssp.deepleaper.com/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //生产环境配置
+        var config = {
+            'url': 'http://feed-test.deepleaper.com',
+            // 'bundleid': "com.Deepleaper.adExample",
+            'bundleid': "com.deepleaper.demo2",
+            'slot_id': "033ce9e3-f829-4602-a073-9fa700f7ce78"
+            // 'slot_id': "540822c0-3bd3-44cc-87b2-6ff2f79a672b"
+        };
+
+        //测试环境配置
+//        var config = {
+//            'url': 'http://101.201.198.169:7013/',
+//            'bundleid': "SXP测试",
+//            'slot_id': "c1ea9354-0dd9-415c-bbf4-2717e59f3afb"
+//        };
+
+        var templateNAME = {
+            'c0bb62fe-fc21-4b0b-a5c7-d547db667032': {
+                'name': '信息流-大图样式',
+                'allowedFileExtensions': ['jpg', 'png', 'gif', 'jpeg'],
+                'picMaxFileSize': '100'
+            },
+            'b2826850-b106-4cde-8a7c-d1d08dfaec7a': {
+                'name': '信息流-视频样式',
+                'picMaxFileSize': '100',
+                'videoMaxFileSize': '5120'
+            },
+            '7c44a357-ecd0-4c5b-80d0-db8bd5100149': {
+                'name': '信息流-大图+文字样式',
+                'allowedFileExtensions': ['jpg', 'png', 'gif', 'jpeg'],
+                'picMaxFileSize': '100'
+            },
+            '4d918595-d2a1-47c7-8e4a-012f28ddd96e': {
+                'name': '信息流-视频+文字样式',
+                'picMaxFileSize': '100',
+                'videoMaxFileSize': '5120'
+            },
+            '7e1199fd-de4d-469f-8778-5de1268cddea': {
+                'name': '信息流-图文样式',
+                'allowedFileExtensions': ['jpg', 'png', 'gif', 'jpeg'],
+                'picMaxFileSize': '100'
+            },
+            '6684515c-3b6d-40f5-969c-d137c3913aab': {
+                'name': '信息流-组图样式',
+                'allowedFileExtensions': ['jpg', 'png', 'gif', 'jpeg'],
+                'picMaxFileSize': '100'
+            },
+            '3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0': {
+                'name': '信息流-文字链样式'
+            }
+        };
+
+        //产生n位随机整数
+        function RndNum(n) {
+            var rnd = "";
+            for (var i = 0; i < n; i++) {
+                rnd += Math.floor(Math.random() * 10);
+            }
+            return rnd;
+        }
+
+        var uid = RndNum(15);
+
+        $("#normalRequest").click(function () {
+            req(uid);
+        });
+
+        $("#changeIdRequest").click(function () {
+            $("#content").html('');
+            uid = RndNum(15);
+            req(uid);
+        });
+
+        function req(uid) {
+            var requestObj = {
+                "user_and_device": {
+                    "uid": uid,
+                    "uid_type": "imei",
+                    "uid_encryption_type": "NA",
+                    "device_type": "pc",
+                    "device_make": "vivo",
+                    "device_os": "ios",
+                    "device_os_version": "android4.3",
+                    "user_agent": "safari",
+                    "device_model": "Mate8",
+                    "device_carrier_id": 1111111,
+                    "device_ppi": 403,
+                    "device_width": 1080,
+                    "device_height": 1920
+                },
+                "scene": {
+                    "local_time": 1501470785,
+                    "network": "wifi",
+                    "ipv4": "222.174.234.6",
+                    "ipv6": "2001:0DB8:0000:0023:0008:0800:200C:417A",
+                    "coordinate_standard": "GCJ_02",
+                    "latitude": 116.40717,
+                    "longitude": 39.90469
+                },
+                "media": {
+                    "bundleid": config.bundleid,
+                    "app_name": "browser",
+                    "app_version": "1.0.0",
+                    "slot_id": config.slot_id
+                },
+                "action": {
+                    "action_type": "pull_up_refresh"
+                },
+                "request_type": "feeds_api"
+            };
+            $.ajax(config.url, {
+                type: 'post',
+                data: JSON.stringify(requestObj),
+                success: function (req) {
+                    if (req.status == 'successful') {
+                        $("#status").html('成功，返回条数：' + req.size);
+                        $("#status").css('color', 'green');
+                        var data = req.data;
+                        for (var i = 0; i < data.length; i++) {
+                            var type = data[i].type;
+                            if (type == 1) {//内容
+                                var template_class = '';//封面图类型 1大图+文字  2图文  3三图
+                                var detail_page_type = '';//详情页类型 1图文 2组图 3视频
+                                var source = data[i].source;//马甲名
+                                var imp = data[i].imp;
+                                var link = data[i].link;
+                                var material = data[i].material;
+                                var pics = material.pic;
+                                switch (data[i].type) {
+                                    case 0:
+                                        type = '广告';
+                                        break;
+                                    case 1:
+                                        type = '内容';
+                                }
+
+                                switch (data[i].template_class) {
+                                    case 1:
+                                        template_class = '大图+文字';
+                                        break;
+                                    case 2:
+                                        template_class = '图文';
+                                        break;
+                                    case 3:
+                                        template_class = '三图';
+                                        break;
+                                }
+
+                                switch (data[i].detail_page_type) {
+                                    case 1:
+                                        detail_page_type = '图文';
+                                        break;
+                                    case 2:
+                                        detail_page_type = '组图';
+                                        break;
+                                    case 3:
+                                        detail_page_type = '视频';
+                                        break;
+                                }
+                                var pic_html = '';
+                                for (var j = 0; j < pics.length; j++) {
+                                    pic_html += '<img src="' + pics[j] + '" width="100px">'
+                                }
+                                var html = '<div data-imp="' + data[i].imp + '" data-link="' + data[i].link + '" class="item" style="border: 1px solid rebeccapurple;background-color: antiquewhite;"><p>类型：内容</p>' +
+                                        '<p>封面图类型：' + template_class + '</p>' +
+                                        '<p>详情页类型：' + detail_page_type + '</p>' +
+                                        '<p>马甲名：' + source + '</p>' +
+                                        '<p>内容标题：' + material.title + '</p>' +
+                                        '<p>内容封面图：</p>' + pic_html +
+                                        '</div>';
+                                $("#content").append(html);
+                            } else if (type == 0) {//广告
+                                var descriptionHtml = '';
+                                var picHtml = '';
+                                var picArrayHtml = '';
+                                var videoHtml = '';
+
+                                if (data[i].material.description) {
+                                    descriptionHtml = '<p>广告描述:' + data[i].material.description + '</p>'
+                                }
+
+                                if (data[i].material.pic) {
+                                    picHtml = '<p>封面图:<img src="' + data[i].material.pic + '" width="100px"></p>'
+                                }
+                                if (data[i].material.pic1) {
+                                    picArrayHtml = '<p>3张封面图:<img src="' + data[i].material.pic1 + '" width="100px"><img src="' + data[i].material.pic2 + '" width="100px"><img src="' + data[i].material.pic3 + '" width="100px"></p>'
+                                }
+                                if (data[i].material.video) {
+                                    videoHtml = '<p><video src="' + data[i].material.video + '" width="100px" /></p>'
+                                }
+
+                                var htmlad = '<div data-imp="' + data[i].imp + '" data-link="' + data[i].link + '" data-click="' + data[i].click + '" class="item" style="background-color: aliceblue;"><p>类型：广告</p>';
+                                htmlad += '<p>广告样式类型：' + templateNAME[data[i].template_class].name + '</p>' +
+                                        '<p>来源：' + data[i].ad_source + '</p>' +
+                                        '<p>广告标题：' + data[i].material.title + '</p>' + descriptionHtml + picHtml + picArrayHtml + videoHtml +
+                                        '</div>';
+                                $("#content").append(htmlad);
+                            }
+                            var img = new Image();
+                            img.src = data[i].imp;//展示监控链接
+                        }
+                    } else if (req.status == 'failed') {
+                        $("#status").css('color', 'red');
+                        $("#status").html('失败，' + req.message);
+                    }
+
+                    $(".item").click(function () {
+                        if ($(this).attr('data-click')) {//广告点击监控，内容点击监控在详情页中实现
+                            var img = new Image();
+                            img.src = $(this).attr('data-click');//点击监控链接
+                        }
+                        window.open($(this).attr('data-link'));//落地页
+                    })
+                },
+                error: function () {
+                    alert('接口请求失败！！！')
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

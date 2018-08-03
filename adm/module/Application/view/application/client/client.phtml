@@ -1,0 +1,123 @@
+<?php
+echo $this->partial('layout/listPublicHeader.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加广告主
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="广告主名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<style>
+    .mw95 {
+        min-width: 95px;
+    }
+</style>
+<script>
+
+    // 权限控制
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+        },
+        table: {           //表格配置
+            url: '/client/client',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortName: 'create_time',
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '广告主名称'
+            }, {
+                field: 'url',
+                title: '广告主网址'
+            }, {
+                field: 'category',
+                title: '行业分类'
+            }, {
+                field: 'agency',
+                title: '代理商名称'
+            }, {
+                field: 'createUserName',
+                title: '创建/修改人'
+            }, {
+                field: 'edit_time',
+                title: '编辑时间'
+            }, {
+                field: 'do',
+                title: '操作',
+                'class': 'mw95',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents'
+            }]
+        },
+        url: {
+            add: '/client/clientadd',       //添加 数据 html 地址
+            edit: '/client/clientedit',      //编辑数据 html 地址
+            del: '/client/clientdel',      //删除数据地址
+            detail: false                      //详细内容地址,为空则取编辑的地址
+        },
+        title: {
+            addTitle: '添加广告主',
+            editTitle: '编辑广告主'
+        },
+        dialogWidth: 600,
+        showDetail: false         //是否显示详细信息按钮
+    };
+
+    var auth = getAuthorityByUrl('/client/client');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                edit: true,
+                //   del: true
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+    hideChangeBtnIfNeed(auth);
+</script>
+
+
+<?php
+echo $this->partial('layout/listPublicFooter3.phtml');
+?>

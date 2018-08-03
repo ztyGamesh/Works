@@ -1,0 +1,382 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+<link rel="stylesheet" href="/css/bootstrap-editable.css"/>
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+<div id="toolbar">
+    <div class="form-inline" role="form" style="padding-bottom: 10px">
+
+        <div class="form-group">
+            <span>开始日期: </span>
+            <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+        </div>
+        <div class="form-group">
+            <span>结束日期: </span>
+            <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+            <span>媒体名称: </span>
+            <select name="media" id="media" class="selectpicker show-tick">
+                <option value="全部">全部</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <span>广告位: </span>
+            <select name="slot" id="slot" class="selectpicker show-tick">
+                <option value="全部">全部</option>
+            </select>
+        </div>
+
+        <button id="ok" type="submit" class="btn btn-default">OK</button>
+
+        <div class="form-group">
+            <input type="button" class="form-control" value="下载报表" id="downloadTable">
+        </div>
+    </div>
+
+    <div id="echarsBox" style="width: 100%;height:400px;"></div>
+
+    <form role="form" style="padding: 19px 0 ">
+        选择报表对比项：
+        <div id="comparision">
+
+        </div>
+    </form>
+
+</div>
+
+
+<script type="text/javascript">
+    function GetDateStr(AddDayCount) {
+        var dd = new Date();
+        dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+        var y = dd.getFullYear();
+        var m = dd.getMonth() + 1;//获取当前月份的日期
+        var d = dd.getDate();
+        return y + "/" + m + "/" + d;
+    }
+
+    (function () {
+        bindRangeDatepicker($('#begin_date'), $('#end_date'), addDate(new Date, -7), addDate(new Date(), -1));
+    })();
+    //        testing
+    //        $('#begin_date').val('2016/11/11');
+    //        $('#end_date').val('2016/11/16');
+</script>
+<script>
+
+    checkActionAuth('/stat/day', 1);
+    //      保存级联数组
+    var getListData = [];
+    statGetList(statGetListSuccess);
+    function statGetListSuccess(result) {
+        var media = $("#media");
+        var slot = $("#slot");
+        var res = JSON.parse(result);
+        console.log(res);
+        if (res.status == '1') {
+            getListData = res.data;
+//          初始化一级菜单
+            var mediaDom = '<option value="全部">全部</option>';
+            for (var i = 0; i < getListData.length; i++) {
+                mediaDom += '<option value="' + getListData[i].m_uid + '">' + getListData[i].m_name + '</option>';
+            }
+            media.html(mediaDom);
+//          选中一级菜单
+            media.change(function () {
+                slot.html('<option value="全部">全部</option>');
+                var slotDom = '<option value="全部">全部</option>';
+                $.each(getListData, function (i, mediaItem) {
+                    if ($("#media option:selected").val() == mediaItem.m_uid) {
+                        $.each(mediaItem.child, function (j, slotItem) {
+                            slotDom += '<option value = ' + slotItem.s_uid + '>' + slotItem.s_name + '</option>';
+                        });
+                        slot.html(slotDom);
+                    }
+                });
+                $(".selectpicker").selectpicker('refresh');
+            });
+        } else {
+            console.log('媒体报表级联菜单获取失败');
+        }
+    }
+</script>
+<script type="text/javascript" src="/js/echartsCtl.js"></script>
+<!--    初始化echarts对比字段控制器-->
+<script type="text/javascript">
+    var comparision = [
+        {
+            field: "pv",
+            name: "PV",
+            checked: true
+        },
+        {
+            field: "u_pv",
+            name: "UV",
+            checked: true
+        },
+        {
+            field: "imp",
+            name: "曝光量",
+            checked: false
+        },
+        {
+            field: "click",
+            name: "点击量",
+            checked: false
+        },
+        {
+            field: "fr",
+            name: "填充率",
+            checked: false
+        },
+        {
+            field: "ctr",
+            name: "点击率",
+            checked: false
+        },
+        {
+            field: "rpm",
+            name: "RPM",
+            checked: false
+        },
+        {
+            field: "cpm",
+            name: "eCPM",
+            checked: false
+        },
+        {
+            field: "cpc",
+            name: "eCPC",
+            checked: false
+        },
+//        {
+//            field: "earning",
+//            name: "收入",
+//            checked: false
+//        }
+    ];
+    comparisionInit($('#comparision'), comparision);
+
+    function draw(xx) {
+        var date_arr = [];
+        var obj = {};
+        //echartsCtlSelected存储当前选中需要图表显示的字段
+        var echartsCtlSelected = [];
+        $("input[name='echartsCtl']:checked").each(function (index, element) {
+            var name = $(element).val();
+            var fieldCol = $(element).attr('field');
+            var fieldObj = [];
+            var fieldObjOriginal = [];//用于图标标记显示
+            for (x in xx.data) {
+                date_arr[x] = xx.data[x].date;
+                for (h in xx.data[x]) {
+                    if (h == fieldCol) {
+                        if (xx.data[x][h] == "-") {
+                            fieldObj[x] = 0;
+                        } else {
+                            fieldObj[x] = xx.data[x][h];
+                        }
+                        fieldObjOriginal[x] = xx.data[x][h];
+                    } else {
+
+                    }
+                }
+            }
+            obj[name] = fieldObjOriginal;
+//              处理原始数据为百分比形式formatterObj
+            var maxVal = Math.max.apply(null, fieldObj);
+            var formatterObj = [];//
+            for (var i = 0; i < fieldObj.length; i++) {
+                if(maxVal == 0){
+                    formatterObj[i] = 0;
+                }else{
+                    formatterObj[i] = parseFloat(fieldObj[i] / maxVal * 100);
+                }
+            }
+            echartsCtlSelected[index] = {
+                name: name,
+                type: 'line',
+                symbol: 'circle',
+                symbolSize: 8,
+                connectNulls: true,
+                data: formatterObj
+            };
+        });
+        var myChart = echarts.init(document.getElementById('echarsBox'));
+        option = {
+            title: {
+                show: false,
+                text: '日流量报表'
+            },
+            tooltip: {
+                trigger: 'axis',
+                hideDelay: 1000,
+                formatter: function (params) {//渲染原始数据
+                    var tooltipHtml = '';
+                    for (var i = 0; i < params.length; i++) {
+                        if (params[i].data != undefined) {
+                            tooltipHtml += '<span style="margin-left:20px;display:inline-block;width:80px;color: ' + params[i].color + ';">' + params[i].seriesName + '</span><span style="display:inline-block;width: 100px;color: ' + params[i].color + ';">' + obj[params[i].seriesName][params[i].dataIndex] + '</span>';
+                            tooltipHtml += '<br/>';
+                        }
+                    }
+
+                    return tooltipHtml;
+                },
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                borderColor: '#e4e4e4',
+                borderWidth: 1,
+                padding: [10, 20, 10, 10],
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#cad2e2',
+                        type: 'dotted'
+                    }
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {
+                    lineStyle: {
+                        color: '#eeeeee'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    margin: 15,
+                    textStyle: {
+                        color: '#c6c6cc'
+                    }
+                },
+                data: date_arr
+            },
+            yAxis: {
+                type: 'value',
+                scale: true,
+                min: '0',
+                max: '120',
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                }
+            },
+            color: ['#abaa92', '#56b7ad', '#a38f24', '#da8888', '#aaaef8', '#64afdf', '#51af66', '#7177e4', '#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+            backgroundColor: "#f9f9f9",
+            series: echartsCtlSelected
+        };
+        myChart.setOption(option);
+    }
+
+    var ListPageConfig = {
+        func: function (data) {//绘制echarts
+            draw(data);
+        },
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/stat/day',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: false,
+            pageSize: 25,  //获取所有数据,建立二级结构
+            sortslot: 'desc',
+
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled:['bs.table.pageNumber'],
+            cookiePath: '/',
+            toolbarAlign: 'dpmiddle',
+
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'date',
+                title: '日期'
+            }, {
+                field: 'pv',
+                title: 'PV',//浏览量
+                sortable: true
+            }, {
+                field: 'u_pv',
+                title: 'UV'//唯一浏览量
+            }, {
+                field: 'imp',
+                title: '曝光量',
+                sortable: true
+            }, {
+                field: 'click',
+                title: '点击量',
+                sortable: true
+            }, {
+                field: 'fr',
+                title: '填充率',
+                sortable: true
+            }, {
+                field: 'ctr',
+                title: '点击率(%)',
+                sortable: true
+            }, {
+                field: 'rpm',
+                title: 'RPM',
+                sortable: true
+            }, {
+                field: 'cpm',
+                title: 'eCPM',
+                sortable: true
+            }, {
+                field: 'cpc',
+                title: 'eCPC',
+                sortable: true
+//            }, {
+//                field: 'earning',
+//                title: '收入',
+//                sortable: true
+            }]
+        },
+        title: {
+            addTitle: '添加订单',
+            editTitle: '编辑订单'
+        },
+        showDetail: false         //是否显示详细信息按钮
+    };
+    //下载报表
+    $("#downloadTable").on('click', function () {
+        var url = '/stat/exportcsv?type=day&begin_date=' + encodeURI($("#begin_date").val()) + '&end_date=' + encodeURI($("#end_date").val()) + '&media=' + encodeURI($("#media").val()) + '&slot=' + encodeURI($("#slot").val());
+        window.open(url);
+    })
+</script>
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter2.phtml');
+?>

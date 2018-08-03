@@ -1,0 +1,170 @@
+<!--添加充值记录界面-->
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/charge/chargelistview">充值记录</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加充值记录</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<form class="form-horizontal list-form" style="margin-top: 30px">
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1  control-label Dl-required">账户名称:</label>
+        <div class="col-sm-7">
+            <select class="selectpicker" data-width="100%" id="name">
+            </select>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1  control-label Dl-required">公司名称:</label>
+        <div class="col-sm-7">
+            <select class="selectpicker" data-width="100%" id="corporation">
+
+            </select>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1  control-label Dl-required">充值金额:</label>
+        <div class="col-sm-7">
+            <input id="charge_money" type="text" name="charge_money" class="form-control">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/user/userpermissionview', 2);
+    clientlistAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            var account_name_html = '<option value="" corporation_id="pleaseChoose">请选择账户</option>';
+            var corporation_name_html = '<option value="" uid="pleaseChoose">请选择公司</option>';
+            for (var i = 0; i < data.length; i++) {
+                account_name_html += '<option value="' + data[i].uid + '" corporation_id="' + data[i].corporation_id + '">' + data[i].name + '</option>';
+                corporation_name_html += '<option value="' + data[i].corporation_id + '" uid="' + data[i].uid + '">' + data[i].corporation_name + '</option>';
+            }
+            $('#name').html(account_name_html);
+            $('#corporation').html(corporation_name_html);
+            $('#name').change(function () {
+                if ($(this).val() == '') {
+                    $('#corporation option').removeProp('disabled');
+                    $('#corporation option[uid = "pleaseChoose"]').prop('selected', 'selected');
+                } else {
+                    $('#corporation option').prop('disabled', 'disabled');
+                    $('#corporation option[uid = "pleaseChoose"]').prop('disabled', 'disabled');
+                    $('#corporation option[uid = ' + $(this).val() + ']').prop('selected', 'selected');
+                    $('#corporation option[uid = ' + $(this).val() + ']').removeProp('disabled');
+                }
+                $('#corporation').selectpicker('refresh');
+            });
+            $('#corporation').change(function () {
+                if ($(this).val() == '') {
+                    $('#name option').removeProp('disabled');
+                    $('#name option[corporation_id = "pleaseChoose"]').prop('selected', 'selected');
+                } else {
+                    $('#name option').prop('disabled', 'disabled');
+                    $('#name option[corporation_id = "pleaseChoose"]').prop('selected', 'selected').removeProp('disabled');
+                    $('#name option[corporation_id = ' + $(this).val() + ']').removeProp('disabled');
+                }
+                $('#name').selectpicker('refresh');
+            })
+        } else {
+            layer.msg(req.msg);
+        }
+    });
+
+
+    var checkList = [
+        {
+            id: '#charge_money',
+            validationFunc: vaIsMoney,
+            msg: '充值金额格式错误'
+        }
+    ];
+    for (var i = 0; i < checkList.length; i++) {
+        (function () {
+            var obj = checkList[i];
+            $(obj.id).blur(function () {
+                if (!obj.validationFunc($(obj.id).val())) {
+                    vaError($(obj.id), obj.msg);
+                } else {
+                    if (obj.msg == $(obj.id).next().text()) {
+                        vaSuccess($(obj.id));
+                    }
+                }
+            });
+        })();
+    }
+    function validation() {
+        for (var i = 0; i < checkList.length; i++) {
+            var obj = checkList[i];
+            if (!obj.validationFunc($(obj.id).val())) {
+                vaError($(obj.id), obj.msg);
+                return false;
+            } else {
+                vaSuccess($(obj.id));
+            }
+        }
+        return true;
+    }
+
+
+    $("#submit").bind('click', function () {
+        if (!validation()) {
+            return false;
+        }
+        if ($('#name').val() == '') {
+            layer.msg('请选择账户名称');
+            return false;
+        }
+        if ($('#corporation').val() == '') {
+            layer.msg('请选择公司名称');
+            return false;
+        }
+        $("#Deepleaper_loading").show();
+        adchargeAPI($('#name').val(), $('#charge_money').val(), adchargeAPIonSuccessFun);
+        function adchargeAPIonSuccessFun(result) {
+            var req = JSON.parse(result);
+            if (req.status == 1) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('充值记录添加成功');
+                setTimeout(function () {
+                    window.location.href = '/charge/chargelistview';
+                }, 2000);
+            } else {
+                $("#Deepleaper_loading").hide();
+                layer.msg(req.msg);
+            }
+        }
+    });
+    $('#cancel').bind('click', function () {
+        window.location.href = '/charge/chargelistview';
+    })
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

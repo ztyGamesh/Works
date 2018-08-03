@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<?php
+$cc = $this->context->id;
+$aa = $this->context->action->id;
+?>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>Deepleaper广告投放系统</title>
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/libs/Font-Awesome-3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/public.css?v=20170411" rel="stylesheet" type="text/css"/>
+    <link href="/css/index.css?v=20170717" rel="stylesheet" type="text/css"/>
+    <!--awesome-bootstrap-checkbox -->
+    <link href="/libs/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css?v=20170719" rel="stylesheet"
+          type="text/css">
+    <link href="/libs/awesome-bootstrap-checkbox/Font-Awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
+
+    <link href="/css/select2.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/ui-dialog.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+
+    <link href="/libs/icheck-1.x/skins/square/green.css" rel="stylesheet">
+    <script src="/libs/icheck-1.x/icheck.js" type="text/javascript"></script>
+
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/index.js?v=2017071702" type="text/javascript"></script>
+    <script src="/js/collapse.js" type="text/javascript"></script>
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/jquery.form.js" type="text/javascript"></script>
+    <script src="/js/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/js/layer/layer.js" type="text/javascript"></script>
+    <script src="/js/select2.min.js" type="text/javascript"></script>
+    <script src="/js/dialog.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/libs/bootstrap-select-1.12.2/dist/css/bootstrap-select.css"/>
+    <script type="text/javascript" src="/libs/bootstrap-select-1.12.2/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/DeepLeaperAPI.js?v=20170717" type="text/javascript"></script>
+    <script src="/js/utils/DLAuthorityUtils.js" type="text/javascript"></script>
+    <script src="/js/utils/DLUtils.js?v=20170615" type="text/javascript"></script>
+    <script src="/js/utils/DLvalidateUtils.js?v=20170508" type="text/javascript"></script>
+
+</head>
+<body>
+<!--loading-->
+<div id="Deepleaper_loading" class="list-item">
+    <div id="loaded">
+        <div id="loaders">
+            <div id="loader">
+                <div id="ball-triangle-path">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--loading end-->
+<div class="nav-c">
+    <div class="logoWrapper">
+        <img src="/img/logo.png" class="logo">
+    </div>
+    <!--    <div class="showUrl">&nbsp;</div>-->
+    <!-- <a href="http://www.deepleaper.com"><p class="showUrl">www.deepleaper.com</p></a> -->
+    <div class="nav list-nav">
+        <div class="panel-group layoutnav" id="layoutnav" role="tablist" aria-multiselectable="true">
+            <div id="/dashboard" class=" panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading16">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup16" aria-expanded="false"
+                       aria-controls="collapseListGroup16" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_dashboard.png">
+                        数据概览
+                    </a>
+                </div>
+                <div id="collapseListGroup16" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading16" aria-expanded="false">
+                    <ul>
+                        <li id="/dashboard/mediadashboardview" class="menuli">
+                            <a>
+                                <span>整体数据</span>
+                            </a>
+                        </li>
+                        <li id="/dashboard/contentview" class="menuli">
+                            <a>
+                                <span>内容合作数据</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class=" menulist-hasnot-offspring" style="position: relative">
+                <div id="/dashboard/clientdashboardview" class="panel menuli">
+                    <div class="nav-h nav-h-hasnot-offspring" role="tab" id="collapseListGroupHeading17">
+                        <a data-toggle="collapse"  aria-expanded="false"
+                            data-parent="#layoutnav">
+                            <img class="menuli1" src="../img/icon/nav_icon_dashboard.png">
+                            数据概览
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="/media" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading2">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup2" aria-expanded="false"
+                       aria-controls="collapseListGroup2" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        媒体管理
+                    </a>
+                </div>
+
+                <div id="collapseListGroup2" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading2" aria-expanded="false">
+                    <ul>
+                        <li id="/media/company" class="menuli">
+                            <a>
+                                <span>媒介渠道</span>
+                            </a>
+                        </li>
+                        <li id="/media/media" class="menuli">
+                            <a>
+
+                                <span>媒体列表</span>
+                            </a>
+                        </li>
+                        <li id="/media/feeds" class="menuli">
+                            <a>
+                                <span>内容合作</span>
+                            </a>
+                        </li>
+                        <li id="/media/slot" class="menuli">
+                            <a>
+
+                                <span>广告位配置</span>
+                            </a>
+                        </li>
+                        <li id="/media/download" class="menuli">
+                            <a>
+
+                                <span>SDK下载</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/unionmedia" class="panel menulist" style="display: none">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading11">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup11" aria-expanded="false"
+                       aria-controls="collapseListGroup11" data-parent="#layoutnav">
+                        媒体管理(联盟)
+                    </a>
+                </div>
+
+                <div id="collapseListGroup11" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading11" aria-expanded="false">
+                    <ul>
+                        <li id="/unionmedia/media" class="menuli">
+                            <a>
+                                <img src="../images/mediaList_icon.png">
+                                <span>媒体列表</span>
+                            </a>
+                        </li>
+                        <li id="/unionmedia/slot" class="menuli">
+                            <a>
+                                <img src="../images/config_icon.png">
+                                <span>广告位配置</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/client" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading9">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup9" aria-expanded="false"
+                       aria-controls="collapseListGroup9" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        广告主管理
+                    </a>
+                </div>
+
+                <div id="collapseListGroup9" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading9" aria-expanded="false">
+                    <ul>
+                        <li id="/client/agency" class="menuli">
+                            <a>
+
+                                <span>广告代理列表</span>
+                            </a>
+                        </li>
+                        <li id="/client/client" class="menuli">
+                            <a>
+
+                                <span>广告主列表</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/promotion" class="panel menulist" style="display: none">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading10">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup10" aria-expanded="false"
+                       aria-controls="collapseListGroup10" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        推广管理
+                    </a>
+                </div>
+                <div id="collapseListGroup10" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading10" aria-expanded="false">
+                    <ul>
+                        <li id="/promotion/adgrouplistview" class="menuli">
+                            <a>
+
+                                <span>广告组</span>
+                            </a>
+                        </li>
+                        <li id="/promotion/adplanlistview" class="menuli">
+                            <a>
+
+                                <span>广告计划</span>
+                            </a>
+                        </li>
+                        <li id="/promotion/adcreativelistview" class="menuli">
+                            <a>
+
+                                <span>广告创意</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/order" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading4">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup4" aria-expanded="false"
+                       aria-controls="collapseListGroup4" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        投放管理
+                    </a>
+                </div>
+                <div id="collapseListGroup4" class="nav-w  panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading4" aria-expanded="false">
+                    <ul>
+
+                        <li id="/order/order" class="menuli">
+                            <a>
+
+                                <span>订单管理</span>
+                            </a>
+                        </li>
+                        <li id="/order/ad" class="menuli">
+                            <a>
+
+                                <span>广告投放管理</span>
+                            </a>
+                        </li>
+                        <li id="/materiel/materiel" class="menuli">
+                            <a>
+
+                                <span>素材列表</span>
+                            </a>
+                        </li>
+                        <li id="/order/targeting" class="menuli">
+                            <a>
+
+                                <span>定向及播控</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/stat" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading5">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup5" aria-expanded="false"
+                       aria-controls="collapseListGroup5" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_report.png">
+                        媒体报表
+                    </a>
+                </div>
+                <div id="collapseListGroup5" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading5" aria-expanded="false">
+                    <ul>
+                        <li id="/stat/hour" class="menuli">
+                            <a>
+
+                                <span>时段报表</span>
+                            </a>
+                        </li>
+                        <li id="/stat/day" class="menuli">
+                            <a>
+
+                                <span>日报表</span>
+                            </a>
+                        </li>
+                        <li id="/stat/geo" class="menuli">
+                            <a>
+
+                                <span>地域报表</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/report" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading6">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup6" aria-expanded="false"
+                       aria-controls="collapseListGroup6" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_report.png">
+                        投放报表
+                    </a>
+                </div>
+                <div id="collapseListGroup6" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading6" aria-expanded="false">
+                    <ul>
+                        <li id="/report/hour" class="menuli">
+                            <a>
+
+                                <span>时段报表</span>
+                            </a>
+                        </li>
+                        <li id="/report/day" class="menuli">
+                            <a>
+
+                                <span>日报表</span>
+                            </a>
+                        </li>
+                        <li id="/report/geo" class="menuli">
+                            <a>
+
+                                <span>地域报表</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/bill" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading7">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup7" aria-expanded="false"
+                       aria-controls="collapseListGroup7" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        财务管理
+                    </a>
+                </div>
+                <div id="collapseListGroup7" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading7" aria-expanded="false">
+                    <ul>
+                        <li id="/bill/bill" class="menuli">
+                            <a>
+
+                                <span>账单</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/user" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading8">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup8" aria-expanded="false"
+                       aria-controls="collapseListGroup8" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        权限管理
+                    </a>
+                </div>
+
+                <div id="collapseListGroup8" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading8" aria-expanded="false">
+                    <ul>
+                        <!-- <li class="<?php //if ($aa == 'client' || $aa == 'clientadd' || $aa == 'clientedit') echo 'on'; ?> "><img src="../images/add.png"><a href="/user/client">广告主用户</a></li>
+					  <li class="<?php //if ($aa == 'site' || $aa == 'siteadd' || $aa == 'clientedit') echo 'on'; ?>"><span class="nav-kong"></span><img src="../images/add.png"><a href="/user/site">媒体用户</a></li>
+					  <li class="<?php //if ($aa == 'internal' || $aa == 'internaladd' || $aa == 'clientedit') echo 'on'; ?>"><span class="nav-kong"></span><img src="../images/add.png"><a href="/user/internal">内部用户</a></li>-->
+                        <li id="/user/userpermissionview" class="menuli">
+                            <a>
+
+                                <span>媒体账户</span>
+                            </a>
+                        </li>
+                        <li id="/user/clientuserlistview" class="menuli">
+                            <a>
+
+                                <span>广告主账户</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/audit" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading12">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup12" aria-expanded="false"
+                       aria-controls="collapseListGroup12" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_01.png">
+                        审核管理
+                    </a>
+                </div>
+
+                <div id="collapseListGroup12" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading12" aria-expanded="false">
+                    <ul>
+                        <li id="/audit/adcreativeauditlistview" class="menuli">
+                            <a>
+
+                                <span>创意审核</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--            广告主系统报表-->
+            <div id="/alliancereport" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading14">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup14" aria-expanded="false"
+                       aria-controls="collapseListGroup14" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_report.png">
+                        数据报表
+                    </a>
+                </div>
+
+                <div id="collapseListGroup14" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading14" aria-expanded="false">
+                    <ul>
+                        <li id="/alliancereport/allianceclientview" class="menuli">
+                            <a>
+
+                                <span>账户报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/allianceadgroupview" class="menuli">
+                            <a>
+
+                                <span>推广组报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/allianceadplanview" class="menuli">
+                            <a>
+
+                                <span>推广计划报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/allianceadcreativeview" class="menuli">
+                            <a>
+
+                                <span>推广创意报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/alliancewordview" class="menuli">
+                            <a>
+
+                                <span>关键词报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/alliancegeoview" class="menuli">
+                            <a>
+
+                                <span>地域报表</span>
+                            </a>
+                        </li>
+                        <!--媒体账户报表-->
+                        <li id="/alliancereport/allianceaccountview" class="menuli">
+                            <a>
+
+                                <span>账户报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/alliancemediaview" class="menuli">
+                            <a>
+
+                                <span>媒体报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/allianceslotview" class="menuli">
+                            <a>
+
+                                <span>广告位报表</span>
+                            </a>
+                        </li>
+                        <li id="/alliancereport/alliancetemplateview" class="menuli">
+                            <a>
+
+                                <span>样式报表</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="/charge" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading13">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup13" aria-expanded="false"
+                       aria-controls="collapseListGroup13" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_charge.png">
+                        财务
+                    </a>
+                </div>
+
+                <div id="collapseListGroup13" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading13" aria-expanded="false">
+                    <ul>
+                        <li id="/charge/chargelistview" class="menuli">
+                            <a>
+                                <span>充值记录</span>
+                            </a>
+                        </li>
+                        <li id="/charge/drawlistview" class="menuli">
+                            <a>
+                                <span>媒体提现</span>
+                            </a>
+                        </li>
+                        <li id="/charge/applydrawlistview" class="menuli">
+                            <a>
+                                <span>财务</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--            账户-->
+            <div id="/account" class="panel menulist">
+                <div class="nav-h" role="tab" id="collapseListGroupHeading15">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseListGroup15" aria-expanded="false"
+                       aria-controls="collapseListGroup15" data-parent="#layoutnav">
+                        <img class="menuli1" src="../img/icon/nav_icon_account.png">
+                        账户
+                    </a>
+                </div>
+
+                <div id="collapseListGroup15" class="nav-w panel-collapse collapse" role="tabpanel"
+                     aria-labelledby="collapseListGroupHeading15" aria-expanded="false">
+                    <ul>
+                        <li id="/account/mediaaccountview" class="menuli">
+                            <a>
+                                <span>账户信息</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="header">
+    <div class="headlink" id="headlink">
+            <span class="cost"><span class="normalFont">今日花费：</span><span id="accountExpend"
+                                                                          class="accountExpend"></span><span
+                        class="normalFont">元</span></span>
+        <span class="cost"><span class="normalFont">账户余额：</span><span id="accountBalance"
+                                                                      class="accountBalance"></span><span
+                    class="normalFont">元</span></span>
+    </div>
+    <div class="account" id="account">
+        <div id="usernameplace" class="usernameplace"></div>
+        <!--            <span id="usernameplace" class="usernameplace"></span>-->
+        <div id="personalInfo_box">
+            <div id="personalInfo_roleplace" class="personalInfo_roleplace">
+                <span id="platform_roleplace" class="platform_roleplace"></span>
+                <!--                    <b class="bottom"><i class="bottom-arrow1"></i><i class="bottom-arrow2"></i></b>-->
+                <!--                    <span id="platform_icon">﹀</span>-->
+                <img src="/img/select2.png">
+            </div>
+            <div id="personalInfo_menu">
+                <!--                <div id="platform_switch_roleplace" class="platform_roleplace"></div>-->
+                <div id="safe_layout" class="platform_roleplace">安全登出</div>
+            </div>
+        </div>
+        <img src="../img/images/switch.png" id="logout" class="logout">
+
+
+        <!--            <a class="set">-->
+        <!--                <img src="../img/images/set.png">-->
+        <!--                <div class="settan">-->
+        <!--                    <p class="pass">修改密码</p>-->
+        <!--                </div>-->
+        <!--            </a>-->
+
+    </div>
+</div>
+<div style="margin-left: 200px;position: relative;right: 0;left: 0;z-index: 100;height: 100%">
+    <div class="layoutInner">
+        <?=$content?>
+    </div>
+</div>
+<div class="shadow"></div>
+<div class="passchange">
+    <p>请使用下方表单修改您的登录密码，建议您定期修改密码，以确保账号安全。</p>
+    <p>为了您的账号及数据安全，密码请采用<i>8位以上数字字母混合</i>，并且，不能与账户名中的关键字相同或相似。</p>
+    <div class="paswd">
+        <div><span>原密码</span> <input type="password"></div>
+        <div><span>新密码</span> <input type="password"></div>
+        <div><span>确认密码</span> <input type="password"></div>
+
+    </div>
+    <a class="pass-a">修&nbsp;&nbsp;改</a>
+    <b class="pass-close">X</b>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var controller = '<?=$cc?>';
+        var action = '<?=$aa ?>';
+        var menuList = {//维护二级目录及三级目录关系
+            '/media/company': ['/media/company', '/media/companyadd', '/media/companyedit'],
+            '/media/media': ['/media/media', '/media/mediaadd', '/media/mediaedit'],
+            '/media/feeds': ['/media/feeds', '/media/create','/media/pidadd', '/media/pidedit'],
+
+            '/media/slot': ['/media/slot', '/media/slotadd', '/media/slotedit', '/media/allianceslotaddview', '/media/alliancesloteditview'],
+            '/media/download': ['/media/download'],
+            '/client/agency': ['/client/agency'],
+            '/client/client': ['/client/client', '/client/clientadd', '/client/clientedit'],
+            '/order/order': ['/order/order'],
+            '/order/ad': ['/order/ad', '/order/adadd', '/order/addetail', '/order/adedit'],
+            '/materiel/materiel': ['/materiel/materiel', '', ''],
+            '/order/targeting': ['/order/targeting', '/order/targetingadd', '/order/targetingdetail', '/order/targetingedit'],
+            '/stat/hour': ['/stat/hour'],
+            '/stat/day': ['/stat/day'],
+            '/stat/geo': ['/stat/geo'],
+            '/report/hour': ['/report/hour'],
+            '/report/day': ['/report/day'],
+            '/report/geo': ['/report/geo'],
+            '/bill/bill': ['/bill/bill', '', ''],
+            '/user/userpermissionview': ['/user/userpermissionview', '/user/adduserview', '/user/updateuserview'],
+            '/user/clientuserlistview': ['/user/clientuserlistview', '/user/addclientuserview', '/user/updateclientuserview'],
+            '/audit/adcreativeauditlistview': ['/audit/adcreativeauditlistview', '/promotion/adcreativeview', '/promotion/adcreativefixedview'],
+            '/alliancereport/allianceclientview': ['/alliancereport/allianceclientview'],
+            '/alliancereport/allianceadgroupview': ['/alliancereport/allianceadgroupview'],
+            '/alliancereport/allianceadplanview': ['/alliancereport/allianceadplanview'],
+            '/alliancereport/allianceadcreativeview': ['/alliancereport/allianceadcreativeview'],
+            '/alliancereport/alliancewordview': ['/alliancereport/alliancewordview'],
+            '/alliancereport/alliancegeoview': ['/alliancereport/alliancegeoview'],
+            '/alliancereport/allianceaccountview': ['/alliancereport/allianceaccountview'],
+            '/alliancereport/alliancemediaview': ['/alliancereport/alliancemediaview'],
+            '/alliancereport/allianceslotview': ['/alliancereport/allianceslotview'],
+            '/alliancereport/alliancetemplateview': ['/alliancereport/alliancetemplateview'],
+            '/charge/chargelistview': ['/charge/chargelistview', '/charge/addchargeview'],
+            '/charge/drawlistview': ['/charge/drawlistview', '', '/charge/drawdetailview'],
+            '/charge/applydrawlistview': ['/charge/applydrawlistview', '/charge/applydrawview', '/charge/applydrawdetailview'],
+            '/account/mediaaccountview': ['/account/mediaaccountview'],
+            //'/promotion/adgrouplistview': ['/promotion/adgrouplistview', '/promotion/adplanlistview', '/promotion/adcreativelistview', '/promotion/adgroupaddview', '/promotion/adgroupeditview', '/promotion/adplanaddview', '/promotion/adplaneditview', '/promotion/adcreativeaddview', '/promotion/adcreativeeditview', '/promotion/adcreativefixedaddview', '/promotion/adcreativefixededitview'],
+            '/promotion/adgrouplistview': ['/promotion/adgrouplistview', '/promotion/adgroupaddview', '/promotion/adgroupeditview'],
+            '/promotion/adplanlistview': ['/promotion/adplanlistview', '/promotion/adplanaddview', '/promotion/adplaneditview'],
+            '/promotion/adcreativelistview': ['/promotion/adcreativelistview', '/promotion/adcreativeaddview', '/promotion/adcreativeeditview', '/promotion/adcreativefixedaddview', '/promotion/adcreativefixededitview'],
+            '/dashboard/mediadashboardview': ['/dashboard/mediadashboardview'],
+            '/dashboard/clientdashboardview': ['/dashboard/clientdashboardview'],
+            '/dashboard/contentview': ['/dashboard/contentview'],
+        };
+        for (var i in menuList) {
+            for (var j = 0; j < menuList[i].length; j++) {
+                if (menuList[i][j] == window.location.pathname) {
+                    var rId = i.replace(/\//g, '\\/');
+                    $('#' + rId).addClass('on').parents('.menulist').children('.nav-h').addClass('on');
+                    controller = window.location.pathname.split('/')[1];
+                    //例外：adcreativeview的controller是promotion  但需要显示在audit中
+                    if (window.location.pathname.split('/')[2] == 'adcreativeview' || window.location.pathname.split('/')[2] == 'adcreativefixedview') {
+                        controller = 'audit'
+                    }
+                }
+            }
+        }
+        var collapseId = {
+            "media": "collapseListGroupHeading2",
+            "order": "collapseListGroupHeading4",
+            "materiel": "collapseListGroupHeading4",
+            "stat": "collapseListGroupHeading5",
+            "report": "collapseListGroupHeading6",
+            "bill": "collapseListGroupHeading7",
+            "user": "collapseListGroupHeading8",
+            "client": "collapseListGroupHeading9",
+            "promotion": "collapseListGroupHeading10",
+            "unionmedia": "collapseListGroupHeading11",
+            "audit": "collapseListGroupHeading12",
+            "charge": "collapseListGroupHeading13",
+            "alliancereport": "collapseListGroupHeading14",
+            "account": "collapseListGroupHeading15",
+            "dashboard": "collapseListGroupHeading16"
+        };
+        $("#" + collapseId[controller] + " .collapsed").attr('aria-expanded', 'true');
+        $("div[aria-labelledby=" + collapseId[controller] + "]").addClass('in');
+
+
+        function showValidMenu(data) {
+            var hasChild = {};
+            for (var i = 0; i < data.length; i++) {
+                var rId = data[i].url.replace(/\//g, '\\/');
+                if (data[i].authority == 0 && data[i].pid != '/') {//非一级目录，无权限，隐藏此二级目录
+                    $('#' + rId).hide();
+                } else {
+                    hasChild[data[i].pid] = true;//有权限的一级目录
+                }
+            }
+            for (var i = 0; i < data.length; i++) {
+
+                if (hasChild[data[i].url] && data[i].pid == '/') {//有权限，一级目录，显示此一级目录
+                    var rId = data[i].url.replace(/\//g, '\\/');
+                    $('#' + rId).show();
+                }
+            }
+
+//            for (var i = 0; i < data.length; i++) {
+//                if (data[i].pid != '/' && window.location.href.indexOf(data[i].url) != -1) {//非一级目录，当前二级目录所在的url，添加on样式
+//                    var rId = data[i].url.replace(/\//g, '\\/');
+//                    $('#' + rId).addClass('on');
+//                    controller = data[i].pid.split('/')[1];
+//                    $('#' + rId).parents('.menulist').children('.nav-h').addClass('on');
+//                }
+//            }
+        }
+
+        showValidMenu(getAuthority());
+
+
+    });
+    //        Todo:选择框checkbox radio样式优化，保留以后来做，需要每个页面单独考虑
+    //    $(document).ready(function(){
+    //        $('input').iCheck({
+    //            checkboxClass: 'icheckbox_square-green',
+    //            radioClass: 'iradio_square-green',
+    //            increaseArea: '20%' // optional
+    //        });
+    //    });
+</script>
+</body>
+</html>

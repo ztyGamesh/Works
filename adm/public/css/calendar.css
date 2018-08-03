@@ -1,0 +1,193 @@
+.calendar {
+	width: 260px;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	position: relative;
+}
+
+.calendar .calendar-input {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	width: 260px;
+	height: 34px;
+	/*margin: auto;*/
+	text-align: center;
+	line-height: 34px;
+	font-size: 16px;
+	border: 1px #ccc solid;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #555;
+}
+
+.calendar .calendar-out {
+	display: none;
+	border: 1px #eee solid;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px #eee;
+	position: absolute;
+	top: 45px;
+	z-index: 5;
+	background: #fff;
+}
+
+.calendar .calendar-out .calendar-change {
+	margin: 10px;
+}
+
+.calendar .calendardiv {
+	display: none;
+	width: 220px;
+	margin: 0px auto;
+	padding-bottom: 10px;
+}
+
+.calendar .calendardiv[value *= "month"] {
+	height: 410px;
+}
+
+.calendar .calendar-tab {
+	overflow: hidden;
+	width: 240px;
+	margin: auto;
+}
+
+.calendar .calendar-nav {
+	overflow: hidden;
+	height: 30px;
+	line-height: 30px;
+}
+
+.calendar .calendar-nav span {
+	text-align: center;
+}
+
+.calendar .calendar-nav span:nth-child(1) {
+	float: left;
+	width: 14px;
+	cursor: pointer;
+}
+
+.calendar .calendar-nav span:nth-child(2) {
+	display: inline-block;
+	width: 192px;
+	font-weight: bolder;
+}
+
+.calendar .calendar-nav span:nth-child(3) {
+	float: right;
+	cursor: pointer;
+	width: 14px;
+}
+
+.calendar .calendar-tab li {
+	float: left;
+	width: 58.75px;
+	height: 24px;
+	line-height: 24px;
+	border: 1px solid #eee;
+	text-align: center;
+	cursor: pointer;
+}
+
+.calendar .monthul li {
+	width: 690px;
+	overflow: hidden;
+	list-style: none;
+	margin-top: 10px;
+}
+
+.calendar .monthdiv {
+	float: left;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.calendar .monthul {
+	transform-origin: 0 0; transform: scaleX(0.314) scaleY(0.34);
+	-webkit-transform-origin: 0 0; -webkit-transform: scaleX(0.314) scaleY(0.34);
+	-moz-transform-origin: 0 0; -moz-transform: scaleX(0.314) scaleY(0.34);
+	-ms-transform-origin: 0 0; -ms-transform: scaleX(0.314) scaleY(0.34);
+	-o-transform-origin: 0 0; -o-transform: scaleX(0.314) scaleY(0.34);
+}
+
+.calendar .monthul .monthdiv span {
+	font-size: 50px;
+}
+
+.calendar .calendar-active {
+	background: #46A9FF;
+	color: #fff;
+}
+
+.calendar .calendarlist .calendar-active span {
+	visibility: visible;
+}
+
+.calendar .calendarnav-active {
+	background: #808080;
+	color: #fff;
+}
+
+.calendar .calendarlist ul li {
+	cursor: pointer;
+	height: 30px;
+	line-height: 30px;
+}
+
+.calendar .calendarlist ul li span {
+	visibility: hidden;
+}
+
+.calendar .calendardiv .calendarl {
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+.calendar .calendardiv .calendarl div {
+	float: left;
+	width: 98px;
+	height: 24px;
+	text-align: center;
+	line-height: 24px;
+	border: 1px #eee solid;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.calendar .calendar-trianglea, .calendar .calendar-triangleb {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #fff;
+	position: absolute;
+	top: 35px;
+	left: 210px;
+	display: none;
+}
+
+.calendar .calendar-trianglea {
+	border-bottom: 10px solid #eee;
+}
+
+.calendar .calendar-triangleb {
+	top: 38px;
+	z-index: 15;
+}
+
+.calendar hr {
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.calendar .glyphicon-calendar {
+    left: 14px;
+    top: -24px;
+}

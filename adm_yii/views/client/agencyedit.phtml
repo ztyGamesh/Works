@@ -1,0 +1,110 @@
+<?php if ($item) {
+    $name = $item['name'];
+    $uid = $item['uid'];
+    $url = $item['url'];
+    $linkman = $item['linkman'];
+    $tel = $item['tel'];
+    ?>
+    <form id="edit" method="post" action="/client/agencysave" class="form-horizontal list-form" novalidate="novalidate">
+
+        <div class="form-group ">
+
+            <label class="col-sm-3 control-label">名称:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <input id="name" type="text" name="name" class="form-control" value="<?php echo $name; ?>">
+                <small class="help-block" style="display: block;"></small>
+                <input id="uid" class="form-control" type="hidden" name="uid" value="<?php echo $uid; ?>">
+            </div>
+        </div>
+
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">代理商网址:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <input type="text" class="form-control" name="url" id="url" value="<?php echo $url; ?>">
+                <small class="help-block" style="display: block;"></small>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">联系人:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <input id="linkman" class="form-control" type="text" name="linkman" value="<?php echo $linkman; ?>">
+                <small class="help-block" style="display: block;"></small>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">电话:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <input id="tel" class="form-control" type="text" name="tel" value="<?php echo $tel; ?>">
+                <small class="help-block" style="display: block;"></small>
+            </div>
+        </div>
+
+    </form>
+<?php } ?>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/client/agency', 2);
+
+    $('#name').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#name'), '代理商名称不能为空');
+        } else {
+            vaSuccess($('#name'));
+        }
+    });
+    $('#url').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#url'), '代理商网址不能为空');
+        } else if (!vaIsUrl($(this).val())) {
+            vaError($('#url'), '地址应以http://或者https://开头');
+        } else {
+            vaSuccess($('#url'));
+        }
+    });
+    $('#linkman').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($('#linkman'), '联系人不能为空');
+        } else {
+            vaSuccess($('#linkman'));
+        }
+    });
+    $('#tel').blur(function () {
+        if (!vaIsNotNull($('#tel').val())) {
+            vaError($('#tel'), '请输入联系人手机号码');
+        } else if (!validatePhoneNum($('#tel').val())) {
+            vaError($('#tel'), '手机号码格式错误');
+        } else {
+            vaSuccess($('#tel'));
+        }
+    });
+
+    function checkFormValidByBackend() {
+        var valid;
+        $.ajax({
+            url: '/client/checkAddOrEditAngencyFormValid',
+            data: {
+                name: $('#name').val(),
+                uid: '<?php echo $_GET["uid"]; ?>'
+            },
+            dataType: 'json',
+            type: 'POST',
+            async: false,
+            success: function (ret) {
+                if (ret.data.error) {
+                    vaError($('#name'), ret.data.error.name);
+                    valid = false;
+                } else {
+                    vaSuccess($('#name'));
+                    valid = true;
+                }
+            }
+        })
+        console.log(valid);
+        return valid;
+    }
+</script>

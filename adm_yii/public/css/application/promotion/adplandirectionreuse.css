@@ -1,0 +1,163 @@
+ul, li, ol {
+    list-style-type: none;
+    /*margin: 0;*/
+    padding: 0;
+}
+li{
+    /*padding: 2px 6px;*/
+    /*margin: 0;*/
+}
+.wrapper{
+    width: 600px;
+    height: 310px;
+    border:1px solid #d3d3d3;
+    border-radius: 15px;
+}
+.directional-head{
+    width: 100%;
+    height: 40px;
+    /*border:1px solid #d3d3d3;*/
+}
+.directional-title{
+    font-size: 14px;
+    margin-left: 5%;
+    height: 40px;
+    line-height: 40px;
+}
+.directional-body{
+    width: 100%;
+    height: 220px;
+    /*border:1px solid #d3d3d3;*/
+}
+.directional-left{
+    width: 43%;
+    height: 220px;
+    border:1px solid #d3d3d3;
+    display: inline-block;
+    float: left;
+    margin-left: 5%;
+}
+.directional-right{
+    width: 43%;
+    height: 220px;
+    border:1px solid #d3d3d3;
+    float: right;
+    margin-right: 5%;
+}
+.directional-footer{
+    width: 100%;
+    height: 50px;
+    /*border:1px solid #d3d3d3;*/
+    line-height: 50px;
+    /*margin-left: 40%;*/
+}
+.control-btn-box{
+    width: 50%;
+    height: 50px;
+    display: inline-block;
+    float: left;
+    margin-top: 7px;
+}
+.control-btn{
+    width: 80px;
+    height: 34px;
+    border: 1px solid #d3d3d3;
+    border-radius: 20px;
+    cursor: pointer;
+    line-height: 32px;
+
+}
+.cancel-btn{
+    float: left;
+    margin-left: 20px;
+    background-color: #fff;
+}
+.save-btn{
+    float: right;
+    margin-right: 20px;
+    background-color: #7fe5e5;
+}
+.directional-left-title,.directional-right-title{
+    width: 100%;
+    height: 25px;
+    border-bottom: 1px solid #d3d3d3;
+    background-color: #f3f3f3;
+    font-size: 14px;
+    line-height: 25px;
+    /*padding-left: 2px;*/
+}
+.directional-left-body{
+    overflow-y: scroll;
+    position: relative;
+    width: 100%;
+    height: 190px;
+    font-size: 12px;
+    word-wrap:break-word;
+}
+
+.directional-right-body{
+    overflow-y: scroll;
+    position: relative;
+    width: 100%;
+    height: 190px;
+    font-size: 12px;
+    word-wrap:break-word;
+}
+
+div .each-childrendata-div,.left-label-child{
+    cursor: pointer;
+}
+div .each-childrendata-div, div .each-data-div{
+    margin-bottom: 3px;
+}
+li img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.mouseover-style{
+    box-shadow: 0px 0px 8px #585858;
+}
+.each-data-div-box{
+    margin: 5px;
+}
+
+.each-data-div-body{
+    margin-left: 15px;
+}
+.each-childrendata-div-active{
+    background-color: #f3f3f3;
+}
+.purpose_label{
+    /*float: right;*/
+    margin-left: 20px;
+}
+#direct-control{
+    border: 1px solid #c4c4c4;
+    width: 100%;
+    height: 31px;
+    cursor: pointer;
+    border-radius: 5px;
+    line-height: 31px;
+    text-align: center;
+    font-size: 12px;
+}
+.direct-container{
+    width: 610px;
+    height: 320px;
+    /*border:1px solid #d3d3d3;*/
+    /*border-rad/ius: 15px;*/
+    padding: 5px;
+    display: none;
+}
+
+.direct-btn{
+    color: #000;
+    width: 120px;
+    /* height: 24px; */
+    margin-right: -150px;
+    background: #F6F6F6;
+    line-height: 12px;
+    margin-bottom: 3px;
+/* padding-left: 30px;*/
+    margin-left: 30px;
+}

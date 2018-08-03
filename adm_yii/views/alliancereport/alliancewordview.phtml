@@ -1,0 +1,1067 @@
+<!--广告主系统 关键词报表界面-->
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<div class="toolbar">
+    <div class="container-fluid" style="margin: 20px 0;">
+        <div class="row">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <div class="input-group date dl-date-range-wrapper">
+                        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+                        <span class="caret dl-date-range-input-icon"></span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin: 0 0 0 30px;">
+                    <div class="checkbox checkbox-deepleaper">
+                        <input type="checkbox" name="compare_date" id="compare_date" value="1">
+                        <label for="compare_date"></label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="input-group date dl-date-range-wrapper">
+                        <input type="text" class="form-control dl-date-range-input" id="compareDate" disabled>
+                        <span class="caret dl-date-range-input-icon"></span>
+                    </div>
+                </div>
+
+                <div class="btn-group report_type_wrapper" data-toggle="buttons">
+                    <label class="btn dl-btn-primary active" id="report_type_hourly">
+                        <input type="radio" name="report_type" autocomplete="off" value="hourly" checked> 分时
+                    </label>
+                    <label class="btn dl-btn-primary disabled" id="report_type_daily">
+                        <input type="radio" name="report_type" autocomplete="off" value="daily"> 分日
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="form-inline" role="form">
+                <div class="btn-group dl-custom-filter" role="group">
+                    <button type="button" class="btn dl-btn-primary dl-custom-filter-all active" id="usersBtn">账户</button>
+                    <div class="btn-group dl-custom-filter-custom-middle" role="group">
+                        <select id="adgroup_check_custom_select" class="selectpicker" data-width="100%" multiple data-size="10"
+                                title="筛选广告组">
+                        </select>
+                    </div>
+                    <div class="btn-group dl-custom-filter-custom" role="group">
+                        <select id="adplan_check_custom_select" class="selectpicker" data-width="100%" multiple data-size="10"
+                                title="筛选广告计划">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="echarsBox" style="width: 100%;height:400px;">
+    <div id="line-container" style="width: 100%;height:400px">
+        <div id="main"></div>
+    </div>
+</div>
+
+<div id="toolbar">
+    <div class="form-inline" role="form">
+        <div class="btn-group pull-left dl-table-filter" id="dimensionSplitWrapper" style="width: 87px;">
+            <select id="dimensionSplit" class="selectpicker" data-width="100%" title="维度拆分">
+                <option value="0">不限</option>
+                <option value="1">日期</option>
+                <option value="2" selected>关键词</option>
+            </select>
+        </div>
+        <div class="btn-group pull-left dl-table-filter" id="dimensionWrapper" style="width: 87px;display: none;margin-left: 10px">
+            <select id="dimension" class="selectpicker" data-width="100%" title="数据维度">
+                <!--                <option value="all">不限</option>-->
+                <option value="query" selected>查询日期</option>
+                <option value="contrast">对比日期</option>
+            </select>
+        </div>
+
+        <div class="input-group pull-left deepleaper-search-control" style='width:250px;display: none' id="keywordWrapper">
+            <input type="text" class="form-control" placeholder="多个关键词以逗号隔开" value="" name="search"  id="keyword">
+            <span class="input-group-btn">
+			<a id="searchkeyword" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+        </div>
+
+        <div class="form-group pull-left download-table" style="margin-left: 10px">
+            <input type="button" class="form-control btn btn-default" value="下载报表" id="downloadTable">
+        </div>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script type="text/javascript" src="/js/report_date_compare.js?v=20170525"></script>
+<script type="text/javascript" src="/js/echartsCtl.js"></script>
+<script src="/js/linechart/js/ajax.js"></script>
+<script type="text/javascript">
+    //折线图输入数据配置
+    var lineConfig = {
+        myLegend :['花费(元)', '曝光量', '点击量', '点击率', 'CPM(元)', 'CPC(元)'],
+        myLegendId: ['income', 'imp', 'clk', 'ctr', 'ecpm', 'ecpc']
+    };
+    //初始化广告组
+    var query_date =$('#searchDate').val().replace(' - ', ',').split(',');
+    fetchuseradstructAPI(query_date[0] ,fetchuseradstructAPIonSuccess);
+    function fetchuseradstructAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            var option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+            }
+            $('#adgroup_check_custom_select').html(option);
+
+            var planoption = '';
+            for (var i = 0; i < data.length; i++) {
+                planoption += '<optgroup label="' + data[i].name + '">';
+                var adplan = data[i].child;
+                for (var j = 0; j < adplan.length; j++) {
+                    planoption += '<option value="' + adplan[j].id + '">' + adplan[j].name + '</option>';
+                }
+                planoption += '</optgroup>';
+            }
+            $('#adplan_check_custom_select').html(planoption);
+
+        } else {
+            layer.msg(req.msg);
+        }
+    }
+
+// 当查询日期发生变化时，更新列表
+//    $('#searchDate').on('change', function() {
+//        if( $('#compare_date').prop('checked')){
+//            var query_date =$('#compareDate').val().replace(' - ', ',').split(',');
+//        }else {
+//            var query_date =$('#searchDate').val().replace(' - ', ',').split(',');
+//        }
+//        fetchuseradstructAPI(query_date[0] ,fetchuseradstructAPIonSuccess);
+//        $("#usersBtn").click();
+//        compareChange();
+//    });
+
+//是否开启对比日期的复选框发生变化时，更新列表
+//   $("#compare_date").on('change', function () {
+//        if( $('#compare_date').prop('checked')){
+//            var query_date =$('#compareDate').val().replace(' - ', ',').split(',');
+//        }else {
+//            var query_date =$('#searchDate').val().replace(' - ', ',').split(',');
+//        }
+//        fetchuseradstructAPI(query_date[0] ,fetchuseradstructAPIonSuccess);
+//        $("#usersBtn").click();
+//    });
+
+// 当对比日期发生变化时，更新列表
+//    compareChange();
+//    function compareChange() {
+//        $('#compareDate').on('change', function() {
+//            var query_date =$('#compareDate').val().replace(' - ', ',').split(',');
+//            fetchuseradstructAPI(query_date[0] ,fetchuseradstructAPIonSuccess);
+//            $("#usersBtn").click();
+//        });
+//    }
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        func: function (result) {
+            {
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                var isCompare = $('#compare_date').prop('checked');//是否比较
+                var compareDate = $('#compareDate').val().replace(' - ', ',').split(',');//比较日期
+                var report_type = $('input[name="report_type"]:checked').val();//分时or分日
+                var filter = "client";
+                var ids = '';//广告组或者广告计划筛选item
+                var adgroup_check_custom_select = $("#adgroup_check_custom_select").val();
+                var adplan_check_custom_select = $("#adplan_check_custom_select").val();
+                if (adgroup_check_custom_select !== null) {
+                    filter = "adgroup";
+                    ids = adgroup_check_custom_select.join(',');
+                } else if (adplan_check_custom_select !== null) {
+                    filter = "adplan";
+                    ids = adplan_check_custom_select.join(',');
+                }
+                var dimension = 'unlimited';//维度拆分
+                if ($('#dimensionSplit').val() == '1') {
+                    dimension = 'date';
+                }
+                if ($('#dimensionSplit').val() == '2') {
+                    dimension = 'word';
+                }
+                var words = $("#keyword").val();//关键词
+
+                var customParams = [];
+                customParams.push({
+                    'begin': searchDate[0].replace(/\//g, ''),
+                    'end': searchDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                if (isCompare) {
+                    customParams.push({
+                        'begin': compareDate[0].replace(/\//g, ''),
+                        'end': compareDate[1].replace(/\//g, ''),
+                        'report_type': report_type,
+                        'filter': filter,
+                        'dimension': dimension,
+                        'ids': ids,
+                        'words': words
+                    });
+
+                    //切换选项 对比日期消失
+                    {
+                        var compareTimedata = document.getElementById("myTimeControl").children[1];
+                        var flag = $("#timeControl1")[0]["checked"];
+                        if (flag) {
+                        $("#timeControl1")[0]["checked"] = !$("#timeControl1")[0]["checked"];
+                        compareTimedata.style.opacity = 0.4;
+                        myChart.clear();
+                        option.series.pop();
+                        option.series.pop();
+//                        //3.根据新的option重新渲染折线图
+                        myChart.setOption(option);
+                        }
+                    }
+                }
+                var condition = JSON.stringify(customParams);
+            }
+            var url = "/alliancereport/wordreport?order=desc&limit=50&offset=0&report_data=all&condition="+condition;
+            myAjax("GET",url,true,function(result){
+                var res = JSON.parse(result);
+                var now = res.data.chart[0];
+                var yesterday;
+                if (isCompare) {
+                    yesterday = res.data.chart[1];
+                } else {
+                    yesterday = [];
+                }
+                res.data = now.concat(yesterday);
+
+                //判断页面是分日还是分时
+                var timeToggle = $("label[class~=active]").children().val();
+                var len = res.data.length;
+                var resAll = {
+                    Current: {
+                        status: 1,
+                        msg: res.msg,
+                        data: null
+                    },
+                    Prev: {
+                        status: 1,
+                        msg: res.msg,
+                        data: null
+                    }
+                };
+                if (timeToggle === "hourly") {
+                    //分时
+                    dataCache.date[0] = $("#searchDate").val().split("-")[0].replace(/\//g, '.');
+                    dataCache.date[1] = $("#compareDate").val().split("-")[0].replace(/\//g, '.');
+                    $("#timeControl0").html($("#searchDate").val().split("-")[0].replace(/\//g, '.'));
+                    $("#timeControl1").html($("#compareDate").val().split("-")[1].replace(/\//g, '.'));
+                    if (len === 0) {
+                        return;
+                    }
+                    if (len === 24 ) {
+                        resAll.Current.data = res.data;
+                        var temp = JSON.stringify(resAll.Current);
+                        renderCurrentLine(temp);
+                    }
+                    else if (len === 48){
+                        var today = [];
+                        var compareToday = [];
+                        for (var i = 0; i < 48; i++) {
+                            if (i < 24) {
+                                today.push(res.data[i]);
+                            } else {
+                                compareToday.push(res.data[i]);
+                            }
+                        }
+                        resAll.Current.data = today;
+                        resAll.Prev.data = compareToday;
+                        var temp1 = JSON.stringify(resAll.Current);
+                        var temp2 = JSON.stringify(resAll.Prev);
+                        renderCurrentLine(temp1);
+                        renderBeforeLine(temp2);
+                    }
+                }
+                else {
+                    //分日
+                    dataCache.date[0] = $("#searchDate").val().replace(/\//g, '.');
+                    dataCache.date[1] = $("#compareDate").val().replace(/\//g, '.');
+                    $("#timeControl0").html($("#searchDate").val().replace(/\//g, '.'));
+                    $("#timeControl1").html($("#compareDate").val().replace(/\//g, '.'));
+                    var today = [];
+                    var compareToday = [];
+                    var flag = $("#compare_date").prop("checked");
+                    if (!flag) {
+                        resAll.Current.data = res.data;
+                        //没有对比日期
+                        var temp = JSON.stringify(resAll.Current);
+                        renderCurrentLineDaily(temp);
+                    } else {
+                        var len = res.data.length / 2;
+                          for (var i = 0; i < res.data.length; i++) {
+                              if (i < len) {
+                                  today.push(res.data[i]);
+                              } else {
+                                  compareToday.push(res.data[i]);
+                              }
+                        }
+                        resAll.Current.data = today;
+                        resAll.Prev.data = compareToday;
+                        var temp1 = JSON.stringify(resAll.Current);
+                        var temp2 = JSON.stringify(resAll.Prev);
+                        renderCurrentLineDaily(temp1);
+                        renderBeforeLineDaily(temp2);
+                    }
+                }
+
+            })
+
+        },
+        url: {},
+        reRequest: function () {//改变筛选项并重新发送请求
+            //筛选清除页码cookie
+            List.$table.bootstrapTable('deleteCookie', ['pageNumber']);
+            List.$table.bootstrapTable('refresh', {
+                query: {offset: 0}
+            });
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {},
+        updateShowColumns: function () {//更新列表中列的显示/隐藏状态
+            var dimensionSplit = $('#dimensionSplit').val();
+            var columns = [
+                {
+                    field: '',
+                    title: '',
+                    formatter: function (value, row, index) {
+                        if (index === 0) {
+                            return '合计'
+                        }
+                        return '';
+                    },
+                    width: '35px',
+                    cellStyle: function (value, row, index, field) {
+                        if (index === 0) {
+                            return {
+                                classes: 'totleCell'
+                            }
+                        }
+                        return {}
+                    }
+                },
+                {
+                    field: 'word',
+                    title: '关键词',
+                    visible: dimensionSplit != '1',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'adplan_name',
+                    title: '广告计划名称',
+                    visible: dimensionSplit != '1',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'adgroup_name',
+                    title: '广告组名称',
+                    visible: dimensionSplit != '1',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'period_date',
+                    title: '日期',
+                    sortable: true,
+                    visible: dimensionSplit != '2',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (typeof dataValue === 'string') {
+                                    if (dataValue == null && dataValue == '') {
+                                        value[item] = '-';
+                                    }
+                                } else if (typeof dataValue === 'object' && dataValue instanceof Array) {
+                                    dataValue.forEach(function (childValue, childItem, childData) {
+                                        if (childValue == null && childValue == '') {
+                                            dataValue[childItem] = '-';
+                                        }
+                                    });
+                                    value[item] = dataValue.join('至');
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'imp',
+                    title: '展示量',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'clk',
+                    title: '点击量',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ctr',
+                    title: '点击率',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value == null ? null : strToPercent(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = strToPercent(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'income',
+                    title: '花费(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ecpm',
+                    title: '平均千次展示费用(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ecpc',
+                    title: '平均点击单价(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }];
+//                    根据维度拆分的值，显示不同的列
+            List.$table.bootstrapTable('refreshOptions', {columns: columns});
+        },
+        toolbar: function () {
+            $("input[type='checkbox'][name='echartsCtl']").bind('change', function () {
+                ListPageConfig.reRequest();
+                ListPageConfig.func();//重新渲染echarts图
+            });
+
+            $("#compare_date").bind('change', function () {//比较
+                //如果有对比，默认为不限
+                if ($('#compare_date').prop('checked')) {
+                    $("#dimensionWrapper").show();
+                    if($("#dimensionSplit").val() == '1'){
+                        $("#dimension option[value='0']").prop('selected', 'selected').change()
+                    }else{
+                        $("#dimension option[value='1']").prop('selected', 'selected').change()
+                    }
+                } else {
+                    $("#dimensionWrapper").hide();
+                    ListPageConfig.reRequest();
+                }
+                ListPageConfig.func();//重新渲染echarts图
+            });
+
+            $("input[name='report_type']").bind('change', function () {//分时分日
+                //修改分时、分日时，同步控制修改时间控件maxDate
+                var report_type = $(this).val();
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');
+                var compareDate = $('#compareDate').val().replace(' - ', ',').split(',');
+                $('#compareDate').unbind('change');
+                if (report_type == 'hourly') {
+                    compareDate_daterangepicker(moment(compareDate[0]), moment(compareDate[1]), moment());
+                    searchDate_daterangepicker(moment(searchDate[0]), moment(searchDate[1]), moment());
+                } else if (report_type == 'daily') {
+                    compareDate_daterangepicker(moment(compareDate[0]), moment(compareDate[1]), moment().subtract('days', 1));
+                    searchDate_daterangepicker(moment(searchDate[0]), moment(searchDate[1]), moment().subtract('days', 1));
+                }
+                ListPageConfig.updateShowColumns();
+                ListPageConfig.reRequest();
+                ListPageConfig.func();//重新渲染echarts图
+            });
+            $("#adgroup_check_custom_select").bind('change', function () {//广告创意筛选
+                ListPageConfig.reRequest();
+                ListPageConfig.func();//重新渲染echarts图
+            });
+            $("#adplan_check_custom_select").bind('change', function () {//广告创意筛选
+                ListPageConfig.reRequest();
+                ListPageConfig.func();//重新渲染echarts图
+            });
+            $("#dimensionSplit").bind('change', function () {//日期or广告创意
+                //维度拆分
+                var dimensionSplit = $(this).val();
+                switch (dimensionSplit) {
+                    case '1':
+                        $("#keywordWrapper").hide();
+                        var html = '<option value="all" selected>不限</option><option value="query">查询日期</option><option value="contrast">对比日期</option>';
+                        $("#dimension").html(html).selectpicker('refresh');
+                        break;
+                    case '2':
+                        $("#keywordWrapper").show();
+                        var html = '<option value="query" selected>查询日期</option><option value="contrast">对比日期</option>';
+                        $("#dimension").html(html).selectpicker('refresh');
+                        break;
+                    default:
+                        console.error('维度拆分选项出错');
+                }
+                ListPageConfig.updateShowColumns();
+                ListPageConfig.reRequest();
+            });
+            $("#dimension").bind('change', function () {//维度
+                ListPageConfig.reRequest();
+            });
+
+            $("#searchkeyword").bind('click', function () {//搜索关键词
+                ListPageConfig.reRequest();
+            });
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/alliancereport/wordreport',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                var isCompare = $('#compare_date').prop('checked');//是否比较
+                var compareDate = $('#compareDate').val().replace(' - ', ',').split(',');//比较日期
+//                var report_type = $('input[name="report_type"]:checked').val();//分时or分日
+                var report_type;
+                if(searchDate[0] == searchDate[1])
+                {
+                    report_type = 'hourly';
+                }else {
+                    report_type = 'daily';
+                }
+                var filter = "client";
+                var ids = '';//广告组或者广告计划筛选item
+                var adgroup_check_custom_select = $("#adgroup_check_custom_select").val();
+                var adplan_check_custom_select = $("#adplan_check_custom_select").val();
+                if (adgroup_check_custom_select !== null) {
+                    filter = "adgroup";
+                    ids = adgroup_check_custom_select.join(',');
+                } else if (adplan_check_custom_select !== null) {
+                    filter = "adplan";
+                    ids = adplan_check_custom_select.join(',');
+                }
+                var dimension = 'unlimited';//维度拆分
+                if ($('#dimensionSplit').val() == '1') {
+                    dimension = 'date';
+                }
+                if ($('#dimensionSplit').val() == '2') {
+                    dimension = 'word';
+                }
+                var words = $("#keyword").val();//关键词
+
+                var customParams = [];
+                customParams.push({
+                    'begin': searchDate[0].replace(/\//g, ''),
+                    'end': searchDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                if (isCompare) {
+                    customParams.push({
+                        'begin': compareDate[0].replace(/\//g, ''),
+                        'end': compareDate[1].replace(/\//g, ''),
+                        'report_type': report_type,
+                        'filter': filter,
+                        'dimension': dimension,
+                        'ids': ids,
+                        'words': words
+                    });
+                }
+                params['condition'] = JSON.stringify(customParams);
+                params['report_data'] = $("#dimension").val();
+                if ($('#dimensionSplit').val() == '2' && params['sort'] == 'period_date') {
+                    params['sort'] = undefined;
+                }
+                return params;
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+                    return {
+                        rows: res.data.report.rows,
+                        total: parseInt(res.data.report.total)
+                    }
+                } else {
+                    layer.msg(res.msg);
+                    return {rows: [], total: 0};
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: false,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            }
+            ,
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            }
+            ,
+            columns: [
+                {
+                    field: '',
+                    title: '',
+                    formatter: function (value, row, index) {
+                        if (index === 0) {
+                            return '合计'
+                        }
+                        return '';
+                    },
+                    width: '35px',
+                    cellStyle: function (value, row, index, field) {
+                        if (index === 0) {
+                            return {
+                                classes: 'totleCell'
+                            }
+                        }
+                        return {}
+                    }
+                },
+                {
+                    field: 'word',
+                    title: '关键词',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'adplan_name',
+                    title: '广告计划名称',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'adgroup_name',
+                    title: '广告组名称',
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return value;
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                },
+                {
+                    field: 'imp',
+                    title: '展示量',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'clk',
+                    title: '点击量',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ctr',
+                    title: '点击率',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return value == null ? null : strToPercent(value);
+                    }
+                }, {
+                    field: 'income',
+                    title: '花费(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ecpm',
+                    title: '平均千次展示费用(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }, {
+                    field: 'ecpc',
+                    title: '平均点击单价(元)',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (typeof value === 'string') {//数据维度：查询日期或对比日期
+                            return splitK(value);
+                        }
+                        else if (typeof value === 'object' && value instanceof Array) {//数据维度：不限
+                            value.forEach(function (dataValue, item, data) {
+                                if (dataValue == null || dataValue == '') {
+                                    value[item] = '-';
+                                } else {
+                                    value[item] = splitK(dataValue);
+                                }
+                            });
+                            return value.join('<br/><p class="compareLineInterval"></p>');
+                        }
+                        return value;
+                    }
+                }]
+        }
+    };
+    //下载报表
+    $("#downloadTable").on('click', function () {
+        var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+        var isCompare = $('#compare_date').prop('checked');//是否比较
+        var compareDate = $('#compareDate').val().replace(' - ', ',').split(',');//比较日期
+        var report_type = $('input[name="report_type"]:checked').val();//分时or分日
+        var filter = "client";
+        var ids = '';//广告组或者广告计划筛选item
+        var adgroup_check_custom_select = $("#adgroup_check_custom_select").val();
+        var adplan_check_custom_select = $("#adplan_check_custom_select").val();
+        if (adgroup_check_custom_select !== null) {
+            filter = "adgroup";
+            ids = adgroup_check_custom_select.join(',');
+        } else if (adplan_check_custom_select !== null) {
+            filter = "adplan";
+            ids = adplan_check_custom_select.join(',');
+        }
+        var dimension = 'unlimited';//维度拆分
+        if ($('#dimensionSplit').val() == '1') {
+            dimension = 'date';
+        }
+        if ($('#dimensionSplit').val() == '2') {
+            dimension = 'word';
+        }
+        var words = $("#keyword").val();//关键词
+        var dimensionValue= $("#dimension").val();
+        var customParams = [];
+        switch (dimensionValue){
+            case '0':
+                customParams.push({
+                    'begin': searchDate[0].replace(/\//g, ''),
+                    'end': searchDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                customParams.push({
+                    'begin': compareDate[0].replace(/\//g, ''),
+                    'end': compareDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                break;
+            case '1':
+                customParams.push({
+                    'begin': searchDate[0].replace(/\//g, ''),
+                    'end': searchDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                break;
+            case '2':
+                customParams.push({
+                    'begin': compareDate[0].replace(/\//g, ''),
+                    'end': compareDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+                break;
+            default:
+                customParams.push({
+                    'begin': searchDate[0].replace(/\//g, ''),
+                    'end': searchDate[1].replace(/\//g, ''),
+                    'report_type': report_type,
+                    'filter': filter,
+                    'dimension': dimension,
+                    'ids': ids,
+                    'words': words
+                });
+        }
+        var condition = JSON.stringify(customParams);
+        var url = '/alliancereport/exportcsv?action_name=wordreportAction&offset=0&limit=1000000&condition=' + condition;
+        window.open(encodeURI(url));
+    });
+    var auth = getAuthorityByUrl('/alliancereport/alliancewordview');
+    function checkAuthority() {
+        if (auth == 0) {
+            toFirstLegalPage();
+        }
+    }
+    checkAuthority();
+</script>
+
+<!--折线图组件js start-->
+<!--折线图必须在lingConfig后面引入，因为没有写成闭包-->
+<!--<script src="/js/linechart/js/ajax.js"></script>-->
+<script src="/js/linechart/js/domReady.js"></script>
+<script src="/js/linechart/js/macarons.js"></script>
+<script src="/js/linechart/js/lineChart.js"></script>
+<!--折线图组件js end-->
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>

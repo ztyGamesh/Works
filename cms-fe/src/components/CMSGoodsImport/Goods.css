@@ -1,0 +1,25 @@
+.good-import-upload {
+    margin-top: 20px;
+    height: 230px;
+}
+
+.good-import-upload .ant-card-body {
+    padding: 8px;
+}
+
+.good-import-upload .ant-upload-list.ant-upload-list-text {
+    height: 180px;
+    padding: 8px;
+    border: solid #ccc 1px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    transform: translateY(-30px);
+}
+
+.good-import-upload .ant-upload.ant-upload-select.ant-upload-select-text {
+    transform: translateY(200px);
+}
+
+.good-import-upload .ant-upload-list.ant-upload-list-text .anticon.anticon-cross {
+    display: none;
+}

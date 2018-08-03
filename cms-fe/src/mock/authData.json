@@ -1,0 +1,54 @@
+认证系统url ** 所有接口都是post **
+  *
+  根域名： auth - dev.deepleaper.com *
+  登录： / User / Login *
+  请求 json: {
+    "mail": "cms@dev.com",
+    "password": "",
+    "platform": 3
+  }
+  * 返回 json： {
+    "status": "ok",
+    "message": null,
+    "data": {
+      "user": "user1",
+      "role": "role1",
+      "credential": "d320390f-b6ef-4547-bb56-85d7a6ccfa5d",
+      "expire": 2147483647
+    }
+  }
+  * 权限判定： / User / AccessPermission *
+  请求json： {
+    "token": {
+      "user": "user1",
+      "role": "role1",
+      "credential": "d320390f-b6ef-4547-bb56-85d7a6ccfa5d"
+    },
+    "address": "sina.com.cn"
+  }
+  * 返回json： {
+    "status": "ok",
+    "message": null,
+    "data": 2# 0 无权限、 1 只读、 2 读写
+  }
+  * 获取角色权限： / Power / GetRolePower *
+  请求json： {
+    "role": "role1"
+  }
+  * 返回json： {
+    "status": "ok",
+    "message": null,
+    "data": [{
+        "role": "role1",
+        "access": "09a4c3eb-95e1-4e16-9c77-3cb37711e7a6",
+        "permission": 2,
+        "address": "sina.com.cn"
+      },
+      {
+        "role": "role1",
+        "access": "9218a3cd-99b9-4e58-b780-0eb36e7d6500",
+        "permission": 2,
+        "address": "sina.com.cn/2"
+      }
+    ]
+  }

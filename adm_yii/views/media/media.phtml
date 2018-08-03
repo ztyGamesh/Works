@@ -1,0 +1,287 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<script>
+    var authType = 'adminAccount';
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/media/media',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortName: 'create_time',
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            onMouseoverRow:function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display','inline-block');
+            },
+            onMouseoutRow:function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display','none');
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '媒体名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'type',
+                title: '媒体类型'
+            }, {
+                field: 'status',
+                title: '媒体状态',
+                formatter: function (value, row, index) {
+                    //判断权限，跃盟端与媒体端区分处理
+                    if(authType == "adminAccount") {
+                        switch (value) {
+                            case 'active':
+                                return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" style="margin-right: 5px;" src="../img/icon/icon_pause.png" title="暂停">';
+                                break;
+                            case 'pause':
+                                return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">冻结</span><img class="status_modify status_start" style="margin-right: 5px;" src="../img/icon/icon_start.png" title="启用">';
+                                break;
+                            default:
+                                return value;
+                        }
+                    }
+                    else {
+                        switch (value) {
+                            case 'active':
+                                return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span>';
+                                break;
+                            case 'pause':
+                                return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">冻结</span>';
+                                break;
+                            default:
+                                return value;
+                        }
+                    }
+
+
+                },
+                events: {
+                    'click .status_start': function (e, value, row, index) {//status开关
+                        switchStatus('active', row);
+                    },
+                    'click .status_pause': function (e, value, row, index){
+                        switchStatus('pause', row);
+                    },
+                },
+                width: '100px',
+            }, {
+                field: 'class_name',
+                title: '媒体分类',
+
+            }, {
+                field: 'medium_name',//'company_name',
+                title: '媒体账户',
+                formatter: function (value, row, index) {
+                    if(!value)
+                    {
+                        return value;
+                    }else {
+                        return '<span class="cutValue">' + cutstrbyChar(value, 10) + '</span>'
+                    }
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 10) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 10) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'duty_user',
+                title: 'deepleaper负责人',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 10) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 10) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 10) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+
+            }, {
+
+                field: 'create_time',
+                title: '创建时间',
+
+            }, {
+
+                field: 'createUserName',
+                title: '创建/修改人',
+
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        },
+        url: {
+            add: '/media/mediaadd',         //添加 数据 html 地址
+            edit: '/media/mediaedit',         //编辑数据 html 地址
+            info: '/media/mediainfo',         //编辑数据 html 地址
+            del: '/media/mediadel',         //删除数据地址
+            detail: false ,                 //详细内容地址,为空则取编辑的地址
+            editShield:'/media/mediaeditshield', //媒体端修改 行业屏蔽页 地址
+            colModify:'/media/status',  //更改状态栏状态
+        },
+        action: {
+            //detail: true,
+            info: true,
+            edit: true,
+            del: true,
+            editShield:true,
+        },
+        title: {
+            addTitle: '添加媒体',
+            editTitle: '编辑媒体',
+            infoTitle: '查看媒体ID',
+        },
+        showDetail: false         //是否显示详细信息按钮
+    }
+
+
+    //状态切换
+    function switchStatus(status, row) {
+        $.ajax({
+            type: 'POST',
+            url: ListPageConfig.url.colModify,
+            cache: false,
+            async: true,
+            data: {
+                'uid': row.uid,
+                'field': 'status',
+                'status': status
+            },
+            success: function (data) {
+                if (!data.status) {
+                    layer.msg(data.msg);
+                } else {
+                    $(ListPageConfig.tableId).bootstrapTable('refresh');
+                }
+            },
+            dataType: 'json'
+        });
+    }
+
+
+    function editShieldItem(indexId) {
+        var copyurl = ListPageConfig.url.editShield + '?uid=' + indexId;
+        window.location.href = copyurl;
+    }
+
+    var auth = getAuthorityByUrl('/media/media');
+    function checkAuthority() {
+        if (auth == 0) {
+            authType = 'nobody';
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                info: false,
+                edit: false,
+                del: false,
+                editShield:false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            authType = 'mediaAccount'
+            ListPageConfig.action = {
+                info: true,
+                edit: false,
+                del: false,
+                editShield:true
+            };
+        } else if (auth == 2) {
+            authType = 'adminAccount'
+            ListPageConfig.action = {
+                info: true,
+                edit: true,
+                //   del: true
+                del: false,
+                editShield:false
+            };
+        }
+    }
+    checkAuthority();
+
+</script>
+
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加媒体
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="媒体名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter3.phtml');
+?>
+
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

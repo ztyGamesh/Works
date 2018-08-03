@@ -1,0 +1,547 @@
+<!--广告创意列表-->
+<link rel="stylesheet" href="/css/bootstrap-table.css?v=20170719">
+<link rel="stylesheet" href="/css/datepicker.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<script type="text/javascript" src="/js/bootstrap-tableFilter-deepleaper.js"></script>
+<?php
+echo $this->partial('layout/tablePublic.phtml');
+?>
+
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name linkable"></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adplanName" class="user-message-name"></span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<input type="hidden" name="plan_id" id="plan_id">
+<div class="toolbar" id="toolbar">
+    <div class="btn-group pull-left create" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">新建广告创意
+        </div>
+    </div>
+
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;margin-right: 14px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="请输入广告创意名称" value=""
+               name="search">
+        <span class="input-group-btn">
+            <a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+        </span>
+    </div>
+
+    <div class="input-group pull-left date dl-date-range-wrapper" style="margin-left: 30px">
+        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+        <span class="caret dl-date-range-input-icon"></span>
+    </div>
+</div>
+
+<table id="table" class="list-table"></table>
+<?php
+echo $this->partial('layout/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+
+<script>
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
+
+
+    clientaccountAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1 && req.data != null) {
+            $("#companyName").html(req.data.name);
+        }
+    });
+    var addUrl = '/promotion/adcreativeaddview?planId=' + GetQueryString('planId') + '&groupId=' + GetQueryString('groupId') + '&entrance=creative';
+    var editUrl = '/promotion/adcreativeeditview';
+    var statusArry = {'active': '启用', 'pause': '暂停'};
+    $("#plan_id").val(GetQueryString('planId'));
+    var media_type = 'media';//广告计划的广告形式属于动态还是固定
+    //查询广告计划信息
+    fetchadplanAPI(GetQueryString('planId'), function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            if (req.data.class == '29076f0d-a923-47d4-bfef-2e3cf28fc099') {
+                media_type = 'media';
+            } else {
+                media_type = 'adx';
+                addUrl = '/promotion/adcreativefixedaddview?planId=' + GetQueryString('planId') + '&groupId=' + GetQueryString('groupId') + '&entrance=creative';
+                editUrl = '/promotion/adcreativefixededitview';
+            }
+        } else {
+            layer.msg(req.msg);
+        }
+    });
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+            $(".table-do-tips").bind("mouseenter", function () {
+                layer.tips('修改创意物料，修改前的创意物料保持修改前的状态不能修改；修改后的创意物料审核通过后覆盖修改前创意物料。', $(this), {
+                    tips: [1, '#353538'],
+                    area: ['auto', 'auto']
+                });
+            });
+            $(".table-do-tips").bind("mouseleave", function () {
+                layer.closeAll();
+            })
+            $("[data-toggle='popover']").popover();
+        },
+        executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('purpose');
+            bindTableFilterAction('status');
+        },
+        url: {
+            add: addUrl,         //新建广告创意
+            copy_edit: editUrl,         //修改创意
+            creativeStatus: '/promotion/adcreativeupdatestatus' //状态(有效/暂停)修改接口
+        },
+        api: {
+            creativeStatus: adgroupupdatestatusAPI //修改状态接口
+        },
+        htmlConfig: {
+//            preview:['<a class="preview" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">预览</a>'],
+//            copy_edit: ['<a class="copy_edit" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">创意修改</a>'],
+            copy_edit: ['<div class="copy_edit dl-list-action-btn-wrapper"  title="修改">',
+                '<img src="../img/icon/icon_edit.png" class="dl-list-action-btn">',
+                '</div>']
+
+//            creativeStatusP: ['<a class="creativeStatus" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">暂停</a>'],
+//            creativeStatusA: ['<a class="creativeStatus" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">有效</a>'],
+        },
+        operateEvents: {
+            'click .preview': function (e, value, row, index) {
+                layer.open({
+                    type: 1,
+                    title: '创意预览',
+                    closeBtn: 0, //不显示关闭按钮
+                    shadeClose: true, //开启遮罩关闭
+                    area: ['320px', '568px'], //宽高
+                    content: row.code
+                });
+            },
+            'click .copy_edit': function (e, value, row, index) {
+                window.location.href = ListPageConfig.url.copy_edit + '?planId=' + GetQueryString('planId') + '&groupId=' + GetQueryString('groupId') + '&id=' + row.id;
+            }
+        },
+        title: {
+            addTitle: '添加用户权限',
+            editTitle: '修改用户权限'
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {
+            preview: true,
+            copy_edit: true,
+            creativeStatus: true
+        },
+        toolbar: function () {
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/promotion/adcreativelist',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                params['begin'] = searchDate[0].replace(/\//g, '-');
+                params['end'] = searchDate[1].replace(/\//g, '-');
+                params['search'] = $("#searchKeyword").val();
+                params['status'] = $("input[name=status]:checked").val();
+                params['plan_id'] = $("#plan_id").val();
+                $('.detail_pop').popover('hide');
+                return params;
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+                    $("#adgroupName").html(res.data.group_name);
+                    $("#adplanName").html(res.data.plan_name);
+                    return res.data;
+                } else {
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: true,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            },
+            onMouseoverRow: function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display', 'inline-block');
+            },
+            onMouseoutRow: function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display', 'none');
+            },
+//            onRefresh: function (params) {
+//                console.log('1212121212');
+//                return params;
+//            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '创意名',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>';
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            },
+//                {
+//                field: 'code',
+//                title: '创意缩略图'
+//            },
+                {
+                    field: 'status',
+                    title: '状态' + jointTableFilter('status', statusArry),
+                    formatter: function (value, row, index) {
+                        switch (value) {
+                            case 'pause':
+                                return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_start" src="../img/icon/icon_start.png" title="启用">';
+                                break;
+                            case 'active':
+                                return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" src="../img/icon/icon_pause.png" title="暂停">';
+                                break;
+                            default:
+                                return value;
+                        }
+                    },
+                    events: {
+                        'click .status_modify': function (e, value, row, index) {//status开关
+                            if ('active' == row.status) {
+                                row.status = 'pause';
+                            } else {
+                                row.status = 'active';
+                            }
+                            var postData = {
+                                'ids': row.id,
+                                'status': row.status
+                            };
+                            ListPageConfig.api.creativeStatus(ListPageConfig.url.creativeStatus, postData, function (result) {
+                                var req = JSON.parse(result);
+                                if (req.status == 1) {
+                                    $(ListPageConfig.tableId).bootstrapTable('refresh', {silent: true});
+                                } else {
+                                    Comm.error(data.msg);
+                                }
+                            });
+                        }
+                    },
+                    width: '85px'
+                }, {
+                    field: 'audit_status',
+                    title: 'Deepleaper审核状态',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        switch (value) {
+                            case 'audit':
+                                return '<i class="icon-question-sign " style="margin-right: 2px;cursor: pointer;"></i>审核中';
+                                break;
+                            case 'reject':
+                                return '<i class="icon-remove-sign " style="margin-right: 2px;cursor: pointer;"></i>审核拒绝 <br/><span class="aduit_reject" style="color: lightgrey; margin-left: 12px;">拒绝原因</span>';
+                                break;
+                            case 'pass':
+                                return '<i class="icon-ok-sign " style="margin-right: 2px;cursor: pointer;"></i>审核通过';
+                                break;
+                            default:
+                                return value;
+                        }
+                    },
+                    events: {
+                        'mouseenter .aduit_reject': function (e, value, row, index) {
+                            if (row.comment) {
+                                layer.tips("<span style='color:black'>" + row.comment + "</span>", e.target, {
+                                    tips: [3, '#fff'],
+                                    area: ['auto', 'auto']
+                                });
+                            } else {
+                                layer.tips("<span style='color:black'>" + '获取审核拒绝原因失败' + "</span>", e.target, {
+                                    tips: [3, '#fff'],
+                                    area: ['auto', 'auto']
+                                });
+                            }
+                        },
+                        'mouseleave .aduit_reject': function (e, value, row, index) {
+                            if (row.comment) {
+                                layer.closeAll()
+                            }
+                        }
+                    }
+                },
+                {
+                    field: 'audit_others',
+                    title: '媒体审核状态',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        var length = 0;
+                        length = value.length;
+                        if(length == 0){
+                            return '-';
+                        }else{
+                            return '<a class="detail_pop"  ishide_id=' + row.id  + '  style="cursor: pointer;text-decoration: underline; border: 0px" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content=""> 详情 </a>';
+                        }
+                    },
+                    events: {
+                        'click .detail_pop': function (e, value, row, index) {
+                                $('.detail_pop').popover('hide');
+                                    if (value.length == 0) {
+                                        $('a[ishide_id=' + row.id + ']').popover('hide');
+                                    }
+                                    else{
+                                        setTimeout(function () {
+                                            $('a[ishide_id=' + row.id + ']').popover('show');
+                                            $(".detail_pop").attr('data-content', '');
+                                        }, 0)
+                                        var html = '<div class="list_close" ><img src="/img/list_close.png" onclick="fun_close(' + row.id + ')"></div>';
+                                        html += '<div class="list_container">';
+                                        for (var i = 0; i < value.length; i++) {
+                                            html += '<div class="list_line" onmouseover="mouseover_color('+ row.id + ',' + i + ')" onmouseout="mouseout_color('+ row.id + ',' + i + ')"> <div class="list_left" change_color_id="'+ row.id + i +'" >' + value[i].name + '</div> <div class="list_right" change_color_id="'+ row.id + i +'">' + trans_status(value[i].audit_status, value[i].comment, i) + '</div> </div>';
+                                        }
+                                        html += '</div>'
+                                        $(".detail_pop").attr('data-content', html);
+                                    }
+
+                            function trans_status(audit_status, comments, i) {
+                                switch (audit_status) {
+                                    case 'audit':
+                                        return '<i class="icon-question-sign " style="margin-right: 2px;cursor: pointer;"></i>审核中';
+                                        break;
+                                    case 'reject':
+                                        return '<i class="icon-remove-sign " style="margin-right: 2px;cursor: pointer;"></i>审核拒绝 <a class="aduit_detail_reject"  other_reason_id= "'+ row.id + i +'" other_reason ="'+ comments +'" style="color: lightgrey; margin-left: 6px;" onmouseover="mouse_over('+ row.id + ',' + i + ')" onmouseout="mouseOut('+ row.id + ',' + i + ')">原因</a>';
+                                        break;
+                                    case 'pass':
+                                        return '<i class="icon-ok-sign " style="margin-right: 2px;cursor: pointer;"></i>审核通过';
+                                        break;
+                                    case 'wait':
+                                        return '<i class="icon-question-sign " style="margin-right: 2px;cursor: pointer;"></i>待审核';
+                                    default:
+                                        return audit_status;
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    field: 'spend_budget',
+                    title: '花费(元)'
+
+                }, {
+                    field: 'imp',
+                    title: '展示数'
+
+                }, {
+                    field: 'clk',
+                    title: '点击数'
+
+                }, {
+                    field: 'ctr',
+                    title: '点击率',
+                    formatter: function (value, row, index) {
+                        return value == null ? null : strToPercent(value);
+                    }
+                }, {
+                    field: 'do',
+                    title: '操作' + '<i class="icon-question-sign table-do-tips" style="margin:0 3px 0 2px;cursor: pointer;"></i>',
+                    align: 'center',
+                    formatter: 'List.operateFormatter',
+                    events: 'List.operateEvents',
+                    width: '100px'
+                }]
+        }
+    };
+    initdaterangepicker($("#searchDate"), moment(), moment(), moment(), moment('1970-01-01'));
+    $("#companyName").bind('click', function () {
+        window.location.href = '/promotion/adgrouplistview';
+    });
+    $("#adgroupName").bind('click', function () {
+        window.location.href = '/promotion/adplanlistview?planId=' + GetQueryString('planId') + '&groupId=' + GetQueryString('groupId');
+    });
+    var auth = getAuthorityByUrl('/promotion/adgrouplistview');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                preview: true,
+                copy_edit: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                preview: true,
+                copy_edit: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                preview: true,
+                copy_edit: true
+            };
+        }
+    }
+    checkAuthority();
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<script type="text/javascript">
+
+    function fun_close(obj) {
+        $('a[ishide_id=' + obj + ']').popover('hide');
+    }
+
+    function mouse_over(obj, i) {
+        var  comments = $('a[other_reason_id=' + obj + i + ']').attr('other_reason');
+        if (comments) {
+            layer.tips("<span style='color:black'>" + comments + "</span>", $('a[other_reason_id=' + obj + i  + ']') , {
+                tips: [3, '#fff'],
+                area: ['auto', 'auto']
+            });
+
+        }
+    }
+
+    function mouseOut(obj,i) {
+        layer.closeAll()
+    }
+
+    function mouseover_color(obj, i) {
+        $('div[change_color_id=' + obj + i + ']').css('background-color','#f6f6f6');
+    }
+    function mouseout_color(obj, i) {
+        $('div[change_color_id=' + obj + i + ']').css('background-color','#ffffff');
+    }
+
+</script>
+<style type="text/css">
+
+    /*弹出框的大小*/
+    .popover.bottom {
+        margin-top: 10px;
+        width: 260px;
+        height: 240px;
+        margin-left: 118px;
+        background-color: #f6f6f6;
+        border: 1px solid #e9e9e9;
+        z-index: 999;
+    }
+
+    .popover > .arrow, .popover > .arrow:after {
+        position: absolute;
+        display: none;
+        width: 0;
+        height: 0;
+        border-color: transparent;
+        border-style: solid;
+    }
+    .list_close {
+        width: 240px;
+        height: 20px;
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .list_close img {
+        cursor: pointer;
+    }
+
+    .list_container {
+        width: 230px;
+        height: 190px;
+        background-color: #FFFFFF;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .list_left, .list_right {
+        width: 110px;
+        text-align: left;
+        display: inline-block;
+        float: left;
+        padding-left: 5px;
+    }
+    .list_left{
+        width: 120px;
+    }
+    .list_right{
+        padding-left: 10px;
+    }
+    .list_line{
+        width: 230px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+
+</style>
+
+
+<?php
+echo $this->partial('layout/listAd.phtml');
+?>

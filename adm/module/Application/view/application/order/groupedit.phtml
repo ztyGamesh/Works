@@ -1,0 +1,25 @@
+<?php if($this->item){
+    $name   = $this->item['name'];
+    $uid    = $this->item['uid'];
+    $info    = $this->item['info'];
+?>
+
+<form id="edit" method="post" action="/order/groupsave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单组名称</label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" check-type="required" required-message="不能为空。"  value="<?php echo $name;?>">
+            <input id="uid" class="form-control" type="hidden" name="uid"  value="<?php echo $uid;?>">
+        </div>
+    </div>
+     
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">备注</label>
+        <div class="col-sm-6 ">
+            <input id="info" class="form-control" type="text" name="info"  value="<?php echo $info;?>">
+        </div>
+    </div>
+    
+</form>
+<?php }?>

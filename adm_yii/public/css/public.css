@@ -1,0 +1,59 @@
+.paddingleft10 { padding-left: 10px;}
+/*add*/
+
+.list-form >label {display: block;padding: 5px;  }
+.list-form .form-control {display: inline-block;  }
+/*.list-form .form-control-feedback {
+	position: absolute;
+    top: 10px;
+    right: 25px;
+}*/
+.list-form .form-radio label{line-height: 32px;  }
+/*.list-form .error {
+    padding-left: 10px;
+    color: #FF0000;
+}
+.list-form .has-success .form-control-feedback {
+    color: #3c763d;
+}
+.list-form .has-error .form-control-feedback {
+    color: #a94442;
+}
+.list-form .help-block {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #a94442;
+}
+.list-form .form-group, .list-form .form-group div {
+    height: 34px;
+}*/
+.list-form .form-group .bs-searchbox {height: 50px;}
+/*.list-form .form-group>span {
+    margin-top: 8px;
+}*/
+.list-table tbody tr td{/*line-height: 20px;*/vertical-align: middle;  }
+.list-table tr td:last-child button {
+        margin: 0 10px;
+    } 
+.pull-left {line-height: normal;}
+table th {outline: none;}
+.required {color : #FF9966;}
+/*.pull-left .btn-danger {
+	background-color: #FFCF1F;
+	border-color: #FFCF1F;
+}*/
+.calendarWrap{position:relative;height:31px}
+.calendarWrap .calendar .calendar-input{height:31px;line-height:31px}
+.calendarWrap .glyphicon-calendar{position:absolute;margin-left: 14px;margin-top: 9px;}
+/*报表数据为空*/
+.empty-result{padding: 40px 0;text-align: center;border: 1px dashed #e8e9ee;margin: 0;width: 100%;color: #666;}
+/*广告投放管理 表格右上角的角标*/
+.bg99{background-color:#999;}
+.bg46{background-color:#4682B4;}
+.bgred{background-color: #ff0000;}
+.labels-p{position: relative;}
+.labels{position: absolute;top: 0;right: 0;margin-top: -1px;padding:0 2px;font-size: 12px;color: #FFFFFF;background-color: #999;line-height: 12px;}
+.labels-gary{position: absolute;top: 0;right: 0;margin-top: -1px;padding:0 2px;font-size: 12px;color: #FFFFFF;background-color: #999;line-height: 12px;}
+.labels-blue{position: absolute;top: 0;right: 0;margin-top: -1px;padding:0 2px;font-size: 12px;color: #FFFFFF;background-color: #4682B4;line-height: 12px;}
+.labels-red{position: absolute;top: 0;right: 0;margin-top: -1px;padding:0 2px;font-size: 12px;color: #FFFFFF;background-color: #ff0000;line-height: 12px;}

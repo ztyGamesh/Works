@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" style="margin: 0;padding: 0;width: 100%">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <title>app_动态信息流_大图+文字模板</title>
+</head>
+<body style="width:100%;margin: 0;padding: 0;">
+<div id="deepleaper_dynamicAD" class="deepleaper_dynamicAD" style="overflow: hidden;">
+    <div id="linkElement" style="overflow: hidden">
+        <p style="margin: 0;
+            padding: 5px 0 3.5px;
+            color: [:TITLECOLOR:];
+            font-size: [:TITLEFONTSIZE:]px;
+            line-height: [:TITLEFONTSIZE:]px;
+            font-family: '[:TITLEFONTFAMILY:]', 'SimHei', 'Microsoft YaHei', 'SimHei', 'SimSun', sans-serif;
+            text-align: left">[:TITLE:]</p>
+        <img src="http://static.adm.deepleaper.com/material/[:FILE:]" style="width:100%;display: block"
+             id="templatePic">
+        <p id="deepleaper-detail" style="margin: 0;
+            padding: 3.5px 0 0;
+            color: [:DESCOLOR:];
+            font-size: [:DESFONTSIZE:]px;
+            line-height: [:DESFONTSIZE:]px;
+            font-family: '[:DESFONTFAMILY:]', 'SimHei', 'Microsoft YaHei', 'SimHei', 'SimSun', sans-serif;
+            text-align: left">[:DES:]</p>
+    </div>
+    <div style="height: 42px;margin-top: 3.5px;width: 100%;background-color: #f0f4f3;display: none"
+         id="dl_extend_creative">
+        <span style="height: 42px;line-height:42px;font-size: 13px;margin-left: 7px;color: #5d5d5d;">[:EXTEND_TITLE:]</span>
+        <a id="deepleaper_extend_creative_phone" href="javascript:void(0)"><span style="font-size: 13px;padding: 3px 10px;border: 1px solid #1f96d8;color: #1f96d8;-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;border-radius: 3px;float: right;position: relative;top: 8px;right: 7px;" id="dl_extend_btn">[:BUTTON_TEXT:]</span></a>
+    </div>
+    <div class="deepleaper-ad-bottom" style="margin: 3.5px 0 5px;height: 14px">
+        <span class="deepleaper-advertising" style="font-size: 12px;
+            line-height: 12px;
+            padding: 1px 2px;
+            position: relative;
+            top: -1px;
+            vertical-align: top;
+            border: 1px solid #949494;
+            color: #949494;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 0;
+            float: left;">广告</span>
+        <span style="font-size: 12px;
+            line-height: 12px;
+            color: #949494;
+            padding: 2px 2px 2px 5px;
+            position: relative;
+            top: -1px;
+            vertical-align: top;
+            border: none;
+            display: inline-block;    max-width: 200px;
+    overflow: hidden;">[:AD_SOURCE:]</span>
+        <img src="http://static.adm.deepleaper.com/material/closeAd.png" id="deepleaper-closeAd"
+             class="deepleaper-closeAd"
+             style="display: inline-block;
+                    float: right;
+                    border:none;
+                    border-radius: 0;
+                    margin: 0 0 0 2px;
+                    width: 14px;
+                    height: 14px;">
+    </div>
+    <script>
+        var dpscale = "[:SCALE:]";
+        var dpscaleArry = dpscale.split("_");
+        if (window.innerWidth !== 0) {
+            bodyW = window.innerWidth;
+        } else {
+            bodyW = window.screen.width;
+        }
+        var daH = bodyW * dpscaleArry[1] / dpscaleArry[0];
+        var pic = document.getElementById("templatePic");
+        pic.style.height = daH + 'px';
+
+        var des = "[:DES:]";
+        if (des == '') {
+            var desElement = document.getElementById('deepleaper-detail');
+            desElement.style.paddingTop = 0;
+            var dl_extend_creative_element = document.getElementById('dl_extend_creative');
+            dl_extend_creative_element.style.marginTop = 0;
+        }
+        //判断平台类型
+        var dl_template_system = 'web';
+        var isAndroid = '';
+        var isIos = '';
+
+        try {
+            isAndroid = droidNative.nativeFeedType();
+        } catch (e) {
+            isAndroid = '';
+        }
+
+        try {
+            nativeGetSystem('get');
+            isIos = 'ios';
+        } catch (e) {
+            isIos = '';
+        }
+
+        if (isAndroid == 'Android') {
+            dl_template_system = 'android';
+        } else if (isIos == 'ios') {
+            dl_template_system = 'ios';
+        } else {
+            dl_template_system = 'web';
+        }
+        //进入落地页
+        var linkElement = document.getElementById("linkElement");
+        linkElement.addEventListener('click', function () {
+            switch (dl_template_system) {
+                case 'android':
+                    try {
+                        droidNative.nativeAndroidClick();
+                    } catch (e) {
+                    }
+                    break;
+                case 'ios':
+                    window.location.href = 'dp-' + '[:LINK:]';
+                    break;
+                default:
+                    var clk = '[:CLK:]';
+                    var request = new XMLHttpRequest();
+                    request.open('get', clk, true);
+                    request.withCredentials = "true";
+                    request.send();
+                    var landing = '[:LANDING:]';
+                    var img = new Image();
+                    img.src = landing;
+                    window.location.href = '[:LINK:]';
+            }
+        });
+        //关闭广告
+        var close = document.getElementById("deepleaper-closeAd");
+        close.addEventListener('click', function () {
+            switch (dl_template_system) {
+                case 'android':
+                    try {
+                        droidNative.nativeFeedClose('close');
+                    } catch (e) {
+                    }
+                    break;
+                case 'ios':
+                    try {
+                        nativeFeedClose('close');
+                    } catch (e) {
+                    }
+                    break;
+                default:
+                    var deepleaper_dynamicAD = document.getElementById("deepleaper_dynamicAD");
+                    var deepleaper_dynamicAD_parentNode = deepleaper_dynamicAD.parentNode;
+                    deepleaper_dynamicAD_parentNode.parentNode.removeChild(deepleaper_dynamicAD_parentNode);
+            }
+        });
+        //附加创意逻辑
+        var extend_type = "[:EXTEND_TYPE:]";
+        var phone_number = "[:PHONE_NUMBER:]";
+        var extend_url = "[:EXTEND_URL:]";
+        if (extend_type == 'phone') {
+            document.getElementById('dl_extend_creative').style.display = 'block';
+        } else if (extend_type == 'form') {
+            document.getElementById('dl_extend_creative').style.display = 'block';
+        } else if (extend_type == 'download') {
+            document.getElementById('dl_extend_creative').style.display = 'block';
+        } else {
+            document.getElementById('dl_extend_creative').style.display = 'none';
+        }
+        //针对平台的模板处理
+        switch (dl_template_system) {
+            case 'android':
+                break;
+            case 'ios':
+                break;
+            default:
+                if (extend_type == 'phone') {//web下的拨打电话使用html处理，js跳转在手机QQ上失效
+                    document.getElementById('deepleaper_extend_creative_phone').setAttribute('href', 'tel:' + phone_number);
+                }
+        }
+        //附加创意按钮点击逻辑
+        var dl_extend_btn = document.getElementById("dl_extend_btn");
+        dl_extend_btn.addEventListener('click', function () {
+            switch (dl_template_system) {
+                case 'android':
+                    if (extend_type == 'phone') {
+                        try {
+                            droidNative.nativeCall(phone_number);
+                        } catch (e) {
+                        }
+                    } else if (extend_type == 'form') {
+                        try {
+                            droidNative.nativeForm(extend_url);
+                        } catch (e) {
+                        }
+                    } else if (extend_type == 'download') {
+                        try {
+                            droidNative.nativeDownload(extend_url);
+                        } catch (e) {
+                        }
+                    }
+
+                    break;
+                case 'ios':
+                    if (extend_type == 'phone') {
+                        try {
+                            nativeCall(phone_number);
+                        } catch (e) {
+                        }
+                    } else if (extend_type == 'form') {
+                        try {
+                            nativeForm(extend_url);
+                        } catch (e) {
+                        }
+                    } else if (extend_type == 'download') {
+                        try {
+                            nativeDownload(extend_url);
+                        } catch (e) {
+                        }
+                    }
+                    break;
+                default:
+                    var EXTEND_URL_CLK = '[:EXTEND_URL_CLK:]';
+                    var request = new XMLHttpRequest();
+                    request.open('get', EXTEND_URL_CLK, true);
+                    request.withCredentials = "true";
+                    request.send();
+                    if (extend_type == 'phone') {
+                    } else if (extend_type == 'form') {
+                        window.location = extend_url;
+                    } else if (extend_type == 'download') {
+                        window.location = extend_url;
+                    }
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

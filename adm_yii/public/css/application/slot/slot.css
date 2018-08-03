@@ -1,0 +1,107 @@
+.html_container{
+    width: 271px;
+    height: 80px;
+}
+.html_title{
+    width: 270px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #f3f3f3;
+    padding-left: 15px;
+    border-bottom: 1px solid #e3e3e3;
+}
+.html_detail{
+    width: 270px;
+    height: 40px;
+    margin-top: 10px;
+    /*padding-left: 15px;*/
+}
+.html_input_box{
+    display: inline-block;
+    height: 30px;
+    width: 200px;
+    border: 1px solid #d3d3d3;
+}
+.html_input{
+    width: 150px;
+    height: 28px;
+    line-height: 30px;
+    padding-left: 15px;
+}
+
+#deleted_img{
+    float: right;
+    height: 13px;
+    width: 13px;
+    line-height: 20px;
+    margin-top: 8px;
+    margin-right: 4px;
+}
+.html_button{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+}
+.price_edit, .media_share{
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-decoration-color: #0088cc;
+}
+.popover-content{
+
+}
+#cancel_error, #media_cancel_error{
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    font-weight: bold;
+}
+.list_close{
+    width: 200px;
+    height: 14px;
+}
+.list_close img{
+    float: right;
+}
+.list_container{
+    width: 190px;
+    height: 80px;
+    margin-left: 10px;
+}
+#aduser{
+    border: 1px solid #aaaaaa;
+    visibility: hidden;
+    /*margin-left: 50px;*/
+    margin-top: 5px;
+    width: 190px;
+
+}
+#save_btn{
+    width: 34px;
+    height: 30px;
+    border: 1px solid #b3b3b3;
+    background: #c3c3c3;
+    line-height: 30px;
+    border-radius: 3px;
+    margin-left: 50px;
+    margin-top: 8px;
+    margin-right: 10px;
+    color: #ffffff;
+}
+#cancel_btn{
+    width: 34px;
+    height: 30px;
+    border: 1px solid #c3c3c3;
+    background: #ffffff;
+    line-height: 30px;
+    border-radius: 3px;
+}
+
+.white_list{
+    cursor: pointer;
+    text-decoration: dashed;
+    text-decoration-line: underline;
+    text-decoration-color: #0088cc;
+    color: #f66946;
+}

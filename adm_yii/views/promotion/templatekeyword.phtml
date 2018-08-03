@@ -1,0 +1,409 @@
+<!--关键词模态框-->
+
+<link rel="stylesheet" href="/css/DL-keyword.css?v=20170503">
+<div class="modal fade" id="keywordModal" tabindex="-1" role="dialog" aria-labelledby="setkeywordsModalLabel"
+     aria-hidden="true" aria-describedby="设置关键词模态框">
+    <div class="modal-dialog" style="margin-top: 100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" id="close">
+                    <span aria-hidden="true" style="font-size: 21px;font-weight: 700;">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="setkeywordsModalLabel">添加关键词
+                    <span class="titledes">请您认真复核将使用的关键词，确保其不违法、侵权，且与您的网页信息相关！</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#keyword" role="tab" data-toggle="tab">添加关键词</a>
+                        </li>
+                        <li role="presentation"><a href="#denykeyword" role="tab" data-toggle="tab">添加否定关键词</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="keyword">
+                        <div class="dl-keyword" style="/*height: 470px;*/">
+                            <div class="matchWrapper">
+                                <div style="display:none;">
+                                    <span class="matchTitle">匹配方式</span>
+                                    <div class="matchTitleExplain">
+                                        <span class="glyphicon glyphicon glyphicon-question-sign matchHint"
+                                              data-toggle="popover" data-trigger="focus" title="匹配方式说明"></span>
+                                    </div>
+                                    ：
+                                    <input type="radio" name="keywordmatch" value="1" checked>&nbsp;<span
+                                        class="radioLabel">精确匹配</span>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <input type="radio" name="keywordmatch" value="2">&nbsp;<span
+                                        class="radioLabel">包含匹配</span>
+                                    <div style="height: 6px;"></div>
+                                </div>
+                                <span class="radioLabel">
+                                    文件导入关键词：
+                                </span>
+                                <label class="btn btn-default radioLabel" for="keywordModal-files1">
+                                    导入本地文件
+                                    <input type="file" accept="text/csv" id="keywordModal-files1" multiple="multiple" style="display: none;"/>
+                                </label>
+                                <span class="data-files"></span>
+                                <div style="height: 6px;"></div>
+                                <span class="radioLabel" style="font-size: 10px; color: #a3a3a3">
+                                    文件及格式要求：1、支持CSV文件导入；2、每个关键词一行；3、计划关键词个数上限为1000个。
+                                </span>
+                                <br/>
+                                <span class="radioLabel" >
+                                    <a href="javascript:;" style="color: #326eea;font-size: 10px;" class="keywordExamples">点击查看文件示例</a>
+                                </span>
+                            </div>
+
+                            <div class="keyword-selector-tab">
+                                <ul class="ctrl-group-keyword-tab-navigator">
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel">
+                                        <span>关键词<span id="keywordnum" dl_keynum=""></span></span>
+                                    </li>
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel deleteAll"
+                                        id="keyworddeleteAll">
+                                        <span>全部删除</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ctrl-group-keyword-text-wrapper">
+                                <div>
+                                    <div class="ctrl-group-keyword-text-num-line" id="ctrl-group-keyword-text-num-line">
+                                        1
+                                    </div>
+                                    <div class="ctrl-group-keyword-text-container">
+                                        <div class="group-keyword">
+                                    <textarea class="ctrl-group-keyword" id="ctrl-group-keyword" spellcheck="false"
+                                              data-keyword="" data-keyword-prepare=""
+                                              onkeyup="this.value=this.value.replace(/,/g,'')"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" id="keywordExport"
+                                 style="height: 30px; line-height: 30px; cursor: pointer; color: #326eea;font-size: 10px; float: right;">
+                                导出关键词到本地
+                            </div>
+                            <div style="padding-top: 6px;color: #a3a3a3;">
+                                <p>关键词定向方式提示：</p>
+                                <p style="text-indent: 2em;">
+                                    用户购买的关键词拆分词后同时出现在文章拆分的关键词中，才能进行推广；
+                                </p>
+                                <p style="text-indent: 2em;">
+                                    举例：比如用户购买了“奶油蛋糕“一个关键词，分词后为“奶油”和“蛋糕”，文章中拆分后的关键词必须同时包含“奶油”和“蛋糕”，广告才能推广。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="denykeyword">
+                        <div class="dl-keyword" style="/*height: 470px;*/">
+                            <div class="matchWrapper">
+                                <div style="display:none;">
+                                    <span class="matchTitle">匹配方式</span>
+                                    <div class="matchTitleExplain">
+                                        <span class="glyphicon glyphicon glyphicon-question-sign matchHint"
+                                              data-toggle="popover" data-trigger="focus" title="匹配方式说明"></span>
+                                    </div>
+                                    ：
+                                    <input type="radio" name="denykeywordmatch" id="match1" value="1" checked disabled>&nbsp;<span
+                                        class="radioLabel">精确匹配</span>
+                                    <div style="height: 6px;"></div>
+                                </div>
+                                <span class="radioLabel">
+                                    文件导入否定关键词：
+                                </span>
+                                <label class="btn btn-default radioLabel" for="keywordModal-files2">
+                                    导入本地文件
+                                    <input type="file" accept="text/csv" id="keywordModal-files2" multiple="multiple" style="display: none;" />
+                                </label>
+                                <span class="data-files"></span>
+                                <div style="height: 6px;"></div>
+                                <span class="radioLabel" style="font-size: 10px; color: #a3a3a3">
+                                    文件及格式要求：1、支持CSV文件导入；2、每个关键词一行；3、计划关键词个数上限为1000个。
+                                </span>
+                                <br/>
+                                <span class="radioLabel" >
+                                    <a href="javascript:;" style="color: #326eea;font-size: 10px;" class="keywordExamples">点击查看文件示例</a>
+                                </span>
+                            </div>
+
+                            <div class="keyword-selector-tab">
+                                <ul class="ctrl-group-keyword-tab-navigator">
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel">
+                                        <span>否定关键词<span id="denykeywordnum" dl_denykeynum=""></span></span>
+                                    </li>
+                                    <li class="ctrl-group-keyword-tab-tab-title-for-panel deleteAll"
+                                        id="denykeyworddeleteAll">
+                                        <span>全部删除</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ctrl-group-keyword-text-wrapper">
+                                <div>
+                                    <div class="ctrl-group-keyword-text-num-line"
+                                         id="denyctrl-group-keyword-text-num-line">
+                                        1
+                                    </div>
+                                    <div class="ctrl-group-keyword-text-container">
+                                        <div class="group-keyword">
+                                    <textarea class="ctrl-group-keyword" id="denyctrl-group-keyword" spellcheck="false"
+                                              data-keyword="" data-keyword-prepare=""
+                                              onkeyup="this.value=this.value.replace(/,/g,'')"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" id="denykeywordExport"
+                                 style="height: 30px; line-height: 30px; cursor: pointer; color: #326eea;font-size: 10px; float: right;">
+                                导出关键词到本地
+                            </div>
+                            <div style="padding-top: 6px;color: #a3a3a3;">
+                                <p>否定关键词定向方式提示：</p>
+                                <p style="text-indent: 2em;">
+                                    用户购买的关键词拆分词后同时出现在文章拆分的关键词中，广告不进行推广；
+                                </p>
+                                <p style="text-indent: 2em;">
+                                    举例：比如用户购买了“奶油蛋糕“一个关键词，分词后为“奶油”和“蛋糕”，文章中关键词同时包含“奶油”和“蛋糕”，广告不能推广。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="keywordCancel">取消</button>
+                <button type="button" class="btn btn-primary" id="keywordSubmit">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+/** 读取文件时关键词去重去空
+ * @param
+ * @return 新增的关键词字符串
+ **/
+function getFileKeywords(newStr, oldStr){
+    var newArr = newStr.split('\n');
+    var oldArr = oldStr.split('\n');
+    var arr = [];
+    for(var i = 0, l = newArr.length; i < l; i++){
+        var d = newArr[i].trim();
+        if('' !== d && -1 === oldArr.indexOf(d)){
+            arr.push(d);
+        }
+    }
+    return arr.join('\n');
+};
+
+/** 读取输入框中去重去空后的关键词
+ * @param str: String
+ */
+function getKeywords(str){
+    var oldArr = str.split('\n');
+    var newArr = [];
+    for(var i = 0, l = oldArr.length; i < l; i++){
+        var d = oldArr[i].trim();
+        if('' !== d && -1 === newArr.indexOf(d)){
+            newArr.push(d);
+        }
+    }
+    return newArr;
+}
+
+/* 计算关键词行数 **/
+function getKeywordRows(newValue, oldValue){
+    var value = '';
+    if(!oldValue || '\n' === oldValue.slice(-1)){
+        value = oldValue + newValue;
+    }else if(newValue != ''){
+        value = oldValue + '\n' + newValue;
+    }else {
+        value = oldValue;
+    }
+    var length = value.split('\n').length;
+    return {
+        value: value,
+        size: length,
+    }
+}
+
+/* 更新关键词序号 **/
+function initKeywordIndex($t, length){
+    var v = '';
+    for(var i = 0; i < length; i++){
+        v += (i + 1) + '<br>';
+    }
+    $t.html(v);
+}
+
+//用于标识导入文件个数
+var fileNum = 0;//关键词文件
+var denyfileNum = 0;//否定关键词文件
+function fileDelete(thisSpan) {
+    $(thisSpan).parent().remove();
+    fileNum--;
+}
+function denyfileDelete(thisSpan) {
+    $(thisSpan).parent().remove();
+    denyfileNum--;
+}
+$(document).ready(function() {
+
+    /* 导入csv **/
+    $('#keywordModal').on('change', 'input[type=file]', function(){
+        var files = [].slice.call(this.files);
+        var length = files.length;
+        if(!length){return};
+        var parent = $(this).parents('[role="tabpanel"]:first');
+        files = files.filter(function(t){
+            var type = t.name.replace(/(.*\.)/g, '');
+            if('csv' === type){
+                if(parent.find('textarea').attr('id') == 'ctrl-group-keyword'){
+                    fileNum++;//记录导入文件的数量，仅是显示的文件名个数
+                    if(fileNum > 10){
+                        fileNum--;
+                        layer.msg('关键词导入文件不能大于10个');
+                        return false;
+                    }
+                }else {
+                    denyfileNum++;//记录导入文件的数量，仅是显示的文件名个数
+                    if(denyfileNum > 10){
+                        denyfileNum--;
+                        layer.msg('否定关键词导入文件不能大于10个');
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            return false;
+        });
+        length = files.length;
+        if(!length){
+            layer.msg('导入的文件格式错误！');
+            this.outerHTML = this.outerHTML;
+            return;
+        }
+
+        var record = parent.find('.data-files');
+        var textarea = parent.find('textarea');
+        var line = parent.find('.ctrl-group-keyword-text-num-line');
+        var size = 1000;
+        var fr = new FileReader();
+        var code = 'gbk';
+        var i = 0;
+        fr.onload = function(){
+            var value = textarea.val();//当前输入框内的关键词
+            var newValue = getFileKeywords(fr.result.replace(/,/g, "\n"), value);//新增的关键词（已相对旧输入去重）
+            var info = getKeywordRows(newValue, value);//统计添加后的总关键词和行数
+            if(info.size > size){
+                layer.msg('关键词超过1000个，文件导入失败');
+                return false;
+            }
+            textarea.val(info.value);//更新输入框内容
+            initKeywordIndex(line, info.size);//更新左侧行数
+//            var data = getKeywords(info.value);//输入框中的数据去重
+
+            //要判断是正向关键词 还是否定关键词
+            if(textarea.attr('id') == 'ctrl-group-keyword'){
+                record.append($('<span> <a href="javascript:;" style="margin-left: 6px;color: #3d5d9f;">'
+                    + files[i].name
+                    + '</a> <img src="/img/filedel.jpg" style=" width: 14px; height: 14px; cursor: pointer;"  onclick="fileDelete(this)">  </img></span>'));
+
+                $("#keywordnum").html('（' + info.size + '）'); //更新关键词后方括号内数字
+                //更新data-keyword-prepare属性
+                $("#ctrl-group-keyword").attr('data-keyword-prepare', info.value.split('\n').join(','));
+            }else {
+                record.append($('<span> <a href="javascript:;" style="margin-left: 6px;color: #3d5d9f;">'
+                    + files[i].name
+                    + '</a> <img src="/img/filedel.jpg" style=" width: 14px; height: 14px; cursor: pointer;"  onclick="denyfileDelete(this)">  </img></span>'));
+
+                $("#denykeywordnum").html('（' + info.size + '）'); //更新关键词后方括号内数字
+                $("#denyctrl-group-keyword").attr('data-keyword-prepare', info.value.split('\n').join(','));
+            }
+
+            if(++i < length){
+                fr.readAsText(files[i], code);
+            }
+            textarea.focus();
+        }
+
+        fr.readAsText(files[0], code);
+        this.outerHTML = this.outerHTML;
+
+    });
+
+//点击查看文件示例
+    $(".keywordExamples").on('click', function () {
+        var url = '/adplan/downloadWordExample';
+        window.open(encodeURI(url));
+    });
+});
+
+//关闭关键词弹框时，清空传入文件的名称列表
+$("#keywordCancel,#close").on('click', function () {
+    $(".data-files").html('');
+    fileNum = 0;
+    denyfileNum = 0;
+
+});
+
+//手动输入关键词，点击保存时去重
+function distinctkey(cc){
+    var arr = cc,
+        ii,
+        jj,
+        len = arr.length;
+    for(ii = 0; ii < len; ii++){
+        for(jj = ii + 1; jj < len; jj++){
+            if(arr[ii] == arr[jj]){
+                arr.splice(jj,1);
+                len--;
+                jj--;
+            }
+        }
+    }
+    return arr;
+};
+
+
+//保存关键词时，清空导入文件名称列表并去重
+//$("#keywordSubmit").on('click', keywordSubmit);
+function keywordSubmit() {
+    if($("#ctrl-group-keyword").attr('data-keyword-prepare')){
+        var keywordGroup = $("#ctrl-group-keyword").attr('data-keyword-prepare').split(',');
+        var keywordGroupResult = distinctkey(keywordGroup);
+        $("#ctrl-group-keyword").attr('data-keyword-prepare',keywordGroupResult.toString());
+        $("#keywordnum").html('（' + keywordGroupResult.length + '）');
+    }
+
+    if($("#denyctrl-group-keyword").attr('data-keyword-prepare')){
+        var denykeywordGroup = $("#denyctrl-group-keyword").attr('data-keyword-prepare').split(',');
+        var denykeywordGroupResult = distinctkey(denykeywordGroup);
+        $("#denyctrl-group-keyword").attr('data-keyword-prepare',denykeywordGroupResult.toString());
+        $("#denykeywordnum").html('（' + denykeywordGroupResult.length + '）');
+    }
+
+    var num1 = 0;
+    var num2 = 0;
+    if ($("#keywordnum").html() !== '') {
+        num1 = $("#keywordnum").html().replace(/\（/g, '').replace(/\）/g, '');
+    }
+    if ($("#denykeywordnum").html() !== '') {
+        num2 = $("#denykeywordnum").html().replace(/\（/g, '').replace(/\）/g, '');
+    }
+    $("#ctrl-group-keyword").attr('data-keyword', $("#ctrl-group-keyword").attr('data-keyword-prepare'));
+    $("#denyctrl-group-keyword").attr('data-keyword', $("#denyctrl-group-keyword").attr('data-keyword-prepare'));
+    $("#keywordnum").attr('dl_keynum', num1);
+    $("#denykeywordnum").attr('dl_denykeynum', num2);
+    $("#keywordstatus").val("已有" + num1 + "个关键词，" + num2 + "个否定关键词");
+    $("#keywordModal").modal('hide');
+    $(".data-files").html('');
+    fileNum = 0;
+    denyfileNum = 0;
+}
+
+</script>

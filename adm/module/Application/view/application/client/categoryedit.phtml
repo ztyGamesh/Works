@@ -1,0 +1,55 @@
+
+<?php
+
+if ($this->item) {
+    $name = $this->item['name'];
+    $uid = $this->item['uid'];
+    $pid = $this->item['pid'];
+    $info = $this->item['info'];
+    $bes_id = $this->item['bes_id'];
+    $tanx_id = $this->item['tanx_id'];
+    $adx_id = $this->item['adx_id'];
+    ?>
+
+<form id="edit" method="post" action="/client/categorysave"
+	class="form-horizontal list-form"
+	novalidate="novalidate">
+
+	<div class="form-group ">
+
+		<label class="col-sm-3 control-label">分类名称</label>
+		<div class="col-sm-6 ">
+			<input id="name" type="text" name="name" class="form-control"
+				value="<?php echo $name;?>" check-type="required"
+				required-message="不能为空。"> <input id="uid" type="hidden" name="uid"
+				class="form-control" value="<?php echo $uid;?>">
+		</div>
+	</div>
+
+	<div class="form-group ">
+		<label class="col-sm-3 control-label">父级分类</label>
+		<div class="col-sm-6 ">
+			<select id="pid" class="form-control selectpicker"
+				data-live-search="true" name="pid">
+				<!--<option value="">主分类</option>-->
+                <?php
+                foreach($this->category as $key => $val){
+                    $selected = '';
+                    if($pid == $val['uid']) $selected   =   'selected';
+                    echo  '<option '.$selected.' value="'.$val['uid'].'">'.$val['name'].'</option>';
+                }
+                ?>
+            </select>
+		</div>
+	</div>
+
+	<div class="form-group ">
+		<label class="col-sm-3 control-label">分类说明</label>
+		<div class="col-sm-6 ">
+			<input type="text" class="form-control" name="info" id="info"
+				value="<?php echo $info;?>">
+		</div>
+	</div>
+
+</form>
+<?php }?>

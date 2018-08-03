@@ -1,0 +1,94 @@
+@import "~antd/lib/style/themes/default.less";
+
+.cell {
+  min-height: 21px;
+  position: relative;
+  .cell-icon-edit {
+    cursor: pointer;
+    margin-left: 12px;
+  }
+  &:not(:hover) {
+    .cell-icon-edit {
+      // visibility: hidden !important;
+      display: none !important;
+    }
+  }
+  .text {
+    word-break: break-all;
+  }
+  .edit-line {
+    word-break: break-all;
+    border-bottom: dashed 1px #1890ff;
+  }
+  .cell-tag {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: -20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    >div {
+      padding: 5px;
+      color: green;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 800;
+      border-radius: 14px;
+      background-color: #fff;
+      user-select: none;
+    }
+  }
+}
+
+.title {
+  :global(.ant-tooltip-inner) {
+    word-break: break-all;
+  }
+}
+
+.cell-edit {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  .cell-edit-operate {
+    height: 32px;
+    padding-left: 6px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    >i {
+      cursor: pointer;
+    }
+  }
+}
+
+.switch {
+  &:hover {
+    .switch-label {
+      display: none !important;
+    }
+  }
+  &:not(:hover) {
+    .switch-view {
+      display: none !important;
+    }
+  }
+}
+.input_button{
+  border: 0;
+  color: #1890ff;
+  cursor: pointer;
+  outline:none;
+  background-color:transparent;
+  font-size: 14px;
+}
+.input_button_false{
+  border: 0;
+  color: gray;
+  cursor: not-allowed;
+  outline:none;
+  background-color:transparent;
+  font-size: 14px;
+}

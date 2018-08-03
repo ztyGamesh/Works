@@ -1,0 +1,187 @@
+<form id="materielAdd" method="post" action="/materiel/materialadd" class="form-horizontal list-form normal_template"
+      novalidate="novalidate" enctype="multipart/form-data" style="margin-top: 30px;">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">素材名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input type="text" name="name" class="name form-control" maxlength="50" value="<?php echo $name; ?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <input type="text" name="template" class="hidden" id="template">
+    <div class="form-group hidden">
+        <label class="col-sm-3 control-label">素材的位类型:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="type" name="type" class="form-control selectpicker " data-live-search="true">
+        </div>
+    </div>
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件720*1280</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_720_1280]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件1242*2208</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_1242_2208]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件480*800</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_480_800]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件640*960</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_640_960]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件768*1024</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_768_1024]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_splash form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件1536*2048</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[s_1536_2048]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="type_banner form-group " style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件</label>
+        <div class="col-sm-6 ">
+
+            <input type="file" id="exampleInputFile" accept="image/jpeg,image/png,image/gif" name="file[filename]">
+            <!--<img src="" />-->小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+
+    <div class="type_banner form-group type_video" style="display:none">
+        <label class="col-sm-3 control-label">选择上传视频文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" id="exampleInputFile" accept="video/mp4" name="file[b_mp4]">
+            <!--<img src="" />-->小于5MB，限mp4格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+</form>
+
+<form id="type_infor_flow" method="post" action="/materiel/materialadd"  id="type_infor_flow" class="form-horizontal type_infor_flow"
+      novalidate="novalidate" enctype="multipart/form-data" style="margin-top: 30px;display: none">
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">素材名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control name" value="">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <input type="text" name="template" class="hidden" id="template">
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">标题:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="title" type="text" name="title" class="form-control">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">描述:</label>
+        <div class="col-sm-6 ">
+            <textarea id="description" name="description" class="form-control" rows="5"></textarea>
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选择上传文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" accept="image/jpeg,image/png,image/gif" name="file[infor_pic]">
+            尺寸:<span class="scale">
+            </span> 小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group pics" style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" accept="image/jpeg,image/png,image/gif" name="file[infor_pic2]">
+            尺寸:<span class="scale">
+            </span> 小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group pics" style="display:none">
+        <label class="col-sm-3 control-label">选择上传文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" accept="image/jpeg,image/png,image/gif" name="file[infor_pic3]">
+            尺寸:<span class="scale">
+            </span> 小于150kb，限jpg/png/gif格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    <div class="form-group type_video" style="display:none">
+        <label class="col-sm-3 control-label">选择上传视频文件</label>
+        <div class="col-sm-6 ">
+            <input type="file" accept="video/mp4" name="file[infor_video]">
+            格式:<span class="videoFormat">
+            </span> 小于5MB，限mp4格式
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/materiel/materiel', 2);
+
+    $('.name').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($(this), '素材名称不能为空');
+        } else {
+            vaSuccess($(this));
+        }
+    });
+    $('#title').blur(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($(this), '标题不能为空');
+        } else {
+            vaSuccess($(this));
+        }
+    });
+    $('input[type=file]').change(function () {
+        if (!vaIsNotNull($(this).val())) {
+            vaError($(this), '请上传文件');
+        } else {
+            vaSuccess($(this));
+        }
+    })
+</script>

@@ -1,0 +1,292 @@
+<!--广告主账户添加界面-->
+<link rel="stylesheet" href="/css/datepicker.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/user/clientuserlistview">广告主账户</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加广告主账户</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div class="row Dl-part-title">
+    <div class="col-md-12">
+        <span class="identifier">账户信息</span>
+    </div>
+</div>
+
+<form class="form-horizontal" role="form" dl-set="public_price">
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">账户名</label>
+        <div class="col-md-7">
+            <input id="name" type="text" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">公司名称</label>
+        <div class="col-md-7">
+            <input id="corporation_name" type="text" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">邮箱</label>
+        <div class="col-md-7">
+            <input id="mail" type="text" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">手机</label>
+        <div class="col-md-7">
+            <input id="tel" type="text" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">密码</label>
+        <div class="col-md-7">
+            <input id="password" type="password" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">重复密码</label>
+        <div class="col-md-7">
+            <input id="rep_password" type="password" class="form-control" value="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+
+    <div class="row Dl-part-title">
+        <div class="col-md-12">
+            <span class="identifier">配置媒体名单</span>
+            <small class="Dl-prompt">不配置媒体则默认该账户为全媒体的广告投放；配置媒体则默认该账户仅在配置的媒体进行广告投放</small>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label">选择媒体</label>
+        <div class="col-md-7">
+            <select class="selectpicker dropup" data-width="100%" data-size="20" id="resource" multiple
+                    data-actions-box="true" title="媒体可多选">
+            </select>
+        </div>
+
+        <span class="help-block col-md-7 col-md-offset-3 " id="notice_1" style="color: blue;">已选全部媒体</span>
+        <span class="help-block col-md-7 col-md-offset-3 " id="notice_2"
+              style="color: lightgrey;">(有新增媒体自动添加至账户内)</span>
+        <div class="media_list"
+             style="width: 300px; height: 200px; position: absolute;z-index: 999; border: 1px solid; margin-top: 35px;margin-left: 240px; background-color: #ffffff; display: none;">
+            <div style="border-bottom: 1px solid; height: 30px; line-height: 30px; font-size: 14px; padding-left: 6px;">
+                媒体列表
+            </div>
+            <div></div>
+        </div>
+
+    </div>
+
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/js/bootstrap-editable.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var data_num = 0;
+    $(document).ready(function () {
+        checkActionAuth('/user/clientuserlistview', 2);
+        medialistAIP('bundle_id', medialistAIPonSuccessFun);
+        function medialistAIPonSuccessFun(result) {
+            var req = JSON.parse(result);
+            if (req.status == 1) {
+                var html = '';
+                for (var i in req.data) {
+                    html += "<input value='' type='checkbox'> " + " <option value='" + i + "'>" + req.data[i] + "</option>"
+                    data_num++;
+                }
+                $('#resource').append(html);
+            } else {
+                console.log('medialistAIP返回失败');
+                layer.msg(req.msg);
+            }
+        }
+
+        var checkList = [
+            {
+                id: '#name',
+                validationFunc: [vaWordNumberLimit1_25],
+                msg: ['名称长度应为1-50个字符:汉字占2个字符']
+            }, {
+                id: '#corporation_name',
+                validationFunc: [vaWordNumberLimit1_25],
+                msg: ['名称长度应为1-50个字符:汉字占2个字符']
+            }, {
+                id: '#mail',
+                validationFunc: [vaIsNotNull, validateEmailAddress, vaMailDuplicated],
+                msg: ['请输入邮箱地址', '请填写正确的邮箱地址', '邮箱地址已使用']
+            }, {
+                id: '#tel',
+                validationFunc: [validatePhoneNum],
+                msg: ['请填写正确的电话号码']
+            }, {
+                id: '#password',
+                validationFunc: [validatePassword],
+                msg: ['请填写正确的密码，格式: 长度至少为6个字符，需要包含数字和大小写字母']
+            }, {
+                id: '#rep_password',
+                validationFunc: [validateRepPassword],
+                msg: ['两次密码填写不一致']
+            }
+        ];
+
+        function validateRepPassword() {//再次输入密码验证
+            return $('#password').val() === $('#rep_password').val();
+        }
+
+        function vaMailDuplicated(msg) {//邮箱服务器验证
+            var valid = false;
+            $.ajax({
+                url: '/user/checkEmailDuplicated',
+                data: {
+                    mail: msg
+                },
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    valid = data.data['res'];
+                }
+            });
+            return !valid;
+        }
+
+        for (var i = 0; i < checkList.length; i++) {
+            var obj = checkList[i];
+            $(obj.id).bind('blur', {obj: obj}, function (event) {
+                return validatefun(event.data.obj);
+            });
+        }
+        function validatefun(obj) {
+            for (var i = 0; i < obj.validationFunc.length; i++) {
+                if (!obj.validationFunc[i]($(obj.id).val())) {
+                    vaError($(obj.id), obj.msg[i]);
+                    return false;
+                } else {
+                    vaSuccess($(obj.id));
+                }
+            }
+            return true;
+        }
+
+        function presubmit() {//提交验证
+            for (var i = 0; i < checkList.length; i++) {
+                var obj = checkList[i];
+                if (!validatefun(obj)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        $('#submit').click(function () {
+            if (!presubmit()) {
+                return false;
+            }
+            var resource = [];
+            var selected_length;
+            if ($("#resource").val() == null) {
+                selected_length = 0;
+            } else {
+                selected_length = $("#resource").val().length;
+            }
+            if (selected_length == data_num) {
+                resource = [];
+            } else {
+                var resourceSelected = $("#resource").val();
+                if (resourceSelected !== null) {
+                    for (var i = 0; i < resourceSelected.length; i++) {
+                        var resourcecChild = {
+                            "platform_role": "alliance",
+                            "type": "media",
+                            "id": resourceSelected[i]
+                        };
+                        resource.push(resourcecChild);
+                    }
+                }
+            }
+
+            data = {
+                "name": $('#name').val(),
+                "corporation_name": $('#corporation_name').val(),
+                "mail": $('#mail').val(),
+                "tel": $('#tel').val(),
+                "password": $('#password').val(),
+                "resource": resource
+            };
+            $("#Deepleaper_loading").show();
+            addclientuserAPI(data, addclientuserAPIonSuccessFun);
+            function addclientuserAPIonSuccessFun(result) {
+                var req = JSON.parse(result);
+                if (req.status == 1) {
+                    $("#Deepleaper_loading").hide();
+                    layer.msg('广告主账户添加成功');
+                    setTimeout(function () {
+                        window.location.href = '/user/clientuserlistview';
+                    }, 2000);
+                } else {
+                    $("#Deepleaper_loading").hide();
+                    layer.msg(req.msg);
+                }
+
+            }
+        });
+        $('#cancel').bind('click', function () {
+            window.location.href = '/user/clientuserlistview';
+        })
+    });
+
+    $('#resource').bind('change', function () {
+        var selected_length;
+        if ($("#resource").val() == null) {
+            selected_length = 0;
+        } else {
+            selected_length = $("#resource").val().length;
+        }
+        if ($("#resource").val()) {
+            if (selected_length == data_num) {
+                document.getElementById("notice_1").innerHTML = "已选全部媒体";
+                document.getElementById("notice_2").innerHTML = "(有新增媒体自动添加至账户内)";
+            } else {
+                document.getElementById("notice_1").innerHTML = "已定向部分媒体";
+                document.getElementById("notice_2").innerHTML = "(有新增媒体不会自动添加至账户内)";
+            }
+        }
+        else {
+            document.getElementById("notice_1").innerHTML = "已选全部媒体";
+            document.getElementById("notice_2").innerHTML = "(有新增媒体自动添加至账户内)";
+        }
+    });
+
+
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>
+
+
+

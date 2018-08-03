@@ -1,0 +1,466 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: wangqi
+ * Date: 2017/4/6
+ * Time: 下午8:56
+ */
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>Deepleaper广告投放系统</title>
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/new_index.css?v=20170717"/>
+</head>
+<body style="min-width: 1024px;" onkeypress="if (event.keyCode == 13) { ifLogin();  }" scroll="no">
+<div>
+    <div class="dl_title">
+        <div class="dl_logo">
+            <img src="/img/home/logo.png">
+        </div>
+        <div class="dl_home" id="home_icon">
+            <img src="/img/home/home.png">
+        </div>
+        <div class="dl_menu" id="menu_icon">
+            <ul>
+                <li><a href="http://www.deepleaper.com/newmedia.html">媒体</a></li>
+                <li><span>|</span></li>
+                <li><a href="http://www.deepleaper.com/newad.html">广告主</a></li>
+                <li><span>|</span></li>
+                <li><a href="http://www.deepleaper.com/aboutUs.html">关于我们</a></li>
+                <li><span>|</span></li>
+                <li><a href="https://www.lagou.com/gongsi/139866.html" target="_blank">加入我们</a></li>
+                <li><span>|</span></li>
+                <li><a href="http://www.deepleaper.com/">返回首页</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--    <div class="dl_container_box">-->
+    <div class="dl_container">
+        <div class="dl_slogan">
+            <div class="title1">
+                <b>
+                    <span>Deepleaper</span>
+                    <br/>
+                    <span>商业语义原生广告平台</span>
+                </b>
+            </div>
+            <div class="title2">
+                <span>算法重构信息分发</span> <span>驱动有效信息有效传递</span>
+                <br/>
+                <span>深度发掘流量与内容价值，</span>
+                <br/>
+                <span>提升商业信息传递效率</span>
+            </div>
+        </div>
+        <div class="dl_login">
+            <div class="user_input">
+                <div class="user_input_1">
+                    <input type="text" name="username" id="username" placeholder="媒体登录邮箱" value="">
+                </div>
+            </div>
+            <div class="h1_before" id="h1"></div>
+            <div class="user_wrong" id="user_wrong">
+                <span id="user_wrong_msg">您输入的邮箱格式不正确</span>
+            </div>
+            <div class="psw_input">
+                <div class="psw_input_1">
+                    <input type="password" name="password" id="password" placeholder="密码" value="">
+                </div>
+            </div>
+            <div class="h2_before" id="h2"></div>
+            <div class="psw_wrong" id="psw_wrong">
+                <span id="psw_wrong_msg">您输入的邮箱或密码不正确</span>
+            </div>
+            <div class="login_notice" style="visibility: hidden">
+                <p><label style="user-select: none" for="savePwd"><span class="span_1"
+                                                                        style="visibility: hidden">记住密码</span></label><span
+                        class="span_2"><a href="#" style="visibility: hidden">忘记密码？</a></span></p>
+                <input type="checkbox" name="savePwd" id="savePwd" value=""
+                       style="position: absolute;top: 0;left: 0;margin: 0;">
+            </div>
+            <div class="login_btn">
+                <input type="submit" value="登&nbsp;录" name="login" id="login" class="login_input">
+            </div>
+            <div class="register">
+                <span>没有平台账户？&nbsp;</span><a class="tryPro">申请注册</a>
+            </div>
+        </div>
+<!--        <div class="dl_login_menu">-->
+<!--            <div class=" dl_menu_login_btn dl_menu_login_btn_media" id="meida_alliance">-->
+<!--                <p> 媒体 </p>-->
+<!--            </div>-->
+<!--            <div class="dl_menu_login_btn" id="client">-->
+<!--                <p> 广告主 </p>-->
+<!--            </div>-->
+<!--            <div class="new_register">-->
+<!--                <span>没有平台账户？&nbsp;</span><a class="tryPro">申请注册</a>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</div>
+
+
+<div id="application">
+    <div class="freewrapper">
+        <div><img id="applicationClose" src="/img/clo.png"></div>
+        <div class="freewrapper-container">
+            <p class="fyh">免费试用</p>
+            <p class="far">
+                很抱歉，目前还未开放直接注册，请留下您的相关信息，我们会尽快与您取得联系，协助您注册与试用，十分感谢！</p>
+            <p class="dname">公司名称</p>
+            <input id="name" type="text">
+            <div class="freewrapper-style"></div>
+            <P class="freewrapper-Pstyle">公司性质</P>
+            <input id="kind" type="text">
+            <div class="freewrapper-style"></div>
+            <P class="freewrapper-Pstyle">联系邮箱</P>
+            <input id="email" type="text">
+            <div class="freewrapper-style"></div>
+            <p class="freewrapper-Pstyle">联系电话</p>
+            <input id="tel" type="text">
+            <div class="freewrapper-style"></div>
+            <input type="button" value="提&#12288;交" id="applicationSubmit">
+        </div>
+    </div>
+</div>
+<!--loading-->
+
+<div id="loading" class="list-item">
+    <div class="loaded">
+        <div class="loaders">
+            <div class="loader">
+                <div class="loader-inner ball-triangle-path">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script src="/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="/js/layer/layer.js" type="text/javascript"></script>
+<script src="/js/DeepLeaperAPI.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var user_type = 'media';
+    var media_type = 'alliance';//默认是媒体联盟
+
+    //隐藏HOME图标~加了动画效果
+    $("#home_icon").bind('mouseover', function () {
+//        $(".dl_home").hide(800,function () {
+//            $(".dl_menu").animate({right:"28px"},1000,null);
+//            $(".dl_menu").show();
+//        });
+        $(".dl_home").hide();
+        $(".dl_menu").show();
+    });
+    $("#menu_icon").bind('mouseleave', function () {
+//        $(".dl_menu").animate({right:"-400px"},1000,function () {
+//            $(".dl_menu").hide();
+//            $(".dl_home").show(800);
+//        });
+        $(".dl_menu").hide();
+        $(".dl_home").show();
+//        $(".dl_menu").css('right',0);
+    });
+
+    $('.login_btn').bind('mouseover', function () {
+        $('.login_input').addClass('login_btn_new_color');
+    });
+    $('.login_btn').bind('mouseleave', function () {
+        $('.login_input').removeClass('login_btn_new_color');
+    });
+    $('#meida_alliance').bind('mouseover', function () {
+        $('#meida_alliance').addClass('login_btn_new_color');
+    });
+    $('#meida_alliance').bind('mouseleave', function () {
+        $('#meida_alliance').removeClass('login_btn_new_color');
+    });
+    $('#client').bind('mouseover', function () {
+        $('#client').addClass('login_btn_new_color');
+    });
+    $('#client').bind('mouseleave', function () {
+        $('#client').removeClass('login_btn_new_color');
+    });
+
+    //用户名获得焦点
+    $("#username").bind('focus', writingUsername);
+    function writingUsername() {
+        $("#h1").removeClass('h1_right_after');
+        $("#h1").removeClass('h1_wrong_after');
+        $("#h1").addClass('h1_before');
+        document.getElementById("user_wrong").style.visibility = "hidden";
+    }
+
+    //密码框获得焦点
+    $("#password").bind('focus', writingPassword);
+    function writingPassword() {
+        $("#h2").addClass('h2_before');
+        $("#h2").removeClass('h2_right_after');
+        $("#h2").removeClass('h2_wrong_after');
+        document.getElementById("psw_wrong").style.visibility = "hidden";
+    }
+
+    //密码框失去焦点
+    $("#password").bind('blur', leavePassword);
+    function leavePassword() {
+        if ($(this).val()) {
+            $("#h2").addClass('h2_right_after');
+            $("#h2").removeClass('h2_before');
+        }
+    }
+
+    //当用户名失去焦点时判断邮箱格式是否正确
+    $("#username").bind('blur', ifEmail);
+    function ifEmail() {
+        if (!$("#username").val()) {//内容为空
+            document.getElementById("user_wrong").style.visibility = "hidden";
+            document.getElementById("psw_wrong").style.visibility = "hidden";
+            $("#h1").removeClass('h1_right_after');
+            $("#h1").removeClass('h1_wrong_after');
+            $("#h1").addClass('h1_before');
+            return false;
+        } else if (!$("#username").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+            document.getElementById("user_wrong_msg").innerHTML = "您输入的邮箱格式不正确";
+            document.getElementById("user_wrong").style.visibility = "visible";
+            $("#h1").removeClass('h1_right_after');
+            $("#h1").addClass('h1_wrong_after');
+            return false;
+        }
+        else {
+            document.getElementById("user_wrong").style.visibility = "hidden";
+            $("#h1").removeClass('h1_wrong_after');
+            $("#h1").addClass('h1_right_after');
+            return true;
+        }
+    }
+
+    //根据域名ssp、dsp来判断媒体、广告主账户
+    var Request = (function () {
+        var postname = window.location.hostname;
+        var mode = '';
+        if (postname.search(/dsp/) != '-1') {
+            mode = 'dsp';
+        } else if (postname.search(/ssp/) != '-1') {
+            mode = 'ssp'
+        }
+        return {
+            mode: mode
+        }
+    })();
+
+    switch (Request.mode){
+        case 'ssp':
+            user_type = 'media';
+            document.getElementById("username").setAttribute('placeholder', "媒体登录邮箱");
+            break;
+        case 'dsp':
+            user_type = 'client';
+            document.getElementById("username").setAttribute('placeholder', "广告主登录邮箱");
+            break;
+        default:
+            console.error('登陆角色判断失效');
+    }
+
+    //登录判断无误后下发数据
+    $("#login").bind('click', ifLogin);
+    function ifLogin() {//先排除是否是这个函数内部出现的问题，来确定是不是API接口的问题
+        var username = $("#username");
+        var password = $("#password");
+        if (!$("#username").val()) {
+            document.getElementById("user_wrong_msg").innerHTML = "您输入的邮箱不能为空";
+            document.getElementById("user_wrong").style.visibility = "visible";
+            return false;
+        }
+        else if (!$("#password").val()) {
+            document.getElementById("psw_wrong_msg").innerHTML = "您输入的密码不能为空";
+            document.getElementById("psw_wrong").style.visibility = "visible";
+            return false;
+        } else if (!ifEmail()) {
+            return false;
+        }
+        $("#loading").show();
+        sessionStorage.clear();
+        loginAPI(user_type, media_type, $("#username").val(), $("#password").val(), loginOnsuccessFun)
+    }
+
+    //信息错误后的显示效果
+    function loginOnsuccessFun(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {//操作成功
+            window.location = req.data;
+            $("#loading").hide();
+//            layer.closeAll('loading');
+//            SetPwdAndChk();
+        } else if (req.status == -6) {
+            document.getElementById("psw_wrong_msg").innerHTML = "您输入的邮箱或密码不正确";
+            document.getElementById("psw_wrong").style.visibility = "visible";
+            $("#h1").removeClass('h1_right_after');
+            $("#h1").addClass('h1_before');
+            $("#h2").removeClass('h2_right_after');
+            $("#h2").addClass('h2_before');
+            $("#loading").hide();
+//            layer.closeAll('loading');
+        } else if (req.status == -7) {
+            document.getElementById("psw_wrong_msg").innerHTML = "账户冻结，请联系Deepleaper CSM团队";
+            document.getElementById("psw_wrong").style.visibility = "visible";
+            $("#h1").removeClass('h1_right_after');
+            $("#h1").addClass('h1_before');
+            $("#h2").removeClass('h2_right_after');
+            $("#h2").addClass('h2_before');
+            $("#loading").hide();
+//            layer.closeAll('loading');
+        }
+        else {
+            layer.msg(req.msg);
+            $("#loading").hide();
+//            layer.closeAll('loading');
+        }
+    }
+
+    //记住密码
+    //    $("#username").bind('blur', GetPwdAndChk);
+    //    $("#login").bind('click', SetPwdAndChk);
+    window.onload = function onLoginLoaded() {
+        if (isPostBack == "False") {
+            GetLastUser();
+        }
+    }
+    function GetLastUser() {
+        var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";//GUID标识符
+        var usr = GetCookie(id);
+        if (usr != null) {
+            document.getElementById('username').value = usr;
+        } else {
+            document.getElementById('username').value = "001";
+        }
+        GetPwdAndChk();
+    }
+
+    //点击登录时触发客户端事件
+    function SetPwdAndChk() {
+        //取用户名
+        var usr = document.getElementById('username').value;
+        //将最后一个用户信息写入到Cookie
+        SetLastUser(usr);
+        //如果记住密码选项被选中
+        if (document.getElementById('savePwd').checked == true) {
+            //取密码值
+            var pwd = document.getElementById('password').value;
+            var expdate = new Date();
+            expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000));
+            //将用户名和密码写入到Cookie
+            SetCookie(usr, pwd, expdate);
+        } else {
+            //如果没有选中记住密码,则立即过期
+            ResetCookie();
+        }
+    }
+    function SetLastUser(usr) {
+        var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";
+        var expdate = new Date();
+        //当前时间加上两周的时间
+        expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000));
+        SetCookie(id, usr, expdate);
+    }
+
+    //用户名失去焦点时调用该方法
+    function GetPwdAndChk() {
+        var usr = document.getElementById('username').value;
+        var pwd = GetCookie(usr);
+        if (pwd != null) {
+            document.getElementById('savePwd').checked = true;
+            document.getElementById('password').value = pwd;
+            $('#h2').removeClass('h2_before');
+            $('#h2').addClass('h2_right_after');
+        } else {
+            document.getElementById('savePwd').checked = false;
+            document.getElementById('password').value = "";
+            $('#h2').addClass('h2_before');
+            $('#h2').removeClass('h2_right_after');
+        }
+    }
+    //取Cookie的值
+    function GetCookie(name) {
+        var arg = name + "=";
+        var alen = arg.length;
+        var clen = document.cookie.length;
+        var i = 0;
+        while (i < clen) {
+            var j = i + alen;
+            //alert(j);
+            if (document.cookie.substring(i, j) == arg) return getCookieVal(j);
+            i = document.cookie.indexOf(" ", i) + 1;
+            if (i == 0) break;
+        }
+        return null;
+    }
+    var isPostBack = "<%= IsPostBack %>";
+
+    function getCookieVal(offset) {
+        var endstr = document.cookie.indexOf(";", offset);
+        if (endstr == -1) endstr = document.cookie.length;
+        return unescape(document.cookie.substring(offset, endstr));
+    }
+    //写入到Cookie
+    function SetCookie(name, value, expires) {
+        var argv = SetCookie.arguments;
+        //本例中length = 3
+        var argc = SetCookie.arguments.length;
+        var expires = (argc > 2) ? argv[2] : null;
+        var path = (argc > 3) ? argv[3] : null;
+        var domain = (argc > 4) ? argv[4] : null;
+        var secure = (argc > 5) ? argv[5] : false;
+        document.cookie = name + "=" + escape(value) + ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) + ((path == null) ? "" : ("; path=" + path)) + ((domain == null) ? "" : ("; domain=" + domain)) + ((secure == true) ? "; secure" : "");
+    }
+
+    function ResetCookie() {
+        var usr = document.getElementById('username').value;
+        var expdate = new Date();
+        SetCookie(usr, null, expdate);
+    }
+
+</script>
+<!--申请注册-->
+<script type="text/javascript">
+
+    $(".tryPro").bind('click', function () {
+        $("#application").show();
+    });
+    $("#applicationClose").bind('click', function () {
+        $("#application").hide();
+    });
+
+    $("#applicationSubmit").bind('click', function () {
+        var name = $("#name").val();
+        var kind = $("#kind").val();
+        var email = $("#email").val();
+        var tel = $("#tel").val();
+        if (name == '' || kind == '' || email == "" || tel == "") {
+            layer.msg("请完全填写信息后提交");
+            return false;
+        }
+        sendemailAPI(name, kind, email, tel, sendemailAPIonSuccess);
+    });
+
+    function sendemailAPIonSuccess(result) {
+        result = JSON.parse(result);
+        if (result.status == 1) {
+            layer.msg("提交成功");
+            $("#application").hide();
+        } else {
+            layer.msg("提交失败，稍后请重试");
+        }
+    }
+
+</script>

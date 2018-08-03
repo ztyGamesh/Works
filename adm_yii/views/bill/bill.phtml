@@ -1,0 +1,136 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+    <div id="toolbar">
+        <div class="input-group pull-left deepleaper-search-control" style='width:250px;padding-left: 0'>
+            <input type="text" id="searchKeyword" class="form-control" placeholder="订单号" value="" name="search">
+            <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+        </div>
+    </div>
+    <table id="table" class="list-table"></table>
+    <script>
+        //获取广告主数据
+        var client_uid = {};
+        clientmenuAPI(function (result) {
+            var req = JSON.parse(result);
+            if (req.status == 1) {
+                for (var i in req.data) {
+                    client_uid[i] = req.data[i];
+                }
+            } else {
+                layer.msg('获取广告主数据失败');
+            }
+        });
+        var ListPageConfig = {
+            tableId: '#table',   // 表格id
+            executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+                bindTableFilterAction('client_uid');
+            },
+            tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+            table: {           //表格配置
+                url: '/bill/bill',
+                queryParams: function (params) {
+                    params.search = $("input[name=search]").val();
+                    params.client_uid = $("input[name=client_uid]:checked").val();
+                    return params;
+                },
+                toolbar: '#toolbar',
+                showColumns: true,
+                searchAlign: 'left',
+                pagination: true,
+                pageSize: 50,
+                pageList: [30, 50, 100],
+                showRefresh: true,
+                sortOrder: 'desc',
+                sortName: 'create_time',
+                sidePagination: 'server',
+                striped: true,
+                cookie: true,
+                cookieIdTable: 'replacebyListJS',
+                cookiesEnabled: ['bs.table.pageNumber'],
+                cookiePath: '/',
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'order_id',
+                    title: '订单号'
+                }, {
+                    field: 'order_name',
+                    title: '订单名称'
+                }, {
+                    field: 'client_name',
+                    title: '客户' + jointTableFilter('client_uid', client_uid)
+                }, {
+                    field: 'amount',
+                    title: '账单金额',
+                    sortable: true
+                }, {
+                    field: 'complete_time',
+                    title: '订单完成时间',
+                    sortable: true
+                }, {
+                    field: 'unpay_time',
+                    title: '账单未结清时间'
+                }, {
+                    field: 'paid',
+                    title: '支付状态'
+                }, {
+                    field: 'pay_time',
+                    title: '付款时间',
+                    sortable: true
+                }, {
+                    field: 'do',
+                    title: '操作',
+                    align: 'center',
+                    formatter: 'List.operateFormatter',
+                    events: 'List.operateEvents'
+                }]
+            },
+            url: {
+
+                edit: '/bill/billedit',         //编辑数据 html 地址
+                del: false,
+                detail: false                      //详细内容地址,为空则取编辑的地址
+            },
+
+            action: {
+                edit: true,
+                del: false
+            },
+            title: {
+                editTitle: '编辑账单'
+            },
+            showDetail: false         //是否显示详细信息按钮
+        };
+        var auth = getAuthorityByUrl('/bill/bill');
+        function checkAuthority() {
+            if (auth == 0) {
+                // 用户无耻的绕过了验证，你就说怎么办吧
+                ListPageConfig.action = {
+                    edit: false,
+                    del: false
+                };
+                toFirstLegalPage();
+            } else if (auth == 1) {
+                ListPageConfig.action = {
+                    edit: false,
+                    del: false
+                };
+            } else if (auth == 2) {
+                ListPageConfig.action = {
+                    edit: true,
+                    del: false
+                };
+            }
+        }
+        checkAuthority();
+        hideChangeBtnIfNeed(auth);
+    </script>
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter.phtml');
+?>

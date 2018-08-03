@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>sug广告品专图文样式</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体imgs/find（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    html,body {
+        height: 100%;
+    }
+    .containers .searchResult {
+        /* height: "80px"; */
+        border-bottom: 1px solid #ececec;
+    }
+</style>
+
+<body>
+    <!-- header -->
+    <!-- <div class="hearder"> -->
+        <!-- 搜索框 -->
+        <!-- <div class="input-group">
+            <input type="text" class="form-control" value="去哪儿" aria-describedby="basic-addon2" disabled>
+            <span class="input-group-addon" id="basic-addon2">搜索</span>
+        </div> -->
+    <!-- </div> -->
+    <!-- container -->
+    <div class="containers">
+        <!--根据搜索的展示结果-->
+        <div class="searchResult">
+            <!--搜索结果的直接展示内容-->
+            <div class="directContent">
+                <div class="imgLogo">
+                    <img src="./imgs/quna.png" alt="" width="40px" height="40px">
+                </div>
+                <div class="topic">
+                    <div class="main">
+                        <div class="name">去哪儿网</div>
+                        <div class="website">官网</div>
+                    </div>
+                    <div class="description">聪明你的旅行!</div>
+                </div>
+                <div class="open">打开</div>
+            </div>
+            <!--根据搜索结果出现的建议-->
+            <div class="advicesContent">
+                <div class="list">
+                    <div class="text">酒店</div>
+                    <div class="needle"></div>
+                    <div class="text">机票</div>
+                    <div class="needle"></div>
+                    <div class="text">火车票</div>
+                    <div class="needle"></div>
+                    <div class="text">汽车票</div>
+                    <div class="text">门票</div>
+                    <div class="needle"></div>
+                    <div class="text">用车</div>
+                    <div class="needle"></div>
+                    <div class="text">旅游</div>
+                    <div class="needle"></div>
+                    <div class="text">团购</div>
+                </div>
+            </div>
+            <!--更多服务-->
+            <div class="moreService">
+                更多服务
+            </div>
+            <!--广告-->
+            <div class="adv">
+                <!--广告来源-->
+                <div class="source">
+                    www.ctrip.com
+                </div>
+                <!--广告品牌-->
+                <div class="logo">
+                    品牌广告
+                </div>
+            </div>
+        </div>
+
+        <!--根据搜索内容的建议搜索范围-->
+        <div class="searchAdvices">
+            <div class="advice">
+                <img class="leftImg" src="./imgs/find.png" width="24px">
+                <div class="message">去哪儿网</div>
+                <img class="rightImg" src="./imgs/arrow.png" width="24px">
+            </div>
+            <div class="advice">
+                <img class="leftImg" src="./imgs/find.png" width="24px">
+                <div class="message">去哪儿网官网</div>
+                <img class="rightImg" src="./imgs/arrow.png" width="24px">
+            </div>
+            <div class="advice">
+                <img class="leftImg" src="./imgs/find.png" width="24px">
+                <div class="message">去哪儿电话</div>
+                <img class="rightImg" src="./imgs/arrow.png" width="24px">
+            </div>
+            <div class="advice">
+                <img class="leftImg" src="./imgs/find.png" width="24px">
+                <div class="message">去哪儿旅行</div>
+                <img class="rightImg" src="./imgs/arrow.png" width="24px">
+            </div>
+            <div class="advice">
+                <img class="leftImg" src="./imgs/find.png" width="24px">
+                <div class="message">去哪儿旅游网</div>
+                <img class="rightImg" src="./imgs/arrow.png" width="24px">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<script>
+    /**
+     * header样式
+     */
+    $(".hearder")
+        .css({
+            "padding": "5px 10px 5px",
+            "borderBottom": "1px solid #ececec",
+            "box-shadow": "0px 0px 1px",
+            "backgroundColor": "white",
+        })
+    /**
+     * 搜索框content部分样式
+     */
+    $(".hearder .input-group .form-control")
+        .css({
+            "backgroundColor":"#ececec",
+            "color": "black",
+            "border": "0px solid transparent"
+        })
+    /**
+     * 搜索框button部分样式
+     */
+    $(".hearder .input-group .input-group-addon")
+        .css({
+            "backgroundColor": "#0078FF",
+            "color": "white",
+            "opacity": 0.8,
+            "border": "0px solid transparent",
+        })
+
+    /**
+     * Content背景颜色
+     */
+    $("body")
+        .css({
+            "backgroundColor": "rgba(236, 236, 236, 0.4)"
+        })
+
+    /**
+     * 给directContent布局
+     */
+    $(".directContent")
+        .css({
+            "display": "flex",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "height": "80px"
+        })
+
+    /*照片*/
+    $(".imgLogo")
+        .css({
+            "marginLeft": "20px"
+        })
+
+    /**
+     * 给topic布局 中间部分
+     */
+    $(".topic")
+        .css({
+            "display": "flex",
+            "flex-direction": "column",
+            "align-items": "flex-start",
+            // "border": "1px solid red",
+            "marginLeft": "15px",
+            "width": "75%"
+        })
+
+    /**
+     * 给main布局 去哪儿&&官网
+     */
+    $(".main")
+        .css({
+            "display": "flex",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "marginBottom": "1%"
+        })
+
+    $(".name")
+        .css({
+            "fontSize": "16px",
+            "color": "#000"
+        })
+
+    $(".website")
+        .css({
+            "backgroundColor": "#00afc7",
+            "fontSize": "9px",
+            "color": "white",
+            "marginLeft": "10px",
+            "padding": "0 2px 0 "
+        })
+
+    $(".description")
+        .css({
+            "fontSize": "12px",
+            "color": "#8e8e8e"
+        })
+    /**
+     * 打开按钮
+     */
+    $(".open")
+        .css({
+             "flex": "flex-end",
+             "border": "1px solid #00afc7",
+             "width": "62px",
+             "height": "30px",
+             "textAlign": "center",
+             "lineHeight": "30px",
+             "fontSize": "14px",
+             "color": "#00afc7",
+             "borderRadius": "4px",
+             "marginRight": "20px"
+        })
+
+    /*
+        搜索结果的参考目录
+     */
+    $(".list")
+        .css({
+            "height": "65px",
+            // "border": "1px solid green",
+            "margin": "0 20px 0",
+            "display": "flex",
+            "justify-content": "space-between",
+            "align-items": "center",
+            "flex-wrap": "wrap"
+        })
+
+    $(".text")
+        .css({
+            "width": "22%",
+            "fontSize": "13px",
+            "textAlign": "center",
+            "lineHeight": "13px"
+        })
+
+    $(".needle")
+        .css({
+            "height": "15px",
+            "border": "0.5px solid gray"
+        })
+
+    $(".moreService")
+        .css({
+            "height": "38px",
+            "margin": "10px 20px 0",
+            // "border": "1px solid red",
+            "textAlign": "center",
+            "fontSize": "13px",
+            "lineHeight": "38px",
+            "backgroundColor": "#ececec",
+            "color": "#000"
+        })
+
+    $(".adv")
+        .css({
+            "height": "42px",
+            "margin": "0 20px 0",
+            "display": "flex",
+            "justify-content": "flex-start",
+            "align-items": "center",
+            "fontSize": "12px",
+            "color": "#616161"
+        })
+
+     $(".source")
+         .css({
+             "marginRight": "15px"
+         })
+
+    $(".advice")
+        .css({
+            "height": "44px",
+            "padding": "10px 20px 10px",
+            "display": "flex",
+            "justify-content": "space-between",
+            "align-items": "center",
+            "border-bottom": "1px solid #ececec"
+        })
+
+    $(".message")
+        .css({
+            "marginLeft": "-40%",
+            "textAlign": "left",
+            "width": "40%",
+            // "border": "1px solid red"
+        })
+
+    $(".rightImg")
+        .css({
+            "transform":"rotate(45deg)"
+        })
+</script>
+</html>

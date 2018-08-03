@@ -1,0 +1,1011 @@
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="../css/application/media/slotadd.css"/>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/promotion/adgrouplistview"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name linkable"><a href="#"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adplanName" class="user-message-name linkable"><a href="#"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span class="user-message-name">添加广告创意</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="infor_flow" id="infor_flow">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">选择模版</span>
+                        <small class="Dl-prompt">请点击缩略图预览样式，根据广告位尺寸比例推荐适配较好的样式</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="templateWrapper">
+                            <img src="/img/application/media/arrowL.png" class="templateTurnLeft cursor"
+                                 id="templateTurnLeft">
+                            <div class="templateContainer">
+                                <div class="templateContainerMove">
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="c0bb62fe-fc21-4b0b-a5c7-d547db667032"
+                                                       id="templateCtl-c0bb62fe-fc21-4b0b-a5c7-d547db667032">
+                                                <label for="templateCtl-c0bb62fe-fc21-4b0b-a5c7-d547db667032">大图样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_img.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="b2826850-b106-4cde-8a7c-d1d08dfaec7a"
+                                                       id="templateCtl-b2826850-b106-4cde-8a7c-d1d08dfaec7a">
+                                                <label for="templateCtl-b2826850-b106-4cde-8a7c-d1d08dfaec7a">视频样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_video.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="7c44a357-ecd0-4c5b-80d0-db8bd5100149"
+                                                       id="templateCtl-7c44a357-ecd0-4c5b-80d0-db8bd5100149">
+                                                <label for="templateCtl-7c44a357-ecd0-4c5b-80d0-db8bd5100149">大图+文字样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgAndChar.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="4d918595-d2a1-47c7-8e4a-012f28ddd96e"
+                                                       id="templateCtl-4d918595-d2a1-47c7-8e4a-012f28ddd96e">
+                                                <label for="templateCtl-4d918595-d2a1-47c7-8e4a-012f28ddd96e">视频+文字样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo" preload="auto">
+                                            <source src="/video/infor_flow_videoAndChar.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="7e1199fd-de4d-469f-8778-5de1268cddea"
+                                                       id="templateCtl-7e1199fd-de4d-469f-8778-5de1268cddea">
+                                                <label for="templateCtl-7e1199fd-de4d-469f-8778-5de1268cddea">图文样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_smallimgAndChar.mp4">
+                                        </video>
+                                    </div>
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="6684515c-3b6d-40f5-969c-d137c3913aab"
+                                                       id="templateCtl-6684515c-3b6d-40f5-969c-d137c3913aab">
+                                                <label for="templateCtl-6684515c-3b6d-40f5-969c-d137c3913aab">组图样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgs.mp4">
+                                        </video>
+                                    </div>
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0"
+                                                       id="templateCtl-3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">
+                                                <label for="templateCtl-3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">文字链样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_char.mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="/img/application/media/arrowR.png" class="templateTurnRight cursor"
+                                 id="templateTurnRight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!--大图样式-->
+                            <div class="panel panel-default" id="c0bb62fe-fc21-4b0b-a5c7-d547db667032">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_img"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_img">
+                                            <span class="collapse－switch"></span>大图样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_img" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">100kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">960*640(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*100(8:1)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*200(4:1)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">900*150(6:1)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*240(3:1)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">640*100(32:5)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input class="file inputUpload_image" type="file" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--视频样式-->
+                            <div class="panel panel-default" id="b2826850-b106-4cde-8a7c-d1d08dfaec7a">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_video"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_video">
+                                            <span class="collapse－switch"></span>视频样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_video" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">100kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">960*640(3:2)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">800*100(8:1)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">800*200(4:1)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">900*150(6:1)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">720*240(3:1)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">640*100(32:5)</span>-->
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">视频上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    视频大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">5MB以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    视频格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">mp4</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_video" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--大图+文字样式-->
+                            <div class="panel panel-default" id="7c44a357-ecd0-4c5b-80d0-db8bd5100149">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgAndChar">
+                                            <span class="collapse－switch"></span>大图+文字样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <textarea class="form-control dl-notNull creativeTitle"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <textarea type="text" class="form-control creativeDescription"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">100kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">960*640(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">600*300(2:1)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--视频+文字样式-->
+                            <div class="panel panel-default" id="4d918595-d2a1-47c7-8e4a-012f28ddd96e">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_videoAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_videoAndChar">
+                                            <span class="collapse－switch"></span>视频+文字样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_videoAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <textarea class="form-control dl-notNull creativeTitle"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <textarea type="text" class="form-control creativeDescription"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">100kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">960*640(3:2)</span>-->
+                                                    <!--                                                    <br/>-->
+                                                    <!--                                                    <span class="colorpicmsg">600*300(2:1)</span>-->
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">视频上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    视频大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">5MB以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    视频格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">mp4</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <span class="colorpicmsg">720*405(16:9)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">800*600(4:3)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_video" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--图文样式-->
+                            <div class="panel panel-default" id="7e1199fd-de4d-469f-8778-5de1268cddea">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_smallimgAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_smallimgAndChar">
+                                            <span class="collapse－switch"></span>图文样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_smallimgAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <textarea class="form-control dl-notNull creativeTitle"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <textarea type="text" class="form-control creativeDescription"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">80kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <span class="colorpicmsg">480*320(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*300(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*400(1:1)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--组图样式-->
+                            <div class="panel panel-default" id="6684515c-3b6d-40f5-969c-d137c3913aab">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgs"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgs">
+                                            <span class="collapse－switch"></span>组图样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgs" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <textarea class="form-control dl-notNull creativeTitle"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <textarea type="text" class="form-control creativeDescription"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <!-- 组图创意中的第一个图片上传位置-->
+                                        <div class="row" id="imgsOne">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">80kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <span class="colorpicmsg">480*320(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*300(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*400(1:1)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <!-- 组图创意中的第二个图片上传位置-->
+                                        <div class="row" id="imgsTwo">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">80kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <span class="colorpicmsg">480*320(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*300(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*400(1:1)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片上传</span>
+                                            </div>
+                                        </div>
+                                        <!-- 组图创意中的第三个图片上传位置-->
+                                        <div class="row" id="imgsThree">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label Dl-required">
+                                                    图片大小:
+                                                    <br/>
+                                                    <span class="colorpicmsg">80kb以内</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持格式:
+                                                    <br/>
+                                                    <span class="colorpicmsg">jpg/jpeg/png/gif</span>
+                                                    <br/>
+                                                    <br/>
+                                                    支持尺寸：
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <span class="colorpicmsg">480*320(3:2)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*300(4:3)</span>
+                                                    <br/>
+                                                    <span class="colorpicmsg">400*400(1:1)</span>
+                                                </label>
+                                                <div class="col-md-7">
+                                                    <input type="file" class="file inputUpload_image" name="file_data"
+                                                           flag="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--文字链样式-->
+                            <div class="panel panel-default" id="3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_char"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_char">
+                                            <span class="collapse－switch"></span>文字链样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_char" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-notNull creativeName"
+                                                           value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <textarea class="form-control dl-notNull creativeTitle"
+                                                              maxlength="46" minlength="6"
+                                                              placeholder="6~23个汉字"></textarea>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier" id="extend_label">广告来源及附加创意配置</span>
+                    </div>
+                </div>
+                <!--                推广目的为应用下载-->
+                <div id="download" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用名</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="20" minlength="2" id="appName"
+                                       placeholder="2~10个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group ">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用下载地址</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control dl-notNull" id="appDownloadUrl"
+                                       placeholder="点击“下载按钮”区域所到达的地址">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">创意副标题</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="24" id="download_extend_title"
+                                       placeholder="2~12个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--                推广目的为落地页-->
+                <div id="landingWrapper" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告来源</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="20" minlength="2" id="ad_source"
+                                       placeholder="2~10个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label">附加创意</label>
+                            <div class="col-md-7">
+                                <select class="form-control selectpicker" dl-data="length" id="extend_type">
+                                    <option value="empty" selected>无</option>
+                                    <option value="phone">电话拨打</option>
+                                    <option value="form">表单收集</option>
+                                </select>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="extend_phone_btn_wrapper" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label">选择按钮名称</label>
+                            <div class="col-md-7">
+                                <select class="form-control selectpicker" dl-data="length" id="phone_btnName">
+                                    <option value="咨询热线" selected>咨询热线</option>
+                                    <option value="免费热线">免费热线</option>
+                                    <option value="立即拨打">立即拨打</option>
+                                    <option value="电话咨询">电话咨询</option>
+                                    <option value="电话拨打">电话拨打</option>
+                                    <option value="咨询电话">咨询电话</option>
+                                    <option value="加盟热线">加盟热线</option>
+                                    <option value="订购热线">订购热线</option>
+                                </select>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="extend_phone_number_wrapper" style="display: none;">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">电话号码</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="11" id="phone_number"
+                                       placeholder="请填写5-11位电话号码">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="extend_form_btn_wrapper" style="display: none;">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">按钮名称</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="8" id="form_btnName"
+                                       placeholder="1-8个字符，汉字占两个字符">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="extend_form_url_wrapper" style="display: none;">
+                        <div class="form-group ">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">表单站点地址</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" value="" id="form_url"
+                                       placeholder="填写以http(https)开头的有效着陆页">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="landing_extend_title_wrapper" style="display: none;">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">附加创意标题</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="24" id="landing_extend_title"
+                                       placeholder="2~12个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">设置广告着陆页</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label Dl-required" id="link_label">URL</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control dl-notNull dl-urlVal" value="" id="link"
+                                   placeholder="填写以http(https)开头的有效着陆页">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">设置广告监测地址</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">第三方曝光监测链接</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" value="" id="monitoring_url">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">第三方点击监测链接</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" value="" id="landing">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row submit_box">
+                    <div class="submit_btn_wrapper">
+                        <div class="submit_btn" id="cancel">
+                            返回列表
+                        </div>
+                        <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                            完成添加
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<script type="text/javascript" src="/js/application/promotion/adcreativeaddview.js?v=20170614"></script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

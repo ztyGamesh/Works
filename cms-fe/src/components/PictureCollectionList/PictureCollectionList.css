@@ -1,0 +1,10 @@
+.pictureCollectionList .ComposePicListTitle {
+    width: 100%;
+}
+
+.pictureCollectionList .ComposePicListTitle span {
+    width: 25%;
+    display: inline-block;
+    text-align: center;
+    padding: 20px 0;
+}

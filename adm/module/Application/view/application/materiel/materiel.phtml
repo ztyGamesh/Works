@@ -1,0 +1,151 @@
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<script>
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/materiel/materiel',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortName: 'create_time',
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            columns: [{
+                checkbox: true
+            }, {
+
+                field: 'name',
+                title: '素材名称'
+            }, {
+                field: 'filename',
+                title: '文件名'
+            }, {
+                field: 'type',
+                title: '广告位类型'
+            }, {
+                field: 'size',
+                title: '素材大小',
+                sortable: true
+            }, {
+
+                field: 'w',
+                title: '宽'
+            }, {
+
+                field: 'h',
+                title: '高'
+            }, {
+
+                field: 'create_time',
+                title: '上传时间',
+                sortable: true
+            }, {
+
+                field: 'username',
+                title: '上传者'
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents'
+            }]
+        },
+        url: {
+            add: '/materiel/materieladd',         //添加 数据 html 地址
+            detail: '/materiel/materieldetail',         //编辑数据 html 地址
+            del: '/materiel/materieldel'         //删除数据地址
+        },
+        action: {
+
+            detail: true,
+            del: true
+        },
+        title: {
+            detailTitle: '查看素材',
+            addTitle: '添加素材'
+
+        },
+        validate: {      //添加提交验证
+            add: function () {
+                var name = $('#name');
+                var nameVal = name.val();
+
+                if (!vaIsNotNull(nameVal)) {
+                    vaError(name, '素材名称不能为空');
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            edit: function () {
+                var name = $('#name');
+                var nameVal = name.val();
+
+                if (!vaIsNotNull(nameVal)) {
+                    vaError(name, '素材名称不能为空');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    };
+
+    var auth = getAuthorityByUrl('/materiel/materiel');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                detail: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                detail: true,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                detail: true,
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+</script>
+<div id="toolbar">
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;padding-left: 0'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="素材名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<?php
+echo $this->partial('layout/listPublicFooter2.phtml');
+?>
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

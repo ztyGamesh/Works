@@ -1,0 +1,23 @@
+@import "~antd/lib/style/themes/default.less";
+
+.body {
+  width: 220px;
+  max-height: 240px;
+  overflow: auto;
+  .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 6px;
+    &:hover {
+      background-color: #e6f7ff;
+    }
+    >div:first-child {
+      width: 0;
+      flex-grow: 1;
+    }
+    >div:first-child+div {
+      flex-shrink: 0;
+    }
+  }
+}

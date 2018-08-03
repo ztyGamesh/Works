@@ -1,0 +1,466 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>资讯</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="lib/Swiper-3.4.2/dist/css/swiper.min.css">
+    <link rel="stylesheet" href="css/nearRealTimeIntention.css">
+    <script src="lib/iscroll-master/build/iscroll-probe.js" type="text/javascript"></script>
+    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="js/jquery.cookie.js" type="text/javascript"></script>
+    <script src="lib/Swiper-3.4.2/dist/js/swiper.jquery.min.js" type="text/javascript"></script>
+</head>
+<body onload="loaded()">
+<div id="header">资讯</div>
+
+<div id="content">
+    <div id="scroller">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href="NewDetail01.html" style="overflow: hidden;display: block;">
+                        <img src="images/youting01.png" style="width: 100%"/>
+                        <p class="swiper-img-float-title">值得期待的Sunseeker 116</p>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="NewDetail03.html" style="overflow: hidden;display: block;">
+                        <img src="images/zuqiu01.png" style="width: 100%"/>
+                        <p class="swiper-img-float-title">冬天踢球需要注意什么呢？</p>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="NewDetail04.html" style="overflow: hidden;display: block;">
+                        <img src="images/gaoerfu01.png" style="width: 100%"/>
+                        <p class="swiper-img-float-title">天下球场：有色有香勐巴拉</p>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+        <!--<div id="pullDown" class="ub ub-pc c-gra">-->
+        <!--<div class="pullDownIcon"></div>-->
+        <!--<div class="pullDownLabel">下拉刷新</div>-->
+        <!--</div>-->
+        <ul id="add">
+            <li>
+                <a href="NewDetail01.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/youting02.png"></dt>
+                        <dd>
+                            <h2 class="titHeader">值得期待的Sunseeker 116</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">游艇社</span>
+                                <span class="fr">2016-11-15</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail02.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/bojin01.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">铂金能成天王吗？他要走的路还很长</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">NBA篮球圈</span>
+                                <span class="fr">2016-11-15</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail03.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/zuqiu01.png"></dt>
+                        <dd>
+                            <h2 class="titHeader">冬天踢球需要注意什么呢？</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">天下足球</span>
+                                <span class="fr">2016-11-14</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a onclick="demo(1)" href="NewDetail11.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/sanxing01.jpeg"></dt>
+                        <dd>
+                            <h2 class="titHeader">三星Note7遭多国“封杀”</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">三星</span>
+                                <span class="fr">2016-11-13</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="1" style="display:none">
+                <a href="http://finance.ifeng.com/a/20160919/14886924_0.shtml" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/sanxing02.jpeg"></dt>
+                        <dd>
+                            <h2 class="titHeader">三星启动本土Note7换机计划 消费者可免费申请换货</h2>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail04.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/gaoerfu01.png"></dt>
+                        <dd>
+                            <h2 class="titHeader">天下球场：有色有香勐巴拉</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">高尔夫大师杂志</span>
+                                <span class="fr">2016-11-13</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail07.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/zixingche.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">中国自行车运动日渐火爆背后的隐忧</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">体育蓝皮书</span>
+                                <span class="fr">2016-11-13</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a onclick="demo(4)" href="NewDetail06.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/huaxue01.png"></dt>
+                        <dd>
+                            <h2 class="titHeader">令人敬畏的滑雪，你不得不看</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">滑雪教程</span>
+                                <span class="fr">2016-11-13</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="4" style="display:none">
+                <a href="http://shop.m.jd.com/?shopId=158594" class="tabslider oh dpb fl">
+                    <div style="width: 100%;margin-bottom: 5px;">
+                        <h2 class="titHeader" style="display: inline">时尚滑雪装备，你值得拥有！</h2>
+                        <div style="border: solid skyblue 1px; float:right; border-radius:5px;">
+                            <small style="color: skyblue;">&nbsp;广告&nbsp;</small>
+                        </div>
+                    </div>
+
+                    <div style="width: 100%;overflow: hidden">
+                        <img src="images/huaxue01.jpg" style="float:left;width: 32%;margin-right: 2%">
+                        <img src="images/huaxue02.jpg" style="float:left;width: 32%;margin-right: 2%">
+                        <img src="images/huaxue03.jpg" style="float:left;width: 32%;">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a onclick="demo(2)" href="NewDetail05.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/youting01.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">戛纳游艇节现场精彩集锦</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">游艇社</span>
+                                <span class="fr">2016-11-11</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="2" style="display:none">
+                <div>
+                    <a href="http://www.audi.cn/cn/web/zh/models.html" class="tabslider oh dpb fl">
+                        <div style="width: 100%;margin-bottom: 5px;">
+                            <h2 class="titHeader" style="display:inline">奥迪车型及报价 - 突破科技 启迪未来</h2>
+                            <div style="border: solid skyblue 1px; float:right; border-radius:5px;">
+                                <small style="color: skyblue;">&nbsp;广告&nbsp;</small>
+                            </div>
+                        </div>
+                        <div style="width: 100%;overflow: hidden">
+                            <img src="images/aodi01.jpg" style="float:left;width: 32%;margin-right: 2%">
+                            <img src="images/aodi02.jpg" style="float:left;width: 32%;margin-right: 2%">
+                            <img src="images/aodi03.jpg" style="float:left;width: 32%">
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a onclick="running()" href="NewDetail08.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/paobu.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">冬季跑步有学问 不可盲目追求高速度</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">体育蓝皮书</span>
+                                <span class="fr">2016-11-12</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail09.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/wushu.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">武术为何在校园重新走热</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">体育蓝皮书</span>
+                                <span class="fr">2016-11-10</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li>
+                <a href="NewDetail10.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/mashu.jpg"></dt>
+                        <dd>
+                            <h2 class="titHeader">【视频】2016全国马术绕桶巡回赛总决赛圆满落幕 巴依尔塔斩获年度绕桶王</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">体育蓝皮书</span>
+                                <span class="fr">2016-11-10</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="pullUp1" style="display:none">
+                <a href="http://shop.m.jd.com/?shopId=17529" target="_blank" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <div style="color: #000;width: 100%;margin-bottom: 5px;">亚瑟士(asics)跑步鞋-京东
+                            <div style="border: solid skyblue 1px; float:right; border-radius:5px;">
+                                <small style="color: skyblue;">&nbsp;广告&nbsp;</small>
+                            </div>
+                        </div>
+                        <div style="width: 100%;overflow: hidden">
+                            <img src="images/asics_orange.jpeg"
+                                 style="float:left;width: 32%;margin-right: 2%">
+                            <img src="images/asics_yellow.jpeg"
+                                 style="float:left;width: 32%;margin-right: 2%">
+                            <img src="images/asics_red.jpeg" style="float:left;width: 32%;">
+                        </div>
+
+                        <div class="oh zpInfo" style="clear:both;">
+                            <span class="fl belong">京东</span>
+                            <span class="fr" style="margin-top: 6px;">2017-7-11</span>
+                        </div>
+                    </dl>
+                </a>
+            </li>
+            <li id="pullUp2" style="display:none">
+                <a href="NewDetail12.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/nba.jpeg"></dt>
+                        <dd>
+                            <h2 class="titHeader">1年520万！勇士与尼克-杨达成签约协议</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">onFire</span>
+                                <span class="fr">2017-07-06</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="pullUp3" style="display:none">
+                <a href="NewDetail13.html" class="tabslider oh dpb fl">
+                    <dl class="oh">
+                        <dt class="fl"><img src="images/territory.jpeg"></dt>
+                        <dd>
+                            <h2 class="titHeader">中国最窄领土仅8米宽，左邻俄罗斯右挨朝鲜，还是日本海出海口</h2>
+                            <div class="oh zpInfo">
+                                <span class="fl belong">北极36号</span>
+                                <span class="fr">2016-11-10</span>
+                            </div>
+                        </dd>
+                    </dl>
+                </a>
+            </li>
+            <li id="pullUp" class="ub ub-pc c-gra">
+                <div class="pullUpIcon"></div>
+                <div class="pullUpLabel">上拉显示更多...</div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+
+
+<script type="text/javascript">
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'horizontal',
+        loop: true,
+        autoplay: 3500,
+        pagination: '.swiper-pagination'
+    });
+
+    function demo(ad) {
+        $("#1,#2,#4").hide();
+        $("#" + ad).css("display", "block");
+        window.localStorage.setItem('deepleaperdemoshowid', ad);
+        myScroll.refresh();
+    }
+
+    var showpullupad = false;
+    if (window.localStorage.getItem('deepleaperdemoshowpullupad') == 1) {
+        showpullupad = true;
+    }
+    function running() {
+        window.localStorage.setItem('deepleaperdemoshowpullupad', 1);
+    }
+    var myScroll;
+    //    var pullDownEl, pullDownL;
+    var pullUpEl, pullUpL;
+    //    var Downcount = 0,
+    var Upcount = 0;
+    var loadingStep = 0;//加载状态0默认，1显示加载状态，2执行加载数据，只有当为0时才能再次加载，这是防止过快拉动刷新
+    //    function pullDownAction() {//下拉事件
+    //        setTimeout(function () {
+    //            var el, li, i;
+    //            el = $('#add');
+    //            for (i = 0; i < 3; i++) {
+    //                li = $("<li></li>");
+    //                Downcount++;
+    //                li.text('new Add ' + Downcount + " ！");
+    //                el.prepend(li);
+    //            }
+    //            pullDownEl.removeClass('loading');
+    //            pullDownL.html('下拉显示更多...');
+    //            pullDownEl['class'] = pullDownEl.attr('class');
+    //            pullDownEl.attr('class', '').hide();
+    //            myScroll.refresh();
+    //            loadingStep = 0;
+    //        }, 1000); //1秒
+    //    }
+    function pullUpAction() {//上拉事件
+        setTimeout(function () {
+            pullUp();
+            pullUpEl.removeClass('loading');
+            pullUpL.html('没有更多了');
+            pullUpEl['class'] = pullUpEl.attr('class');
+            pullUpEl.attr('class', '');
+            myScroll.refresh();
+//            loadingStep = 0;
+        }, 1000);
+    }
+    function pullUp() {
+        if (showpullupad) {
+            $("#pullUp1").show();
+            window.localStorage.setItem('deepleaperdemoshowpullupad', 0);
+        }
+        $("#pullUp2").show();
+        $("#pullUp3").show();
+    }
+
+    function loaded() {
+
+        var deepleaperdemoshowid = window.localStorage.getItem('deepleaperdemoshowid');
+        if (deepleaperdemoshowid !== null) {
+            $("#" + deepleaperdemoshowid).show();
+            window.localStorage.removeItem('deepleaperdemoshowid');
+        }
+
+//        pullDownEl = $('#pullDown');
+//        pullDownL = pullDownEl.find('.pullDownLabel');
+//        pullDownEl['class'] = pullDownEl.attr('class');
+//        pullDownEl.attr('class', '').hide();
+
+        pullUpEl = $('#pullUp');
+        pullUpL = pullUpEl.find('.pullUpLabel');
+        pullUpEl['class'] = pullUpEl.attr('class');
+        pullUpEl.attr('class', '');
+//        获取页面滚动位置 且不可超过iscroll初始化最大滚动距离
+        var deepleaperdemoscrollY = (window.localStorage.getItem('deepleaperdemoscrollY') == null || window.localStorage.getItem('deepleaperdemoscrollY') == "NaN" ) ? 0 : window.localStorage.getItem('deepleaperdemoscrollY');
+        var maxScroll = $("#scroller").height() - $("#content").height();
+        deepleaperdemoscrollY = maxScroll < Math.abs(deepleaperdemoscrollY) ? maxScroll - 2 * maxScroll : deepleaperdemoscrollY;
+        window.localStorage.setItem('deepleaperdemoscrollY', 0);
+        myScroll = new IScroll('#content', {
+            probeType: 2,//probeType：1对性能没有影响。在滚动事件被触发时，滚动轴是不是忙着做它的东西。probeType：2总执行滚动，除了势头，反弹过程中的事件。这类似于原生的onscroll事件。probeType：3发出的滚动事件与到的像素精度。注意，滚动被迫requestAnimationFrame（即：useTransition：假）。
+            scrollbars: true,//有滚动条
+            mouseWheel: true,//允许滑轮滚动
+            fadeScrollbars: true,//滚动时显示滚动条，默认影藏，并且是淡出淡入效果
+            bounce: true,//边界反弹
+            interactiveScrollbars: true,//滚动条可以拖动
+            shrinkScrollbars: 'scale',// 当滚动边界之外的滚动条是由少量的收缩。'clip' or 'scale'.
+            click: true,// 允许点击事件
+            keyBindings: true,//允许使用按键控制
+            momentum: true,// 允许有惯性滑动
+            startY: parseInt(deepleaperdemoscrollY)
+        });
+        //滚动时
+        myScroll.on('scroll', function () {
+            if (loadingStep == 0
+//                    && !pullDownEl.attr('class').match('flip|loading')
+                    && !pullUpEl.attr('class').match('flip|loading')) {
+//                if (this.y > 5) {
+//                    //下拉刷新效果
+//                    pullDownEl.attr('class', pullUpEl['class'])
+//                    pullDownEl.show();
+//                    myScroll.refresh();
+//                    pullDownEl.addClass('flip');
+//                    pullDownL.html('准备刷新...');
+//                    loadingStep = 1;
+//                }
+//                else
+                if (this.y < (this.maxScrollY - 5)) {
+                    //上拉刷新效果
+                    pullUpEl.attr('class', pullUpEl['class']);
+                    pullUpEl.show();
+                    myScroll.refresh();
+                    pullUpEl.addClass('flip');
+                    pullUpL.html('准备刷新...');
+                    loadingStep = 1;
+                }
+            }
+        });
+        //滚动完毕
+        myScroll.on('scrollEnd', function () {
+            if (loadingStep == 1) {
+                if (pullUpEl.attr('class').match('flip|loading')) {
+                    pullUpEl.removeClass('flip').addClass('loading');
+                    pullUpL.html('Loading...');
+                    loadingStep = 2;
+                    pullUpAction();
+                }
+//                else if (pullDownEl.attr('class').match('flip|loading')) {
+//                    pullDownEl.removeClass('flip').addClass('loading');
+//                    pullDownL.html('Loading...');
+//                    loadingStep = 2;
+//                    pullDownAction();
+//                }
+            }
+        });
+
+    }
+    document.addEventListener('touchmove', function (e) {
+        e.preventDefault();
+    }, false);
+    //离开前存储当前页面滚动位置
+    $('a').click(function () {
+        window.localStorage.setItem('deepleaperdemoscrollY', myScroll.y);
+    });
+    $(window).bind('beforeunload', function () {
+        window.localStorage.setItem('deepleaperdemoscrollY', myScroll.y);
+    });
+</script>
+</html>

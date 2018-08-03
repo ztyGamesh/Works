@@ -1,0 +1,197 @@
+<?php if($this->item){
+    $name   = $this->item['name'];
+    $uid    = $this->item['uid'];
+    $ext    = $this->item['ext'];
+    $filename    = $this->item['filename'];
+	
+?>
+
+<form id="edit" method="post" action="/materiel/materielsave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">素材名称</label>
+        <div class="col-sm-6 ">
+           
+            <div><?php echo $this->item['name'];?></div>
+        </div>
+    </div>
+     
+    <?php if ($this->item['type'] != 'App_开屏') {?> 
+    
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">文件名称</label>
+			<div class="col-sm-6 ">
+				 <div><?php echo $this->item['filename'];?></div>
+			</div>
+		</div>
+
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['uid'];   ?>.<?php echo $this->item['ext'];?>" style="width:300px;" />
+			</div>
+		</div>
+		
+    <?php } else { ?>
+    
+     	<?php if ($this->item['s_720_1280']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_720_1280</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_720_1280'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($this->item['s_1242_2208']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_1242_2208</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_1242_2208'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+
+		<?php if ($this->item['s_480_800']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_480_800</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_480_800'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($this->item['s_640_960']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_640_960</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_640_960'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($this->item['s_768_1024']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_768_1024</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_768_1024'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($this->item['s_1536_2048']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_1536_2048</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['s_1536_2048'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		
+		
+		<?php if ($this->item['b_320_50']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">b_320_50</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['b_320_50'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		
+		<?php if ($this->item['b_640_100']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">b_640_100</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="/uploads/<?php echo $this->item['b_640_100'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+    <?php } ?>
+
+	<?php if ($this->item['b_mp4']) {?>
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">视频</label>
+			<div class="col-sm-6 ">
+
+                <div><?php echo "http://{$_SERVER['HTTP_HOST']}/uploads/{$this->item['b_mp4']}";?></div>
+
+<!--				<div>http://adm.deepleaper.com/uploads/--><?php //echo $this->item['b_mp4'];?><!--</div>-->
+			</div>
+		</div>
+	<?php } ?>
+
+
+</form>
+<?php }?>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/materiel/materiel', 1);
+</script>

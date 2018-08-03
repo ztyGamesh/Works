@@ -1,0 +1,77 @@
+@import "~antd/lib/style/themes/default.less";
+
+.body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .box {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    .line {
+      width: 100%;
+      padding-bottom: 18px;
+      padding-right: 18px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: stretch;
+      flex-shrink: 0;
+      &[class~="auto"] {
+        width: auto;
+      }
+      .fill {
+        width: 0;
+        flex-grow: 1;
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-end;
+      }
+      .hold {
+        width: 18px;
+        height: 0;
+        align-self: center;
+        flex-shrink: 0;
+      }
+    }
+  }
+  .content {
+    width: 100%;
+    // height: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  tr td {
+    padding: 16px 8px;
+  }
+  tr td {
+    padding: 16px 8px;
+  }
+  [class~=ant-table-filter-dropdown] ul li {
+    display: flex;
+    align-items: center;
+  }
+  [class~=ant-table-filter-dropdown] ul li>span {
+    max-width: 155px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  :global(.ant-pagination.ant-table-pagination) {
+    width: 100%;
+    display: flex;
+    :global(.ant-pagination-total-text) {
+      flex-grow: 1;
+      padding-left: 8px;
+    }
+  }
+  table {
+    width: 100% !important;
+  }
+}

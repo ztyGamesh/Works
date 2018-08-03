@@ -1,0 +1,40 @@
+@import "~antd/lib/style/themes/default.less";
+.bg{
+  height: 100%;
+  background: linear-gradient(top,#f9faff,#f5f5ff);
+  background: -webkit-linear-gradient(top,#f9faff,#f5f5ff);
+  background: -moz-linear-gradient(top,#f9faff,#f5f5ff);
+  background: -o-linear-gradient(top,#f9faff,#f5f5ff);
+  background: -ms-linear-gradient(top,#f9faff,#f5f5ff);
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+}
+
+.content {
+  padding: 32px 0;
+  flex: 1;
+}
+
+@media (min-width: @screen-md-min) {
+  .container {
+    //background-image: url('../assets/loginBg.png');
+    background-image: url('../assets/loginbg.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+  }
+
+  .content {
+    padding: 0;
+  }
+}
+
+.logo {
+  height: 44px;
+  vertical-align: top;
+  margin-right: 16px;
+}

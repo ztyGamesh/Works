@@ -1,0 +1,1532 @@
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="../css/application/media/alliancesloteditview.css"/>
+<link rel="stylesheet" href="../css/application/media/slotadd.css"/>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/media/slot">广告位配置</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加广告位</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="infor_flow" id="infor_flow">
+            <div class="container-fluid">
+
+                <div class="row" style="padding-top: 20px;">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告位名称</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control dl-notNull" value="" id="name">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">所属媒体</label>
+                        <div class="col-md-7">
+                            <select id="media" name="media" class="form-control selectpicker" data-live-search="true">
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">媒体平台属性</label>
+                        <div class="col-md-7">
+                            <div id="media_type" class="form-control"></div>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告形式</label>
+                        <div class="col-md-7">
+                            <select class="selectpicker" data-width="100%" id="class">
+                                <option value="29076f0d-a923-47d4-bfef-2e3cf28fc099">动态信息流</option>
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告位频道分类</label>
+                        <div class="col-md-7">
+                            <select class="selectpicker" data-width="100%" id="channelParent" data-size="6">
+
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group" style="display: none">
+                        <label class="col-md-2 col-md-offset-1 control-label"></label>
+                        <div class="col-md-7">
+                            <select class="selectpicker" data-width="100%" id="channelChild" title="请选择" multiple>
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">选择模版</span>
+                        <small class="Dl-prompt">请点击缩略图预览样式，根据广告位尺寸比例推荐适配较好的样式</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="templateWrapper">
+                            <img src="/img/application/media/arrowL.png" class="templateTurnLeft cursor"
+                                 id="templateTurnLeft">
+                            <div class="templateContainer">
+                                <div class="templateContainerMove">
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!-- awesome checkbox-->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="c0bb62fe-fc21-4b0b-a5c7-d547db667032"
+                                                       id="templateCtl-c0bb62fe-fc21-4b0b-a5c7-d547db667032">
+                                                <label for="templateCtl-c0bb62fe-fc21-4b0b-a5c7-d547db667032">大图样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_img.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--   awesome checkbox-->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="b2826850-b106-4cde-8a7c-d1d08dfaec7a"
+                                                       id="templateCtl-b2826850-b106-4cde-8a7c-d1d08dfaec7a">
+                                                <label for="templateCtl-b2826850-b106-4cde-8a7c-d1d08dfaec7a">视频样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_video.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--  awesome checkbox -->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="7c44a357-ecd0-4c5b-80d0-db8bd5100149"
+                                                       id="templateCtl-7c44a357-ecd0-4c5b-80d0-db8bd5100149">
+                                                <label for="templateCtl-7c44a357-ecd0-4c5b-80d0-db8bd5100149">大图+文字样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgAndChar.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--    awesome checkbox   -->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="4d918595-d2a1-47c7-8e4a-012f28ddd96e"
+                                                       id="templateCtl-4d918595-d2a1-47c7-8e4a-012f28ddd96e">
+                                                <label for="templateCtl-4d918595-d2a1-47c7-8e4a-012f28ddd96e">视频+文字样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo" preload="auto">
+                                            <source src="/video/infor_flow_videoAndChar.mp4">
+                                        </video>
+                                    </div>
+
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--    awesome checkbox-->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="7e1199fd-de4d-469f-8778-5de1268cddea"
+                                                       id="templateCtl-7e1199fd-de4d-469f-8778-5de1268cddea">
+                                                <label for="templateCtl-7e1199fd-de4d-469f-8778-5de1268cddea">图文样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_smallimgAndChar.mp4">
+                                        </video>
+                                    </div>
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--    awesome checkbox    -->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="6684515c-3b6d-40f5-969c-d137c3913aab"
+                                                       id="templateCtl-6684515c-3b6d-40f5-969c-d137c3913aab">
+                                                <label for="templateCtl-6684515c-3b6d-40f5-969c-d137c3913aab">组图样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgs.mp4">
+                                        </video>
+                                    </div>
+                                    <div class="templateBox">
+                                        <div class="templateTitle">
+                                            <!--    awesome checkbox-->
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0"
+                                                       id="templateCtl-3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">
+                                                <label for="templateCtl-3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">文字链样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_char.mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="/img/application/media/arrowR.png" class="templateTurnRight cursor"
+                                 id="templateTurnRight">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!--大图模板-->
+                            <div class="panel panel-default" id="c0bb62fe-fc21-4b0b-a5c7-d547db667032">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_img"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_img">
+                                            <span class="collapse－switch"></span>大图样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_img" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="form-group ">
+                                                    <label
+                                                            class="col-md-2 col-md-offset-1 control-label Dl-required">素材尺寸</label>
+                                                    <div class="col-md-7">
+                                                        <select class="selectpicker" data-width="100%" dl-data="scale">
+                                                            <option value="16_9" selected>
+                                                                16:9&nbsp;&nbsp;&nbsp;720*405
+                                                            </option>
+                                                            <option value="4_3">4:3&nbsp;&nbsp;&nbsp;800*600</option>
+                                                            <option value="3_2">3:2&nbsp;&nbsp;&nbsp;960*640</option>
+                                                            <option value="8_1">8:1&nbsp;&nbsp;&nbsp;800*100</option>
+                                                            <option value="4_1">4:1&nbsp;&nbsp;&nbsp;800*200</option>
+                                                            <option value="6_1">6:1&nbsp;&nbsp;&nbsp;900*150</option>
+                                                            <option value="3_1">3:1&nbsp;&nbsp;&nbsp;720*240</option>
+                                                            <option value="32_5">32:5&nbsp;&nbsp;&nbsp;640*100</option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="help-block col-md-7 col-md-offset-3"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group ">
+                                                    <label class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                    <div class="col-md-7">
+                                                        <input type="text" class="form-control dl-moneyNotNullVal"
+                                                               dl-data="public_price" value="">
+                                                    </div>
+                                                    <span class="help-block col-md-7 col-md-offset-3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--视频模板-->
+                            <div class="panel panel-default" id="b2826850-b106-4cde-8a7c-d1d08dfaec7a">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_video"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_video">
+                                            <span class="collapse－switch"></span>视频样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_video" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">广告位尺寸</label>
+                                                <div class="col-md-7">
+                                                    <select class="selectpicker" data-width="100%" dl-data="scale">
+                                                        <option value="16_9" selected>16:9&nbsp;&nbsp;&nbsp;720*405
+                                                        </option>
+                                                        <option value="4_3">4:3&nbsp;&nbsp;&nbsp;800*600</option>
+                                                        <!--                                                        <option value="3_2">3:2&nbsp;&nbsp;&nbsp;960*640</option>-->
+                                                        <!--                                                        <option value="8_1">8:1&nbsp;&nbsp;&nbsp;800*100</option>-->
+                                                        <!--                                                        <option value="4_1">4:1&nbsp;&nbsp;&nbsp;800*200</option>-->
+                                                        <!--                                                        <option value="6_1">6:1&nbsp;&nbsp;&nbsp;900*150</option>-->
+                                                        <!--                                                        <option value="3_1">3:1&nbsp;&nbsp;&nbsp;720*240</option>-->
+                                                        <!--                                                        <option value="32_5">32:5&nbsp;&nbsp;&nbsp;640*100</option>-->
+                                                    </select>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--大图+文字模板-->
+                            <div class="panel panel-default" id="7c44a357-ecd0-4c5b-80d0-db8bd5100149">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgAndChar">
+                                            <span class="collapse－switch"></span>大图+文字样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <!-- 别删-->
+                                        <div class="row "></div>
+                                        <form></form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">素材设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="pic_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">素材尺寸</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker dl-notNull"
+                                                            dl-data="scale">
+                                                        <option value="4_3" selected>4:3&nbsp;&nbsp;&nbsp;800*600
+                                                        </option>
+                                                        <option value="3_2">3:2&nbsp;&nbsp;&nbsp;960*640</option>
+                                                        <option value="2_1">2:1&nbsp;&nbsp;&nbsp;600*300</option>
+                                                        <option value="16_9">16:9&nbsp;&nbsp;&nbsp;1280*720</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hidden">
+                                                <label for=""
+                                                       class="col-md-2 col-md-offset-1 control-label">素材格式</label>
+                                                <div class="col-md-7">
+                                                    <div class="checkbox">
+                                                        <!--        awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="saweslotaddview-awesome-checkbox01"
+                                                                   type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   class="Dl-checkbox" value="static_pic"
+                                                                   dl-data="static_pic" checked>
+                                                            <label for="awesome-checkbox01">
+                                                            </label>
+                                                            静态(JPG,PNG,GIF)
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <!--     awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox02" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   class="Dl-checkbox" value="dynamic_pic"
+                                                                   dl-data="dynamic_pic" checked>
+                                                            <label for="awesome-checkbox02">
+                                                            </label>
+                                                            动态(GIF)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">标题设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="title_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12">12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14" selected>14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                        <option value="18">18px</option>
+                                                        <option value="19">19px</option>
+                                                        <option value="20">20px</option>
+                                                        <option value="21">21px</option>
+                                                        <option value="22">22px</option>
+                                                        <option value="23">23px</option>
+                                                        <option value="24">24px</option>
+                                                        <option value="25">25px</option>
+                                                        <option value="26">26px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21" selected>21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">描述设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="description_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12" selected>12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14">14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">描述长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23" selected>23</option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">结算价设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="public_price">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--视频+文字模板-->
+                            <div class="panel panel-default" id="4d918595-d2a1-47c7-8e4a-012f28ddd96e">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_videoAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_videoAndChar">
+                                            <span class="collapse－switch"></span>视频+文字样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_videoAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <!-- 别删-->
+                                        <div class="row "></div>
+                                        <form></form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">素材设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="pic_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">素材尺寸</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker dl-notNull"
+                                                            dl-data="scale">
+                                                        <option value="4_3" selected>4:3&nbsp;&nbsp;&nbsp;800*600
+                                                        </option>
+                                                        <option value="16_9">16:9&nbsp;&nbsp;&nbsp;720*405</option>
+                                                        <!--                                                        <option value="3_2">3:2&nbsp;&nbsp;&nbsp;960*640</option>-->
+                                                        <!--                                                        <option value="2_1">2:1&nbsp;&nbsp;&nbsp;600*300</option>-->
+                                                        <!--                                                        <option value="16_9">16:9&nbsp;&nbsp;&nbsp;1280*720</option>-->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hidden">
+                                                <label for=""
+                                                       class="col-md-2 col-md-offset-1 control-label">素材格式</label>
+                                                <div class="col-md-7">
+                                                    <div class="checkbox">
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox07" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   class="Dl-checkbox" value="static_pic"
+                                                                   dl-data="static_pic" checked>
+                                                            <label for="slotaddview-awesome-checkbox07">
+                                                            </label>
+                                                            静态(JPG,PNG,GIF)
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <!--     awesome checkbox     -->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox08" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   class="Dl-checkbox" value="dynamic_pic"
+                                                                   dl-data="dynamic_pic" checked>
+                                                            <label for="slotaddview-awesome-checkbox08">
+                                                            </label>
+                                                            动态(GIF)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">视频素材设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="video_setting">
+                                            <div class="form-group">
+                                                <label for=""
+                                                       class="col-md-2 col-md-offset-1 control-label">素材格式</label>
+                                                <div class="col-md-7">
+                                                    <div class="checkbox">
+                                                        <!-- awesome checkbox                                                       -->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox08" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   value="mp4"
+                                                                   dl-data="format" disabled checked>
+                                                            <label for="slotaddview-awesome-checkbox08">
+                                                            </label>
+                                                            mp4
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">标题设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="title_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12">12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14" selected>14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                        <option value="18">18px</option>
+                                                        <option value="19">19px</option>
+                                                        <option value="20">20px</option>
+                                                        <option value="21">21px</option>
+                                                        <option value="22">22px</option>
+                                                        <option value="23">23px</option>
+                                                        <option value="24">24px</option>
+                                                        <option value="25">25px</option>
+                                                        <option value="26">26px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21" selected>21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">描述设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="description_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12" selected>12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14">14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">描述长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23" selected>23</option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">结算价设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="public_price">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--图文模板-->
+                            <div class="panel panel-default" id="7e1199fd-de4d-469f-8778-5de1268cddea">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_smallimgAndchar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_smallimgAndchar">
+                                            <span class="collapse－switch"></span>图文样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_smallimgAndchar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <!-- 别删-->
+                                        <div class="row "></div>
+                                        <form></form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片素材设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="pic_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">素材尺寸</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="scale">
+                                                        <option value="3_2" selected>3:2&nbsp;&nbsp;&nbsp;480*320
+                                                        </option>
+                                                        <option value="4_3">4:3&nbsp;&nbsp;&nbsp;400*300</option>
+                                                        <option value="1_1">1:1&nbsp;&nbsp;&nbsp;400*400</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">图片位置</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="position">
+                                                        <option value="left" selected>左侧</option>
+                                                        <option value="right">右侧</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hidden">
+                                                <label for=""
+                                                       class="col-md-2 col-md-offset-1 control-label">素材格式</label>
+                                                <div class="col-md-7">
+                                                    <div class="checkbox">
+                                                        <!--      awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox03" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   value="static_pic"
+                                                                   dl-data="static_pic" checked>
+                                                            <label for="slotaddview-awesome-checkbox03">
+                                                            </label>
+                                                            静态(JPG,PNG,GIF)
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <!--    awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox04" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   value="dynamic_pic"
+                                                                   checked>
+                                                            <label for="slotaddview-awesome-checkbox04">
+                                                            </label>
+                                                            动态(GIF)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">标题设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="title_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题与图片对齐方式</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="align">
+                                                        <option value="top" selected>顶部对齐</option>
+                                                        <option value="middle">垂直居中</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12">12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14" selected>14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                        <option value="18">18px</option>
+                                                        <option value="19">19px</option>
+                                                        <option value="20">20px</option>
+                                                        <option value="21">21px</option>
+                                                        <option value="22">22px</option>
+                                                        <option value="23">23px</option>
+                                                        <option value="24">24px</option>
+                                                        <option value="25">25px</option>
+                                                        <option value="26">26px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21" selected>21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">描述设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="description_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12" selected>12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14">14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">描述长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23" selected>23</option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">结算价设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="public_price">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--组图模板-->
+                            <div class="panel panel-default" id="6684515c-3b6d-40f5-969c-d137c3913aab">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgs"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgs">
+                                            <span class="collapse－switch"></span>组图样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgs" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <!-- 别删-->
+                                        <div class="row "></div>
+                                        <form></form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">图片素材设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="pic_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">素材尺寸</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="scale">
+                                                        <option value="3_2" selected>3:2&nbsp;&nbsp;&nbsp;480*320
+                                                        </option>
+                                                        <option value="4_3">4:3&nbsp;&nbsp;&nbsp;400*300</option>
+                                                        <option value="1_1">1:1&nbsp;&nbsp;&nbsp;400*400</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">图片数</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="number">
+                                                        <option value="3" selected>3</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group hidden">
+                                                <label for=""
+                                                       class="col-md-2 col-md-offset-1 control-label">素材格式</label>
+                                                <div class="col-md-7">
+                                                    <div class="checkbox">
+                                                        <!--    awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox05" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   value="static_pic"
+                                                                   dl-data="static_pic" checked>
+                                                            <label for="slotaddview-awesome-checkbox05"></label>
+                                                            静态(JPG,PNG,GIF)
+                                                        </div>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <!--  awesome checkbox-->
+                                                        <div class="checkbox checkbox-deepleaper">
+                                                            <input id="slotaddview-awesome-checkbox06" type="checkbox"
+                                                                   class="Dl-checkbox" name="format"
+                                                                   value="dynamic_pic"
+                                                                   checked>
+                                                            <label for="slotaddview-awesome-checkbox06"></label>
+                                                            动态(GIF)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">标题设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="title_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题与图片对齐方式</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="align">
+                                                        <option value="top" selected>顶部对齐</option>
+                                                        <option value="middle">垂直居中</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12">12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14" selected>14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                        <option value="18">18px</option>
+                                                        <option value="19">19px</option>
+                                                        <option value="20">20px</option>
+                                                        <option value="21">21px</option>
+                                                        <option value="22">22px</option>
+                                                        <option value="23">23px</option>
+                                                        <option value="24">24px</option>
+                                                        <option value="25">25px</option>
+                                                        <option value="26">26px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21" selected>21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">描述设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="description_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12" selected>12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14">14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">描述长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21">21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23" selected>23</option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">结算价设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="public_price">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--文字链模板-->
+                            <div class="panel panel-default" id="3df90aec-8438-4f7b-96d5-0f3fd9b2a2b0">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_char"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_char">
+                                            <span class="collapse－switch"></span>文字链样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_char" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <!-- 别删-->
+                                        <div class="row "></div>
+                                        <form></form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">标题设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="title_setting">
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字体</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font">
+                                                        <option value="">系统默认字体</option>
+                                                        <option value="LiHei Pro Medium">苹果丽黑 LiHei Pro Medium</option>
+                                                        <option value="LiSong Pro Light">苹果丽宋 LiSong Pro Light</option>
+                                                        <option value="Apple LiGothic Medium">苹果丽中黑 Apple LiGothic
+                                                            Medium
+                                                        </option>
+                                                        <option value="Apple LiGothic Medium">苹果丽细宋 Apple LiSung Light
+                                                        </option>
+                                                        <option value="Hiragino Sans">冬青黑体 Hiragino Sans</option>
+                                                        <option value="Droid Sans">Droid Sans</option>
+                                                        <option value="Droid Sans Fallback">Droid Sans Fallback</option>
+                                                        <option value="STHeiti">华文黑体 STHeiti</option>
+                                                        <option value="STKaiti">华文楷体 STKaiti</option>
+                                                        <option value="STSong">华文宋体 STSong</option>
+                                                        <option value="STFangsong">华文仿宋 STFangsong</option>
+                                                        <option value="STHeiti Light">华文细黑 STHeiti Light</option>
+                                                        <option value="Microsoft YaHei">微软雅黑 Microsoft YaHei</option>
+                                                        <option value="方正兰亭中黑_GBK">方正兰亭中黑_GBK</option>
+                                                        <option value="方正兰亭黑_GBK">方正兰亭黑_GBK</option>
+                                                        <option value="Source Han Sans">思源黑体 Source Han Sans</option>
+                                                        <option value="ExtractBlack">汉仪旗黑 ExtractBlacki</option>
+                                                        <option value="SimSun">宋体 SimSun</option>
+                                                        <option value="SimHei">黑体 SimHei</option>
+                                                        <option value="FZZhongDengXian">方正等线 FZZhongDengXian</option>
+                                                        <option value="zysong">中易宋体 zysong</option>
+                                                        <option value="WenQuanYi Micro Hei Mono">文泉驿微米黑 WenQuanYi Micro
+                                                            Hei Mono
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字号</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="font-size">
+                                                        <option value="12">12px</option>
+                                                        <option value="13">13px</option>
+                                                        <option value="14" selected>14px</option>
+                                                        <option value="15">15px</option>
+                                                        <option value="16">16px</option>
+                                                        <option value="17">17px</option>
+                                                        <option value="18">18px</option>
+                                                        <option value="19">19px</option>
+                                                        <option value="20">20px</option>
+                                                        <option value="21">21px</option>
+                                                        <option value="22">22px</option>
+                                                        <option value="23">23px</option>
+                                                        <option value="24">24px</option>
+                                                        <option value="25">25px</option>
+                                                        <option value="26">26px</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">字色</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" dl-data="font-color"
+                                                           value="#000000" placeholder="#000000">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-2 col-md-offset-1 control-label">标题长度</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control selectpicker" dl-data="length">
+                                                        <option value="17">17</option>
+                                                        <option value="18">18</option>
+                                                        <option value="19">19</option>
+                                                        <option value="20">20</option>
+                                                        <option value="21" selected>21</option>
+                                                        <option value="22">22</option>
+                                                        <option value="23">23</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row Dl-title">
+                                            <div class="col-md-10 col-md-offset-1">
+                                                <span class="identifier">结算价设置</span>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" role="form" dl-set="public_price">
+                                            <div class="form-group ">
+                                                <label
+                                                        class="col-md-2 col-md-offset-1 control-label Dl-required">结算价(元／千次展示)</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control dl-moneyNotNullVal"
+                                                           dl-data="public_price" value="">
+                                                </div>
+                                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row submit_box">
+                    <div class="submit_btn_wrapper">
+                        <div class="submit_btn" id="cancel">
+                            返回列表
+                        </div>
+                        <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                            完成添加
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="/js/application/media/allianceslotaddview.js?v=20170509"></script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

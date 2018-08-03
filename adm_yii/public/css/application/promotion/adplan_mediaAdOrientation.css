@@ -1,0 +1,211 @@
+#dl_media{
+    width: 620px;
+    height: 330px;
+    padding: 5px;
+}
+ul, li, ol {
+    list-style-type: none;
+    margin: 2px 0;
+    padding: 0;
+}
+span, label {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+input,label{
+    cursor: pointer;
+}
+
+#dl-media-box{
+    width: 600px;
+    height: 300px;
+    border: 1px solid #e3e1e2;
+    position: absolute;
+    box-shadow: 0 0 5px #e3e1e2;
+    z-index: 999;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    margin-top: 5px;
+    /* display: none; */
+}
+.dl-media-top-box{
+    width: 600px;
+    height: 35px;
+    /* border: 1px solid; */
+    position: relative;
+    z-index: 999;
+    line-height: 30px;
+    margin-top: 20px;
+}
+.dl-media-container-box{
+    width: 600px;
+    height: 220px;
+    /* border: 1px solid; */
+    position: relative;
+    z-index: 999;
+    margin-top: 5px;
+}
+.dl-media-footer-box{
+    width: 600px;
+    height: 35px;
+    /* border: 1px solid; */
+    position: relative;
+    z-index: 999;
+    margin-top: 10px;
+    display: none;
+}
+.dl-media-top-left{
+    width: 46%;
+    height: 30px;
+    border: 1px solid #ffffff;
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: left;
+    margin-left: 20px;
+    background-color: #ffffff;
+}
+.dl-media-top-right{
+    width: 46%;
+    height: 30px;
+    border: 1px solid #ffffff;
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+    background-color: #ffffff;
+}
+.top-left-span{
+    margin-left: 10px;
+}
+.top-right-span{
+    font-size: 12px;
+    height: 30px;
+    line-height: 36px;
+    margin-left: 10px;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    margin-top: -17px;
+}
+.dl-media-all-delete{
+    width: 70px;
+    height: 26px;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    background-color: #ffffff;
+    float: right;
+    /* margin-top: 4px; */
+    line-height: 26px;
+    cursor: pointer;
+}
+#dl-media-container-selected{
+    width: 46%;
+    height: 219px;
+    border: 1px solid #e3e1e2;
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: left;
+    margin-left: 20px;
+    background-color: #ffffff;
+    overflow-y: scroll;
+}
+#dl-media-container-checked{
+    width: 46%;
+    height: 219px;
+    border: 1px solid #e3e1e2;
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+    background-color: #ffffff;
+    overflow-y: scroll;
+}
+.dl-media-footer-affirm-frame{
+    width: 46%;
+    height: 29px;
+    /* border: 1px solid; */
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: left;
+    margin-left: 20px;
+}
+.dl-media-footer-cancel-frame{
+    width: 46%;
+    height: 29px;
+    /* border: 1px solid; */
+    position: relative;
+    z-index: 999;
+    display: inline-block;
+    float: right;
+    margin-right: 20px;
+}
+.dl-media-affirm-btn{
+    width: 70px;
+    height: 26px;
+    border-radius: 5px;
+    border: 1px solid #cfcdda;
+    background-color: #f3f3f3;
+    float: right;
+    cursor: pointer;
+}
+.dl-media-cancel-btn{
+    width: 70px;
+    height: 26px;
+    border-radius: 5px;
+    border: 1px solid #cfcdda;
+    background-color: #f3f3f3;
+    float: left;
+    cursor: pointer;
+}
+.ad-display{
+    /*display: none;*/
+}
+.adId-display{
+    display: none;
+    border: 1px solid #cfcdda;
+    width: 260px;
+}
+.delete-img{
+    /* display: inline; */
+    float: right;
+    width: 12px;
+    height: 12px;
+    margin-right: 15px;
+    margin-top: 4px;
+    cursor: pointer;
+    /* text-align: right; */
+}
+.adId-delete-img{
+    /* display: inline; */
+    float: right;
+    width: 12px;
+    height: 12px;
+    margin-right: 15px;
+    margin-top: 4px;
+    cursor: pointer;
+    /* text-align: right; */
+}
+
+.mouseover-style{
+    box-shadow: 0px 0px 8px #585858;
+}
+.each-data-div-delete {
+    /* cursor: pointer; */
+    display: none;
+}
+
+.adId_span{
+    word-break:normal;
+    width: auto;
+    /*display: block;*/
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    display: inline-block;
+}

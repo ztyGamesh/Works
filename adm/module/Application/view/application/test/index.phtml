@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>登录</title>
+        <link rel="stylesheet" href="/css/application/login.css"/>
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/application/login.js"></script>
+        <!--[if IE 8]>
+        <script>
+            $(function(){
+                $('.login-form').css({ 'filter': 'progid:DXImageTransform.Microsoft.gradient(startcolorstr=#22ffffff,endcolorstr=#22ffffff)'});
+            })
+        </script>
+        <![endif]-->
+        <!--[if IE 7]>
+        <script>
+            $(function(){
+                $('.login-form').css({ 'filter': 'progid:DXImageTransform.Microsoft.gradient(startcolorstr=#22ffffff,endcolorstr=#22ffffff)'});
+            })
+        </script>
+        <![endif]-->
+        <!--[if IE 6]>
+        <script>
+            $(function(){
+                $('.login-form').css({ 'filter': 'progid:DXImageTransform.Microsoft.gradient(startcolorstr=#22ffffff,endcolorstr=#22ffffff)'});
+            })
+        </script>
+        <![endif]-->
+    </head>
+    <body>
+        <img src="/img/application/login/login-bg.jpg"  class="login-bg" >
+        <img src="/img/application/login/login-footer-bg.png" class="login-footer-bg">
+        <div class="login-wrap">
+            <div class="login-form">
+                <form id="formLogin" action="/index/login" method="post">
+                    <input type="hidden" name="ajax" value="1">
+                    <div class="login-user ">
+                        <span class="user-img"></span>
+                        <input type="text" placeholder="ID" class="user" name="username" autocomplete="off">
+                    </div>
+                    <div class="login-pass ">
+                        <span class="pass-img"></span>
+                        <input type="text" placeholder="密码" class="pass" name="passwd" autocomplete="off">
+                        <input type="submit" value="" class="sub" id="btnSub">
+                        <span class="subImg"></span>
+                        <span class="refresh"></span>
+                    </div>
+                    <div class="login-tip" style="display:none;">
+                        <span class="triangle"></span>
+                        <span class="tip">ID 或密码不正确</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <script src="/js/jquery.form.js"></script>
+        <script src="/js/passport.js"></script>  
+    </body>
+</html>

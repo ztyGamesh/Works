@@ -1,0 +1,42 @@
+@import "~antd/lib/style/themes/default.less";
+
+.body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px;
+  .btn {
+    flex-shrink: 0;
+    font-size: 22px;
+    font-weight: 800;
+    width: 28px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0 0 8px 0 #888888;
+    }
+  }
+  .main {
+    width: auto;
+    flex-grow: 0;
+    padding: 0 18px;
+    overflow: hidden;
+    .view {
+      width: 100%;
+      overflow: hidden;
+      .content {
+        min-width: 100%;
+        display: flex;
+        .item {
+          flex-shrink: 0;
+          padding: 0 6px;
+        }
+      }
+    }
+  }
+}

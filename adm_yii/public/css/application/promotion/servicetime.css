@@ -1,0 +1,126 @@
+
+.sche-wrapper{
+    border: 1px solid #d3d3d3;
+    padding: 15px;
+    background: #fff;
+    width: 625px;
+    /*width: 657px;*/
+    /*height: 300px;*/
+    /*display: none;*/
+}
+.ui-schedule{
+    font-size: 12px;
+    width: 620px;
+    /*height: 270px;*/
+}
+.ui-schedule-head{
+    height: 28px;
+    margin-bottom: 10px;
+}
+.ui-schedule-body{
+    display: inline-grid;
+}
+.ui-schedule-help{
+    float: right;
+    width: 200px;
+}
+.ui-schedule-help div{
+    float: left;
+    cursor: default;
+}
+
+
+
+.ui-schedule-time, .ui-schedule-timehead, .ui-schedule-help-selected, .ui-schedule-help-unselected {
+    background: #E6E6E6;
+    border: 1px solid #E6E6E6;
+    color: #E6E6E6;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    /*height: 16px;*/
+    height: 18px;
+    line-height: 16px;
+    /*line-height: 16px;*/
+    margin-right: 2px;
+    text-align: center;
+    /*width: 16px;*/
+    width: 18px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.ui-schedule-time-hover{
+    background:#fff;
+    border:1px solid #A2D688;
+    color:#390
+}
+
+.ui-schedule-time-selected, .ui-schedule-help-selected {
+    background: #390;
+    border: 1px solid #390;
+}
+
+
+.ui-schedule-help-text {
+    line-height: 16px;
+    padding: 2px 8px 0 3px;
+}
+.ui-schedule-shortcut{
+    float: left;
+    padding: 2px 0 0 10px;
+    line-height: 16px;
+}
+.ui-schedule-shortcut-item {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #37a;
+}
+.ui-schedule-line {
+    height: 18px;
+    padding: 2px 0;
+    line-height: 18px;
+    margin: 2px 0;
+}
+
+.ui-schedule-day {
+    float: left;
+    line-height: 18px;
+    height: 18px;
+    padding-left: 2px;
+    width: 90px;
+}
+
+.ui-schedule-seg {
+    float: left;
+    width: 130px;
+}
+.ui-schedule-timehead {
+    background: url(../../../img/esui.png) -40px -200px;
+    border: 0;
+    width: 18px;
+}
+.ui-schedule-timehead-active {
+    background: url(../../../img/esui.png) -58px -200px;
+}
+
+
+.ui-schedule-day input {
+    margin-right: 5px;
+}
+input, label {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+.error {
+    font-size: 12px;
+    font-weight: normal;
+    color: red;
+}
+

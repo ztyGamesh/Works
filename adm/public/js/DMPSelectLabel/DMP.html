@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DMP标签选择器-完备版本</title>
+	<link rel="stylesheet" href="./css/DMPselect.css">
+</head>
+<body>
+	<div id="elementWrapper">
+            <div id="element_id">
+                <select class="first" size="6" id="elementOne" >
+                    <option value="123" selected></option>
+                </select>
+                <select class="second" size="6" id="elementTwo" >
+                    <option value="" selected></option>
+                </select>
+                <select class="third" size="6" id="elementThree">
+                    <option value="" selected></option>
+                </select>
+            </div>
+            <div id="element_id_show">
+                <span id="levelOne"></span>
+                <span id="levelTwo"></span>
+                <span id="levelThree"></span>
+            </div>
+        </div>
+</body>
+<script src="./js/jquery.js"></script>
+<script src="./js/jquery.cxselect.js"></script>
+<script src="./js/DMPselect.js"></script>
+<script>
+	var test = new addElementIDListener({
+                url: "../test.json",
+                urlCode: "../code2.json"
+            });
+    test.init();
+</script>
+</html>

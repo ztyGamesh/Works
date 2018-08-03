@@ -1,0 +1,225 @@
+ 
+
+  
+<form id="edit" method="post" action="/order/ordersave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" autocomplete="off" value="<?php echo $name;?>">
+            <input id="uid" class="form-control" type="hidden" name="uid"  value="<?php echo $uid;?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单号:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+           <input id="order_id" type="text" name="order_id" class="form-control"  value="<?php echo $this->item['order_id'];?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+<!--    屏蔽预算-->
+     <div class="form-group" style="display: none">
+        <label class="col-sm-3 control-label">预算:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="cpm" class="form-control" type="text" name="cpm"  value="<?php echo $this->item['cpm'];?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    
+    <!--
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单组</label>
+        <div class="col-sm-6 ">
+            <select name="class" class="form-control selectpicker dropup" data-live-search="true">
+				<?php foreach($this->group_menu as $key => $val):?>
+				<option value="<?php echo $key?>" <?php if($this->item['class'] ==$key) echo 'selected="selected"'?>><?php echo $val;?></option>
+				<?php endforeach;?>
+            </select>
+        </div>
+    </div>
+    -->
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">代理商:</label>
+        <div class="col-sm-6 ">
+            <select name="agency" class="form-control selectpicker dropup" data-live-search="true">
+                <option value="">无（直接客户）</option>
+				<?php foreach($this->agency_menu as $key => $val):?>
+				<option value="<?php echo $key?>" <?php if($this->item['agency'] ==$key) echo 'selected="selected"'?>><?php echo $val;?></option>
+				<?php endforeach;?>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">客户:</label>
+        <div class="col-sm-6 ">
+            <select name="client" class="form-control selectpicker dropup" data-live-search="true"></select>
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">起始日期:</label>
+        <div class="col-sm-6 ">
+            <input id="s" class="form-control" type="text" name="s" style="z-index:1025"  value="<?php echo $this->item['s'];?>">
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">截止日期:</label>
+        <div class="col-sm-6 ">
+            <input id="e" class="form-control" type="text" name="e" style="z-index:1025"  value="<?php echo $this->item['e'];?>">
+        </div>
+    </div>
+<!--    屏蔽订单负责人-->
+    <div class="form-group " style="display: none">
+        <label class="col-sm-3 control-label">订单负责人:</label>
+        <div class="col-sm-6 ">
+            
+        	<select name="duty_user" class="form-control selectpicker dropup" data-live-search="true">
+				<?php foreach($this->user_menu as $key => $val):?>
+				<option value="<?php echo $key?>" <?php if($this->item['duty_user'] ==$key) echo 'selected="selected"'?>><?php echo $val;?></option>
+				<?php endforeach;?>
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单说明</label>
+        <div class="col-sm-6 ">
+            <input id="info" class="form-control" type="text" name="info"  value="<?php echo $this->item['info'];?>">
+        </div>
+    </div>
+    
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/order/order', 2);
+
+    var clientAgencyData = $.parseJSON('<?php echo $this->client_agency; ?>');
+    var clientMenuData = $.parseJSON('<?php echo $this->client_menu; ?>');
+
+    var agencyToClient = {};
+    for (var k in clientAgencyData) {
+        if (!agencyToClient[clientAgencyData[k]]) {
+            agencyToClient[clientAgencyData[k]] = [];
+        }
+        agencyToClient[clientAgencyData[k]].push(k);
+    }
+
+    $('select[name=agency]').change(function() {
+        var childList = agencyToClient[$(this).val()];
+        var context = '';
+        if (childList) {
+            for (var i = 0; i < childList.length; i++) {
+                context += '<option value="' + childList[i] + '">' + clientMenuData[childList[i]] + '</option>'
+            }
+        }
+        $('select[name=client]').html(context);
+        $('select[name=client]').selectpicker('refresh');
+    });
+
+    $('select[name=agency]').change();
+
+    $('#name').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#name'),'订单名称不能为空');
+        }else{
+            vaSuccess($('#name'));
+        }
+    });
+    $('#order_id').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#order_id'),'订单号不能为空');
+        }else{
+            vaSuccess($('#order_id'));
+        }
+    });
+    $('#cpm').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#cpm'),'预算不能为空');
+        }else{
+            vaSuccess($('#cpm'));
+        }
+    });
+
+
+
+
+    function checkFormValidByBackend() {
+        // ---- 拼装好的的提交form
+        var data = {
+            'name': $('#name').val(),
+            'order_id': $('#order_id').val(),
+            'cpm': $('#cpm').val(),
+            'agency': $('select[name=agency]').val(),
+            'client': $('select[name=client]').val(),
+            's': $('#s').val(),
+            'e': $('#e').val(),
+            'info': $('#info').val(),
+        };
+        // ---- form end.
+        
+        if (!data.client) {
+            vaError($('select[name=client]'), '请选择客户');
+            return false;
+        } else {
+            vaSuccess($('select[name=client]'));
+        }
+        
+        var valid;
+     
+        $.ajax({
+            url: '/order/checkAddOrEditOrderFormValid',
+            data: data,
+            type: 'POST',
+            dataType: 'json',
+            async: false,
+            success: function(ret){
+                if (ret && ret.data) {
+                    if (ret.data.res) {
+                        // 验证成功
+                        valid = true;
+                    } else {
+                        // 验证失败
+                        valid = false;
+               
+                        var validObj = ['name', 'order_id'];
+                        for (var i = 0; i < validObj.length; i++) {
+                            vaSuccess($('[name=' + validObj[i] + ']'));
+                        }
+               
+                        for (var key in ret.data.error) {
+                            vaError($('[name=' + key + ']'), ret.data.error[key]);
+                        }
+                    }
+                }
+            }
+        });
+        
+        return valid;
+        
+    }
+
+
+
+
+    
+
+
+
+$( function() {
+ 
+    bindRangeDatepicker($("#s"), $("#e"));
+  
+    $(".ui-dialog-content").css("overflow","initial");
+} );
+
+
+
+</script>
+  <link rel="stylesheet" href="/resources/demos/style.css">

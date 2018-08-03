@@ -1,0 +1,112 @@
+         #element_id select {
+         padding: 20px 30px 20px;
+         outline: none;
+         height: 390px;
+         line-height: 80px;
+         width: 300px;
+         border-radius: 3px;
+         display: inline-block;
+         font-size: 24px;
+         color: #5d5c61;
+         background-color: #fff;
+         -webkit-appearance: none;
+         float: left;
+         box-sizing: border-box;
+         -moz-appearance: none;  
+         appearance: none;/*清除select下拉框默认样式*/  
+         border-right:1px solid gray;
+         border-left: 0px solid #fff;
+         border-top: 0px solid #fff;
+         border-bottom: 0px solid #fff;
+        }
+        #elementWrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            width: 1200px;
+            border: 1px solid gray;
+        } 
+        select option {
+            padding: 5px 0 5px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            width: 178px;
+            color:#5d5c61;
+            text-indent: 0.5em;
+        }
+        select option:checked {
+            /*box-shadow: 0 0 10px 100px gray inset;*/
+            background-image: radial-gradient(at center bottom,#8a8a8a, #8a8a8a);
+            background-color: #8a8a8a;
+            animation:change 1s linear 0s infinite;
+            -webkit-animation:change 1s linear 0s infinite;
+            -moz-animation:change 1s linear 0s infinite;
+            -o-animation:change 1s linear 0s infinite;
+            -ms-animation:change 1s linear 0s infinite;
+        }
+        option:hover {
+            width: 178px;
+            background-color: #e8e8e8;
+            color:#5d5c61;
+        }
+        /* chrome safari */
+        @-webkit-keyframes change{ 0%{color:#fff;}
+            100% {color:#fff;}
+        }
+
+        /* firefox */
+        @-moz-keyframes change { 
+            0% {color:#fff;
+
+                }
+            100% {color:#fff;}
+        }
+
+        /* ie */
+        @-ms-keyframes change{ 0%{color:#fff;}
+            100% {color:#fff;}
+        }
+
+        /* opera */
+        @-o-keyframes change{ 0%{color:#fff;}
+            100% {color:#fff;}
+        }
+
+        /* 支持w3c标准新版本游览器 */
+        @keyframes change{ 0%{color:#fff;}
+            100% {color:#fff;}
+        }
+        
+        #element_id {
+            width: 900px;
+            height: 390px;
+            float: left;
+        }
+        #element_id_show {
+            float: right;
+            width: 290px;
+            height: 388px;
+            position: relative;
+        }
+        #levelOne {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            font-size: 24px;
+            color: #7a7a7a;
+        }
+        #levelTwo {
+            position: absolute;
+            top: 75px;
+            left: 60px;
+            font-size: 24px;
+            color: #7a7a7a;
+        }
+        #levelThree {
+            position: absolute;
+            top: 120px;
+            left: 90px;
+            font-size: 24px;
+            color: #7a7a7a;
+        }

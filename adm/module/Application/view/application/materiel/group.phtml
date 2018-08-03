@@ -1,0 +1,86 @@
+<?php
+    echo $this->partial('layout/listPublicHeader2.phtml');
+?>
+<script>
+
+    var ListPageConfig = {
+        tableId:'#table',   // 表格id
+        func:function(data){  
+        },
+        tableIndexCol :'uid', //数据索引字段 一般为 uid 或者 id
+        table : {           //表格配置
+            url: '/materiel/group',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign:'left',
+            pagination: true,
+            pageSize: 25,  //获取所有数据,建立二级结构
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'saveId',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '素材组'
+            },{
+                field: 'create_time',
+                title: '创建时间',
+                sortable:true,
+            }, {
+        
+                field: 'info',
+                title: '备注',
+                sortable:true,
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url:{
+            add         : '/materiel/groupadd',         //添加 数据 html 地址
+            edit        : '/materiel/groupedit',         //编辑数据 html 地址
+            del         : '/materiel/groupdel' ,         //删除数据地址
+            detail      : false                      //详细内容地址,为空则取编辑的地址
+        },
+        title:{
+            addTitle:'添加素材组',
+            editTitle:'编辑素材组',
+        },
+        showDetail:false         //是否显示详细信息按钮
+    }
+
+</script>
+
+
+<div id="toolbar">
+	<div class = "btn-group pull-left">
+		<a class = "btn btn-warning plus"><i class = "glyphicon glyphicon-plus"></i> 添加</a>
+		<button id = "dropdown" class = "btn btn-warning dropdown-toggle" data-toggle = "dropdown" disabled><span
+				class = "caret"></span></button>
+		<ul class = "dropdown-menu">
+			<li><a href = "#" class = "allremove"><i class = "glyphicon glyphicon-remove"></i> 删除</a></li>
+
+		</ul>
+	</div>
+	<div class = "input-group pull-left paddingleft10" style = 'width:300px;'>
+		<input type = "text" id = "searchKeyword" class = "form-control" placeholder = "媒介渠道名称" value = "" name = "search">
+	
+   
+	
+	
+		<span class = "input-group-btn">
+			<a id = "ok" class = "btn btn-default dropdown-toggle deepleaper-search-btn" type = "button" data-toggle = "dropdown"><span
+					class = "glyphicon glyphicon-search"></span></a>
+		</span>
+	</div>
+</div>
+<table id = "table" class="list-table"></table>
+<?php
+    echo $this->partial('layout/listPublicFooter2.phtml');
+?>

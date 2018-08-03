@@ -1,0 +1,267 @@
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+?>
+    <link rel="stylesheet" href="/css/bootstrap-editable.css"/>
+    <script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+
+    <div id="toolbar">
+        <div class="form-inline" role="form" style="padding-bottom: 10px">
+
+            <div class="form-group">
+                <span>开始日期: </span>
+                <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+            </div>
+
+            <div class="form-group">
+                <span>结束日期: </span>
+                <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+            </div>
+
+            <br/>
+
+            <div class="form-group hidden">
+                <span>媒体分类: </span>
+                <select name="mediaclass" id="mediaclass" class="selectpicker show-tick">
+                    <option value="全部">全部</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span>媒体名称: </span>
+                <select name="media" id="media" class="selectpicker show-tick">
+                    <option value="全部">全部</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <span>广告位: </span>
+                <select name="slot" id="slot" class="selectpicker show-tick">
+                    <option value="全部">全部</option>
+                </select>
+            </div>
+
+
+            <button id="ok" type="submit" class="btn btn-default">OK</button>
+            <div class="form-group">
+                <input type="button" class="form-control" value="下载报表" id="downloadTable">
+            </div>
+        </div>
+        <div id="echarsBox" style="width: 100%;height:400px;"></div>
+        <form role="form" style="padding: 19px 0 ">
+            选择报表对比项：
+            <div id="comparision">
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        function GetDateStr(AddDayCount) {
+            var dd = new Date();
+            dd.setDate(dd.getDate() + AddDayCount);//获取AddDayCount天后的日期
+            var y = dd.getFullYear();
+            var m = dd.getMonth() + 1;//获取当前月份的日期
+            var d = dd.getDate();
+            return y + "/" + m + "/" + d;
+        }
+
+        (function () {
+            bindRangeDatepicker($('#begin_date'), $('#end_date'), addDate(new Date, -7), addDate(new Date(), -1));
+        })();
+    </script>
+
+    <script>
+
+        checkActionAuth('/stat/geo', 1);
+        //      保存级联数组
+        var getListData = [];
+        statGetList(statGetListSuccess);
+        function statGetListSuccess(result) {
+            var media = $("#media");
+            var slot = $("#slot");
+            var res = JSON.parse(result);
+            console.log(res);
+            if (res.status == '1') {
+                getListData = res.data;
+//          初始化一级菜单
+                var mediaDom = '<option value="全部">全部</option>';
+                for (var i = 0; i < getListData.length; i++) {
+                    mediaDom += '<option value="' + getListData[i].m_uid + '">' + getListData[i].m_name + '</option>';
+                }
+                media.html(mediaDom);
+//          选中一级菜单
+                media.change(function () {
+                    slot.html('<option value="全部">全部</option>');
+                    var slotDom = '<option value="全部">全部</option>';
+                    $.each(getListData, function (i, mediaItem) {
+                        if ($("#media option:selected").val() == mediaItem.m_uid) {
+                            $.each(mediaItem.child, function (j, slotItem) {
+                                slotDom += '<option value = ' + slotItem.s_uid + '>' + slotItem.s_name + '</option>';
+                            });
+                            slot.html(slotDom);
+                        }
+                    });
+                    $(".selectpicker").selectpicker('refresh');
+                });
+            } else {
+                console.log('媒体报表级联菜单获取失败');
+            }
+        }
+    </script>
+    <script type="text/javascript" src="/js/echartsCtl.js"></script>
+    <!--    初始化echarts对比字段控制器-->
+    <script type="text/javascript">
+        var comparision = [
+            {
+                field: "pv",
+                name: "PV",
+                checked: true
+            },
+            {
+                field: "imp",
+                name: "曝光量",
+                checked: false
+            },
+            {
+                field: "click",
+                name: "点击量",
+                checked: false
+            }
+        ];
+        comparisionRadioInit($('#comparision'), comparision);
+        function draw(xx) {
+            var echartsCtlSelected = [];
+            var echartsName = '';
+            $("input[name='echartsCtl']:checked").each(function (index, element) {
+                var fieldCol = $(element).attr('field');
+                echartsName = $(element).val();
+                for (x in xx.data) {
+                    for (h in xx.data[x]) {
+                        if (h == fieldCol) {
+                            echartsCtlSelected.push({
+                                name: xx.data[x].province, value: xx.data[x][h]
+                            });
+                        } else {
+                        }
+                    }
+                }
+            });
+
+            var myChart = echarts.init(document.getElementById('echarsBox'));
+            option = {
+                title: {
+                    text: echartsName+'地图',
+                    subtext: '',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: []
+                },
+                visualMap: {
+                    min: 0,
+                    max: 1000000,
+                    left: 'left',
+                    top: 'bottom',
+                    text: ['高', '低'],           // 文本，默认为数值文本
+                    calculable: true
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        dataView: {readOnly: false},
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                series: [
+                    {
+                        name: echartsName,
+                        type: 'map',
+                        mapType: 'china',
+                        roam: false,
+                        label: {
+                            normal: {
+                                show: true
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        data: echartsCtlSelected
+//                        data: [
+//                            {name: '北京', value: 1111111111},
+//                            {name: '河南', value: 112222},
+//                            {name: '云南', value: 555555555555}
+//                        ]
+                    }
+
+                ]
+            };
+            myChart.setOption(option);
+        }
+
+
+        var ListPageConfig = {
+            func: function (data) {//绘制echarts
+                draw(data);
+            },
+            tableId: '#table',   // 表格id
+            tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+            table: {           //表格配置
+                url: '/stat/geo',
+                queryParams: 'queryParams',
+                toolbar: '#toolbar',
+                showColumns: true,
+                searchAlign: 'left',
+                pagination: false,
+                pageSize: 25,  //获取所有数据,建立二级结构
+                sortOrder: 'desc',
+
+                sidePagination: 'server',
+                cookie: true,
+                cookieIdTable: 'replacebyListJS',cookiesEnabled:['bs.table.pageNumber'],
+                cookiePath: '/',
+                toolbarAlign: 'dpmiddle',
+
+                columns: [{
+                    field: 'province',
+                    title: '省份'
+                }, {
+                    field: 'pv',
+                    title: 'PV',
+                    sortable: true
+                }, {
+                    field: 'imp',
+                    title: '曝光量',
+                    sortable: true
+                }, {
+                    field: 'click',
+                    title: '点击量',
+                    sortable: true
+                }]
+            },
+
+            title: {
+                addTitle: '添加订单',
+                editTitle: '编辑订单'
+            },
+            showDetail: false         //是否显示详细信息按钮
+        };
+        //下载报表
+        $("#downloadTable").on('click',function () {
+            var url = '/stat/exportcsv?type=geo&begin_date='+encodeURI($("#begin_date").val())+'&end_date='+encodeURI($("#end_date").val())+'&media='+encodeURI($("#media").val())+'&slot='+encodeURI($("#slot").val());
+            window.open(url);
+        })
+    </script>
+    <table id="table" class="list-table"></table>
+
+<?php
+echo $this->partial('layout/listPublicFooter2.phtml');
+?>

@@ -1,0 +1,340 @@
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="../css/application/media/slotadd.css?v=201709013"/>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/promotion/adgrouplistview"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name linkable"><a href="#"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adplanName" class="user-message-name linkable"><a href="#"></a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span class="user-message-name">添加广告创意</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="infor_flow" id="infor_flow">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label ">广告计划名称</label>
+                        <div class="col-md-7">
+                            <div class="dropdown">
+                                <button type="button" style="width: 100%;" class="btn btn-default" id="plannameSelect" data-toggle="dropdown">
+                                    <div>
+                                        <span id="planname">广告计划</span>
+                                        <span class="caret"></span>
+                                    </div>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="plannameSelect" id="plannamelist" style="max-height: 400px;overflow: auto;width: 100%;">
+                                </ul>
+                            </div>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3" style="display: none;"></span>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告形式</label>
+                        <div class="col-md-7" id="dom-ad-type"></div>
+                        <span class="help-block col-md-7 col-md-offset-3" style="display: none;"></span>
+                    </div>
+                </div> -->
+
+                <!-- <div class="row Dl-part-title" style="margin-bottom: 0;">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">选择模版</span>
+                        <small class="Dl-prompt">请点击缩略图预览样式，根据广告位尺寸比例推荐适配较好的样式</small>
+                    </div>
+                </div> -->
+
+                <!-- <div class="row" id="dom-ad-style"></div> -->
+
+
+                <div class="row Dl-part-title" style="margin-bottom: 0;margin-top: 15px;">
+                        <div class="col-md-10 col-md-offset-1">
+                            <span class="identifier">添加创意</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="dom-ad-type-box">
+                    <div id="dom-ad-type"></div>
+                </div>
+
+                <div class="row" id="dom-ad-create"></div>
+
+                <div id="openScreenConfig" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告是否可点击</label>
+                            <div class="col-md-7">
+                                <label class="radio-inline">
+                                    <input type="radio" name="canClick" value="true"> 是
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="canClick" value="false" checked> 否
+                                </label>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">URL</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" id="adClickUrl">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">标题</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="50" id="adClickTitle"
+                                       placeholder="6-25个字，2个英文是1个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">描述</label>
+                            <div class="col-md-7">
+                                <input class="form-control dl-notNull" maxlength="50" id="adClickDetail"
+                                       placeholder="6-25个字，2个英文是1个字">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="informationFlowConfig">
+
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="Dl-divider"></div>
+                        </div>
+                    </div>
+                    <div class="row Dl-part-title">
+                        <div class="col-md-10 col-md-offset-1">
+                            <span class="identifier" id="extend_label">广告来源及附加创意配置</span>
+                        </div>
+                    </div>
+                    <!--                推广目的为应用下载-->
+                    <div id="download" style="display: none">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用名</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="20" id="appName"
+                                           placeholder="2~10个字">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+<!--                        <div class="row">-->
+<!--                            <div class="form-group ">-->
+<!--                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用下载地址</label>-->
+<!--                                <div class="col-md-7">-->
+<!--                                    <input type="text" class="form-control dl-notNull" id="appDownloadUrl"-->
+<!--                                           placeholder="点击“下载按钮”区域所到达的地址">-->
+<!--                                </div>-->
+<!--                                <span class="help-block col-md-7 col-md-offset-3"></span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">创意副标题</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="24" id="download_extend_title"
+                                           placeholder="2~12个字">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                推广目的为落地页-->
+                    <div id="landingWrapper" style="display: none">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告来源</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="20" id="ad_source"
+                                           placeholder="2~10个字">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label">附加创意</label>
+                                <div class="col-md-7">
+                                    <select class="form-control selectpicker" dl-data="length" id="extend_type">
+                                        <option value="empty" selected>无</option>
+                                        <option value="phone">电话拨打</option>
+                                        <option value="form">表单收集</option>
+                                    </select>
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row" id="extend_phone_btn_wrapper" style="display: none">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label">选择按钮名称</label>
+                                <div class="col-md-7">
+                                    <select class="form-control selectpicker" dl-data="length" id="phone_btnName">
+                                        <option value="咨询热线" selected>咨询热线</option>
+                                        <option value="免费热线">免费热线</option>
+                                        <option value="立即拨打">立即拨打</option>
+                                        <option value="电话咨询">电话咨询</option>
+                                        <option value="电话拨打">电话拨打</option>
+                                        <option value="咨询电话">咨询电话</option>
+                                        <option value="加盟热线">加盟热线</option>
+                                        <option value="订购热线">订购热线</option>
+                                    </select>
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row" id="extend_phone_number_wrapper" style="display: none;">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">电话号码</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="11" id="phone_number"
+                                           placeholder="请填写5-11位电话号码">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row" id="extend_form_btn_wrapper" style="display: none;">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">按钮名称</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="8" id="form_btnName"
+                                           placeholder="1-8个字符，汉字占两个字符">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row" id="extend_form_url_wrapper" style="display: none;">
+                            <div class="form-group ">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">表单站点地址</label>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" value="" id="form_url"
+                                           placeholder="填写以http(https)开头的有效着陆页">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                        <div class="row" id="landing_extend_title_wrapper" style="display: none;">
+                            <div class="form-group">
+                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">附加创意标题</label>
+                                <div class="col-md-7">
+                                    <input class="form-control dl-notNull" maxlength="24" id="landing_extend_title"
+                                           placeholder="2~12个字">
+                                </div>
+                                <span class="help-block col-md-7 col-md-offset-3"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="linkConfig">
+                    <div class="row Dl-part-title">
+                        <div class="col-md-10 col-md-offset-1">
+                            <span class="identifier">设置广告着陆页</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group ">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required" id="link_label">URL</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control dl-notNull dl-urlVal" value="" id="link"
+                                       placeholder="填写以http(https)开头的有效着陆页">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="deeplink_div" >
+                        <div class="form-group ">
+                            <label class="col-md-2 col-md-offset-1  control-label " id="deeplink_label">deeplink地址</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control dl-notNull dl-urlVal" value="" id="deeplink"
+                                       placeholder="当投放WIFI万能钥匙Android端信息流deeplink广告时填写">
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">设置广告监测地址</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">第三方曝光监测链接</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" value="" id="monitoring_url">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">第三方点击监测链接</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" value="" id="landing">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row submit_box">
+                    <div class="submit_btn_wrapper">
+                        <div class="submit_btn" id="cancel">
+                            返回列表
+                        </div>
+                        <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                            完成添加
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 工具方法 -->
+<script src="/js/listUtils/index.js"></script>
+<script src="/js/listUtils/templateCreative.js"></script>
+
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<script type="text/javascript" src="/js/adFormAndPreview/adFormAndPreview.js?v=20170926"></script>
+<script type="text/javascript" src="/js/application/promotion/adcreativeaddview.js?v=20171225"></script>
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicFooter.phtml');
+?>

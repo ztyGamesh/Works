@@ -1,0 +1,14 @@
+.down-excel{
+    width: 90px;
+    height: 30px;
+    border-radius: 25px;
+    border: 1px solid #d3d3d3;
+    background: #ffffff;
+}
+
+.all_data tr{
+    height: 40px;
+}
+#data-list{
+    left:20%;
+}

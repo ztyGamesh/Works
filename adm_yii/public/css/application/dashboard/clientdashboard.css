@@ -1,0 +1,348 @@
+@media screen and (max-width: 1400px) {
+    #data-list li {
+        float: left;
+        /*width: 100%;*/
+        height: 100%;
+        padding: 0 0;
+        text-align: center;
+        line-height: 28px;
+        font-size: 4px;
+        border-right: 1px solid #ccc;
+    }
+}
+@media screen and (min-width: 1280px) {
+    #data-list li {
+        float: left;
+        /*width: 100%;*/
+        height: 100%;
+        padding: 0 10px;
+        text-align: center;
+        line-height: 28px;
+        border-right: 1px solid #ccc;
+    }
+}
+
+a{
+    text-decoration:none;
+    cursor: pointer;
+}
+
+
+.line_charts{
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.chart_container{
+    width: 49%;
+    height:430px;
+    display: inline;
+    float: left;
+    /*margin-left: 20px;*/
+    margin-top: 20px;
+    border: 1px solid #e5e5e5;
+}
+/*#999999*/
+.chart_title{
+    height: 42px;
+    background-color: #f0f0f0;
+    line-height: 42px;
+}
+.chart_title_top{
+    font-size: 14px;
+    text-align: left;
+    margin-left: 8%;
+    color: #999999;
+}
+.chart_title_name{
+    font-size: 10px;
+    color: #999999;
+    margin-left: 10px;
+}
+.chart_title_more a{
+    font-size: 12px;
+    float: right;
+    margin-right: 10px;
+    color: #cacaca;
+}
+.chart{
+    width: 100%;
+    height: 380px;
+}
+
+.keyWords{
+    margin-top: 20px;
+    overflow: hidden;
+}
+.keyWords_container{
+    width: 49%;
+    display: inline;
+    float: left;
+    /*margin-left: 20px;*/
+    margin-top: 20px;
+}
+.keyWords_title{
+    /*border: 1px solid lightgray;*/
+    background-color: #f0f0f0;
+    font-size: 14px;
+    height: 42px;
+    line-height: 42px;
+    color: #999999;
+
+}
+.keyWords_title span{
+    margin-left: 12px;
+    /*border: 1px solid #e5e5e5;*/
+    /*width: 50%;*/
+    /*height: 40px;*/
+}
+.keyWords_table{
+    width: 100%;
+    border: 1px solid #f0f0f0;
+    margin-top: 10px;
+}
+.seeMoredata{
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: right;
+    font-size: 10px;
+    color: #cacaca;
+}
+.seeMoredata a{
+    color: #cacaca;
+}
+.all_data{
+    border: 1px solid #FFFFFF ;
+    width: 100%;
+    height: 100px;
+}
+.all_data table{
+    border: 1px solid #FFFFFF;
+    width: 100%;
+}
+.all_data tr{
+    border: 1px solid #FFFFFF;
+    height: 30px;
+}
+.all_data td{
+    border: 1px solid #FFFFFF;
+    height: 30px;
+    text-align: left;
+}
+.all_data th{
+    font-size: 12px;
+    height: 30px;
+    text-align: left;
+}
+.tr_now{
+    font-size: 20px;
+    color: #666666;
+}
+.tr_before{
+    font-size: 8px;
+    color:#adadad ;
+}
+.tr_name {
+    color:#adadad ;
+}
+/*折线图样式=======================================================*/
+
+#data-list {
+    height: 28px;
+    border: 1px solid #ccc;
+    position: absolute;
+    left: 50%;
+    top: 28px;
+    /*width: 40%;*/
+}
+
+/*#data-list li {*/
+    /*float: left;*/
+    /*!*width: 100%;*!*/
+    /*height: 100%;*/
+    /*padding: 0 10px;*/
+    /*text-align: center;*/
+    /*line-height: 28px;*/
+    /*border-right: 1px solid #ccc;*/
+/*}*/
+
+.item {
+    display: inline-block;
+    color: #a6a6a6;
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+}
+
+#admEchart {
+    position: relative;
+    border: 1px solid #d4d2d3;
+    height: 376px;
+    background-color: #fafafa;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#main {
+    width: 100%;
+    padding-top: 26px;
+    height: 284px;
+    position: relative;
+}
+
+/*增加图例样式*/
+.legendLeft {
+    width: 26px;
+    height: 11px;
+    /*border: 1px solid #000;*/
+    position: absolute;
+    bottom: 4px;
+    left: -8px;
+    background-image: url("../../../img/application/dashboard/focusCurrent.png");
+}
+.legendRightF {
+    width: 26px;
+    height: 11px;
+    /*border: 1px solid #000;*/
+    position: absolute;
+    bottom: 4px;
+    left: -8px;
+    background-image: url("../../../img/application/dashboard/dataCompare.png");
+    /*transition: all 0.3s;*/
+}
+.legendRightB {
+    width: 26px;
+    height: 11px;
+    /*border: 1px solid #000;*/
+    position: absolute;
+    bottom: 4px;
+    left: -9px;
+    background-image: url("../../../img/application/dashboard/focusCompare.png");
+    /*transition: all 0.3s;*/
+}
+#admEchart::after {
+    content: '';
+    width: 100%;
+    background-color: #ccc;
+    height: 1px;
+    position: absolute;
+    bottom: 52px;
+}
+
+.timeModule {
+    width: 400px;
+    height: 20px;
+    /*border: 1px solid #000;*/
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeModule li {
+    /*border: 1px solid #000;*/
+    box-sizing: border-box;
+    flex: 1;
+    text-align: center;
+    vertical-align: center;
+    line-height: 20px;
+    color: #c3c3c3;
+    font-size: 10px;
+    padding-left: 10px;
+    position: relative;
+}
+
+.timeModule li:nth-child(1) {
+    position: relative;
+    left: 4px;
+}
+
+.timeModule li:nth-child(2) {
+    position: relative;
+    left: 96px;
+}
+
+.timeModule li:nth-child(2):hover {
+    cursor: pointer;
+}
+
+.blue {
+    background-color: #0077e5;
+}
+
+.red {
+    background-color: #f04e35;
+}
+
+.orange {
+    background-color: #ffc801;
+}
+
+.purple {
+    background-color: #a75adc;
+}
+
+.pink {
+    background-color: #ff91bb;
+}
+
+.yellow {
+    background-color: #99cc01;
+}
+.green {
+    background-color: #ADFF2F;
+}
+.lightblue {
+    background-color: #BBFFFF;
+}
+.darkorange {
+    background-color: #EE7621;
+}
+.lightgreen {
+    background-color: #98FB98;
+}
+
+/*tooltip测试css*/
+#tooltip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-width: 200px;
+    min-height: 38px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 28px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+#tooltip > li > div {
+    font-size: 12px;
+    line-height: 22px;
+    height: 22px;
+    text-align: center;
+    /*background-color: red;*/
+}
+
+#tooltip>li:nth-child(2)>div {
+    text-align: left;
+}
+
+.tooltipData {
+    color: #333;
+    /*color: skyblue;*/
+    /*background-color: red;*/
+}
+div:nth-child(1).tooltipData {
+    margin-left: 20px;
+}
+#tooltipBall {
+    position: absolute;
+    left: 0;
+}

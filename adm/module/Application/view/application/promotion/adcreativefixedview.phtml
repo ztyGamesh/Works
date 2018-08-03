@@ -1,0 +1,460 @@
+<!--创意详情页面-->
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="../css/application/media/slotadd.css"/>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/audit/adcreativeauditlistview">创意审核</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">创意详情</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="infor_flow" id="infor_flow">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">选择模版</span>
+                        <small class="Dl-prompt">请点击缩略图预览样式，根据广告位尺寸比例推荐适配较好的样式</small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="templateWrapper" style="margin-left: 239px;">
+                            <img src="/img/application/media/arrowL.png" class="templateTurnLeft cursor"
+                                 id="templateTurnLeft">
+                            <div class="templateContainer">
+                                <div class="templateContainerMove">
+                                    
+                                    <div class="templateBox" style="display: none">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="903bd235-0936-4c0d-b839-fa20a94d5507" template-ctl="903bd235-0936-4c0d-b839-fa20a94d5507"
+                                                       id="templateCtl-903bd235-0936-4c0d-b839-fa20a94d5507" disabled>
+                                                <label for="templateCtl-903bd235-0936-4c0d-b839-fa20a94d5507">大图+文字样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgAndChar_fixed.mp4">
+                                        </video>
+                                    </div>
+                                    
+
+                                    <div class="templateBox" style="display: none">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="cbf602dc-3c99-41f9-9e4b-91c033bf5a90" name="cbf602dc-3c99-41f9-9e4b-91c033bf5a90"
+                                                       id="templateCtl-cbf602dc-3c99-41f9-9e4b-91c033bf5a90" disabled>
+                                                <label for="templateCtl-cbf602dc-3c99-41f9-9e4b-91c033bf5a90">图文样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_smallimgAndChar_fixed.mp4">
+                                        </video>
+                                    </div>
+                                    
+                                    <div class="templateBox" style="display: none">
+                                        <div class="templateTitle">
+                                            <div class="checkbox checkbox-deepleaper">
+                                                <input class="styled Dl-checkbox" type="checkbox"
+                                                       template-ctl="2c52b03e-b044-4fda-8c18-bc00ed3bd80d" name="2c52b03e-b044-4fda-8c18-bc00ed3bd80d"
+                                                       id="templateCtl-2c52b03e-b044-4fda-8c18-bc00ed3bd80d" disabled>
+                                                <label for="templateCtl-2c52b03e-b044-4fda-8c18-bc00ed3bd80d">组图样式
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <video width="145px" height="258px" class="templateDemo">
+                                            <source src="/video/infor_flow_imgs_fixed.mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <img src="/img/application/media/arrowR.png" class="templateTurnRight cursor"
+                                 id="templateTurnRight">
+                        </div>
+                    </div>
+                </div>
+                <!-- 三种样式的HTML结构代码-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            
+                            <!--大图+文字样式-->
+                            <div class="panel panel-default" id="903bd235-0936-4c0d-b839-fa20a94d5507">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgAndChar">
+                                            <span class="collapse－switch"></span>大图+文字样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <!--<input type="text" class="form-control dl-notNull creativeName"-->
+                                                           <!--disabled="disabled"-->
+                                                           <!--value="">-->
+                                                     <p class="creativeName form-control-static" style="margin-top: -1px"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea class="form-control dl-notNull creativeTitle"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                    <p class="creativeTitle form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea type="text" class="form-control creativeDescription"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                    <p class="creativeDescription form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">当前创意图片</label>
+                                                <div class="col-md-7">
+                                                    <img src="" class="demonstrate_image" style="width: 30%;margin-top: 10px">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--图文样式-->
+                            <div class="panel panel-default" id="cbf602dc-3c99-41f9-9e4b-91c033bf5a90">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_smallimgAndChar"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_smallimgAndChar">
+                                            <span class="collapse－switch"></span>图文样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_smallimgAndChar" class="panel-collapse collapse in"
+                                     role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <!--<input type="text" class="form-control dl-notNull creativeName"-->
+                                                           <!--disabled="disabled"-->
+                                                           <!--value="">-->
+                                                     <p class="creativeName form-control-static" style="margin-top: -1px"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea class="form-control dl-notNull creativeTitle"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                    <p class="creativeTitle form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea type="text" class="form-control creativeDescription"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                    <p class="creativeDescription form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">当前创意图片</label>
+                                                <div class="col-md-7">
+                                                    <img src="" class="demonstrate_image" style="width: 30%;margin-top: 10px">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--组图样式-->
+                            <div class="panel panel-default" id="2c52b03e-b044-4fda-8c18-bc00ed3bd80d">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse_infor_flow_imgs"
+                                           aria-expanded="true" aria-controls="collapse_infor_flow_imgs">
+                                            <span class="collapse－switch"></span>组图样式
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse_infor_flow_imgs" class="panel-collapse collapse in" role="tabpanel"
+                                     aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意名称</label>
+                                                <div class="col-md-7">
+                                                    <!--<input type="text" class="form-control dl-notNull creativeName"-->
+                                                           <!--disabled="disabled"-->
+                                                           <!--value="">-->
+                                                    <p class="creativeName form-control-static" style="margin-top: -1px"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label
+                                                    class="col-md-2 col-md-offset-1  control-label Dl-required">创意标题</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea class="form-control dl-notNull creativeTitle"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                     <p class="creativeTitle form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label">创意描述</label>
+                                                <div class="col-md-7">
+                                                    <!--<textarea type="text" class="form-control creativeDescription"-->
+                                                              <!--maxlength="46" minlength="6" placeholder="6~23个汉字"-->
+                                                              <!--disabled="disabled"></textarea>-->
+                                                    <p class="creativeDescription form-control-static"></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <label class="col-md-2 col-md-offset-1  control-label Dl-required">当前创意图片</label>
+                                                <div class="col-md-7">
+                                                    <img src="" class="demonstrate_image" style="width: 30%;margin-top: 10px">
+                                                    <img src="" class="demonstrate_image" style="width: 30%;margin-top: 10px">
+                                                    <img src="" class="demonstrate_image" style="width: 30%;margin-top: 10px">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier" id="extend_label">广告来源配置</span>
+                    </div>
+                </div>
+                <!--                推广目的为应用下载-->
+                <div id="download" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用名</label>
+                            <div class="col-md-7">
+                                <!--<input class="form-control dl-notNull" maxlength="20" minlength="2" id="appName"-->
+                                       <!--placeholder="2~10个字" disabled>-->
+                                <p id="appName" class="form-control-static"></p>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group ">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用下载地址</label>
+                            <div class="col-md-7">
+                                <!--<input type="text" class="form-control dl-notNull" id="appDownloadUrl"-->
+                                       <!--placeholder="点击“下载按钮”区域所到达的地址" disabled>-->
+                                <p class="form-control-static"><a href="javacript:void(0)" id="appDownloadUrl" target="_blank"></a> </p>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row" id="appPackageNameWrapper" style="display: none">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">应用包名称</label>
+                            <div class="col-md-7">
+                                <!--<input class="form-control dl-notNull" maxlength="100" id="appPackageName" disabled>-->
+                                <p class="form-control-static" id="appPackageName"></p>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">创意副标题</label>
+                            <div class="col-md-7">
+                                <!--<input class="form-control dl-notNull" maxlength="24" id="download_extend_title"-->
+                                       <!--placeholder="2~12个字" disabled>-->
+                                <div id="download_extend_title" class="form-control-static"></div>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--                推广目的为落地页-->
+                <div id="landingWrapper" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告来源</label>
+                            <div class="col-md-7">
+                                <!--<input class="form-control dl-notNull" maxlength="20" minlength="2" id="ad_source"-->
+                                       <!--placeholder="2~10个字" disabled>-->
+                                <p class="form-control-static" id="ad_source"></p>
+                            </div>
+                            <span class="help-block col-md-7 col-md-offset-3"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">设置广告着陆页</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label Dl-required">URL地址</label>
+                        <div class="col-md-7">
+                            <!--<input type="text" class="form-control dl-notNull dl-urlVal" value="" id="link" disabled>-->
+                            <p class="form-control-static"><a href="javascript:void(0)" id="link" target="_blank"></a></p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">曝光监测链接</label>
+                        <div class="col-md-7">
+                            <!--<input type="text" class="form-control dl-urlVal" value="" id="landing" disabled>-->
+                            <p class="form-control-static"><a href="javascript:void(0)" id="landing" target="_blank"></a></p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label">点击监测链接</label>
+                        <div class="col-md-7">
+                            <!--<input type="text" class="form-control dl-urlVal" value="" id="monitoring_url" disabled>-->
+                            <p class="form-control-static"><a href="javascript:void(0)" id="monitoring_url" target="_blank"></a></p>
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="row Dl-part-title" style="margin-top: 20px">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">设置广告创意标签</span>
+                    </div>
+                </div>
+                <!--DMP标签选择器 start-->
+                <div id="elementWrapper">
+                    <div id="element_id">
+                        <select class="first" size="6" id="elementOne" >
+                            <option value="123" selected></option>
+                        </select>
+                        <select class="second" size="6" id="elementTwo" >
+                            <option value="" selected></option>
+                        </select>
+                        <select class="third" size="6" id="elementThree">
+                            <option value="" selected></option>
+                        </select>
+                    </div>
+                    <div id="element_id_show">
+                        <span id="levelOne"></span>
+                        <span id="levelTwo"></span>
+                        <span id="levelThree"></span>
+                    </div>
+                </div>
+                <!--DMP标签选择器 start-->
+                <div class="row submit_box">
+                    <div class="submit_btn_wrapper" style="width: 570px;margin-left: -285px">
+                        <div class="submit_btn" id="cancel">
+                            返回
+                        </div>
+                        <div class="submit_btn submit_btn_default submit_btn_active" id="pass">
+                            内审通过
+                        </div>
+                        <div class="submit_btn " id="reject">
+                            内审拒绝
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $('body').append('<textarea id="comment" type="text" placeholder="请输入拒绝理由(必填项)" style="display:none;margin: 10px 20px;width: 320px;height: 100px;"></textarea>');
+</script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<script type="text/javascript" src="/js/application/promotion/adcreativefixedview.js?v=20170704"></script>
+<script src="/js/DMPSelectLabel/js/jquery.cxselect.js"></script>
+<script src="/js/DMPSelectLabel/js/DMPselect.js"></script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

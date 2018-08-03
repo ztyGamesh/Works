@@ -1,0 +1,448 @@
+<link rel="stylesheet" href="/css/jquery-ui-1.10.0.custom.css">
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<script src="/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/order/ad">广告投放管理</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">查看广告投放</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<form id="edit" method="post" action="/order/adedit?uid=<?php echo $this->id; ?>" class="form-horizontal"
+      novalidate="novalidate">
+
+    <div class="form-group ">
+        <?php
+
+        if (isset($this->form['error'])) { ?>
+            <div class="alert ">
+                <a class="close" data-dismiss="alert">×</a>
+                <strong>Warning!</strong> <?php echo $this->form['error']; ?></div>
+        <?php } ?>
+    </div>
+
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">广告投放属性:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php if ($this->form['class'] == 1) { ?>正常投放<?php } ?>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <?php if ($this->form['class'] == 2) { ?>配送<?php } ?>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <?php if ($this->form['class'] == 3) { ?>补量<?php } ?>
+
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">广告投放名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php echo $this->form['name']; ?>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">订单名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+
+            <?php
+            foreach ($this->order_menu as $key => $val):?>
+                <?php if ($this->form['order'] == $key) {
+                    echo $val;
+                } ?>
+            <?php endforeach; ?>
+
+        </div>
+
+
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">媒体名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php
+            foreach ($this->media_menu as $key => $val):?>
+                <?php if ($this->form['media'] == $key) {
+                    echo $val;
+                } ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">广告位名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php
+            foreach ($this->slot_menu as $key => $val):?>
+                <?php if ($this->form['adslot'] == $key) {
+                    echo $val;
+                } ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">样式:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php
+
+            foreach ($this->slottemplate_menu as $key => $val):?>
+                <?php if ($this->form['template'] == $key) {
+                    echo $val;
+                } ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">素材:</label>
+        <div class="col-sm-6 ">
+
+            <?php
+
+            foreach ($this->materiel_menu as $key => $val):?>
+                <?php
+
+                if ($this->form['material'] == $key) {
+
+                    echo $val;
+
+                }
+                ?>
+            <?php endforeach; ?>
+
+
+        </div>
+    </div>
+
+    <!--
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">展现监测:</label>
+        <div class="col-sm-6 ">
+           <input id="imp_monitor" class="form-control" type="text" name="imp_monitor"  value="<?php echo $this->item['imp_monitor']; ?>">
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">点击监测:</label>
+        <div class="col-sm-6 ">
+            <input id="cli_monitor" class="form-control" type="text" name="cli_monitor"  value="<?php echo $this->item['cli_monitor']; ?>">
+        </div>
+    </div>
+    
+    -->
+<!--    <div class="form-group ">-->
+<!--        <label class="col-sm-3 text-right">落地页地址:<span style="color:red"> *</span></label>-->
+<!--        <div class="col-sm-6 ">-->
+<!--            --><?php //echo ltrim($this->form['landing'], "dl-"); ?>
+<!---->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">第三方曝光监测地址:</label>
+        <div class="col-sm-6 ">
+            <?php echo ltrim($this->form['link_exposure'], "dl-"); ?>
+
+        </div>
+    </div>
+    <div class="form-group hidden">
+        <label class="col-sm-3 text-right">目标url:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php echo ltrim($this->form['link'], "dl-"); ?>
+        </div>
+    </div>
+
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">结算方式:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 " id="sell_type">
+
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">投放周期:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <?php echo $this->form['s']; ?> 至 <?php echo $this->form['e']; ?>
+
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">排期设定:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <button type="button" id="setSchedule" class="btn btn-primary btn-small btn-block">设置排期详情</button>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">样式刊例价:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <div class="col-sm-6">
+                <span id="klj"><?php echo $this->template_price[$form["template"]]; ?></span>
+                <span id="kljUnit"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 text-right">实际计费单价:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <div class="col-sm-6 ">
+                <?php echo $this->form['price']; ?>
+                <span id="price_unit"></span>
+            </div>
+        </div>
+    </div>
+    <div id="attr_1" <?php if ($this->form['sell_type'] == 3) { ?>style="display:none;"<?php } ?>>
+        <div class="form-group hidden">
+            <label class="col-sm-3 text-right">总预算:<span style="color:red"> *</span></label>
+            <div class="col-sm-6 ">
+                <?php echo $this->form['budget']; ?>
+            </div>
+        </div>
+    </div>
+
+    <div id="attr_2" <?php if ($this->form['sell_type'] != 3) { ?> style="display:none;"<?php } ?>>
+        <div class="form-group ">
+            <label class="col-sm-3 text-right">选择定向:</label>
+            <div class="col-sm-6 ">
+                <select id="material" name="targeting" class="form-control  dropup" data-live-search="true">
+                    <?php
+                    foreach ($this->targeting_menu as $key => $val):?>
+                        <option
+                            value="<?php echo $key ?>" <?php if ($this->form['targeting'] == $key) echo 'selected="selected"' ?>><?php echo $val; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 text-right">CPM单价:</label>
+            <div class="col-sm-6 ">
+                <input type="text" name="cpm_price" id="cpm_price" class="form-control"
+                       value="<?php echo $this->form['cpm_price']; ?>">
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 text-right">日投放量:</label>
+            <div class="col-sm-6 ">
+                <input type="text" name="quota_daily" id="quota_daily" class="form-control"
+                       value="<?php echo $this->form['quota_daily']; ?>">
+
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 text-right">投放优先级:</label>
+            <div class="col-sm-6 ">
+                1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9
+            </div>
+            <div class="col-sm-6 ">
+                <div id="slider"></div>
+                <input id="slider_value" type="text" name="priority" type="hidden"/>
+            </div>
+            <div class="col-sm-12 ">
+                <label class="col-sm-3 text-right"></label>
+                最低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最高
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <label class="col-sm-3 text-right">投放速度:</label>
+            <div class="col-sm-6 ">
+                <input type="radio" name="speed" id="optionsSpeedRadios1"
+                       value="1" <?php if ($this->form['speed'] == 1) echo 'checked="checked"' ?>> &nbsp;&nbsp;尽快投放
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <input type="radio" name="speed" id="optionsSpeedRadios2"
+                       value="2" <?php if ($this->form['speed'] == 2) echo 'checked="checked"' ?>>&nbsp;&nbsp;按流量平均投放
+                <input type="radio" name="speed" id="optionsSpeedRadios3"
+                       value="3" <?php if ($this->form['speed'] == 3) echo 'checked="checked"' ?>>&nbsp;&nbsp;按小时平均投放
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group ">
+        <label class="col-sm-3 text-right"></label>
+        <div class="col-sm-6 ">
+            <div style="padding-left:100px;">
+
+                <button type="button"
+                        style="width:120px;line-height:30px;background:#4183cd;font-size:12px;color:#fff;border-radius: 26px;margin-left:30px;"
+                        onclick="javascript:window.location.href='/order/ad'">返回
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+<!--排期设定-->
+<link rel="stylesheet" href="/css/dialog/dialog.css">
+<div class="dialog_wrapper" id="dialog_wrapper" style="display: none;">
+    <div class="dialog_box">
+        <div class="date_box">
+            <div class="attention">
+<!--                注：修改排期时，距离投放日期开始前3天排期不能修改-->
+            </div>
+            <div id="data_wrapper">
+                <div class="dates_wrapper">
+                </div>
+            </div>
+
+            <div class="btn_box">
+                <input type="button" value="返回" id="stock_submit">
+            </div>
+        </div>
+        <img src="/images/left_btn_dialog.png" class="left_btn_dialog" id="left_btn_dialog">
+        <img src="/images/right_btn_dialog.png" class="right_btn_dialog" id="right_btn_dialog">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    checkActionAuth('/order/ad', 1);
+
+    $(function () {
+        $("#slider").slider({
+            value:<?php echo $this->form['priority'] ?>,
+            min: 1,
+            max: 9,
+            step: 1,
+            slide: function (event, ui) {
+                $("#slider_value").val( <?php echo $this->form['priority'] ?> );
+            }
+        });
+    });
+
+    media_slotinventory('<?php echo $this->form['adslot']; ?>', '<?php echo $this->form['uid']; ?>', '<?php echo $this->form['s']; ?>', '<?php echo $this->form['e']; ?>', initMedia_slotinventorySuccess);
+    function initMedia_slotinventorySuccess(result) {
+        var res = JSON.parse(result);
+        if (res.status == '1') {
+            var data = res.data;
+            var slot_inventory = data.slot_inventory; //slot_inventory广告位总量 作为分母
+            var inventory = getJsonValue(data.inventory);//inventory 库存量 作为分子
+            var selects = getJsonValue(data.selects);//selects 已选 填充
+            var available_date = getJsonValue(data.available_date); //可编辑标识(后端判断根据目前距离3天内投放不能修改的设定) 0不可 1可以
+            var total = getJsonLength(data.inventory);//total 总条数
+            var pages = Math.ceil(total / 16);//总页数，每页16条
+            var dataArray = getJsonKey(data.inventory);//日期数组
+            sell_type = data.sell_type;//结算方式 1:CPD  2:轮播
+            console.log(sell_type);
+            $('#kljUnit').html(sell_type == 1? '元/天': '元/轮播');
+            $('#price_unit').html(sell_type == 1? '元/天': '元/轮播');
+            $('#sell_type').html(sell_type == 1? 'CPD': '轮播');
+            $("#data_wrapper").html('');
+            var data_page = "";
+            var data_flag = 0;
+            if (sell_type == '2') {//轮播
+                for (var i = 0; i < pages; i++) {
+                    if (i == 0) {
+                        data_page += '<div class="dates_wrapper display_block">';
+                    } else {
+                        data_page += '<div class="dates_wrapper display_none">';
+                    }
+                    for (var j = 0; j < 16; j++) {
+                        if (data_flag < dataArray.length) {//非空单元格
+                            if (available_date[data_flag] == 1) {//可以编辑
+                                var data_content = '<div class="date_content eneditable">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="stock backcolorCan">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                    + '<input type="text" class="purchase canSubmit backcolorCant" placeholder="不可买" disabled="disabled" selects="' + selects[data_flag] + '"  value="' + selects[data_flag] + '">'
+                                    + '</div>';
+                            } else if (available_date[data_flag] == 0) {//不可编辑
+                                var data_content = '<div class="date_content eneditable">'
+                                    + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                    + '<div class="stock backcolorCant">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                    + '<input type="text" class="purchase canSubmit backcolorCant" placeholder="不可买" disabled="disabled" selects="' + selects[data_flag] + '"  value="' + selects[data_flag] + '">'
+                                    + '</div>';
+                            } else {
+                                console.log('可编辑标识识别错误！');
+                            }
+                            data_page += data_content;
+                            data_flag += 1;
+                        } else {//空单元格
+                            var data_content = '<div class="date_content">'
+                                + '<div class="time" style="visibility: hidden">' + dataArray[data_flag] + '</div>'
+                                + '<div class="stock backcolorCan" style="visibility: hidden">' + inventory[data_flag] + '/' + slot_inventory + '</div>'
+                                + '<input type="text" class="purchase" placeholder="购买量" style="visibility: hidden">'
+                                + '</div>';
+                            data_page += data_content;
+                        }
+                    }
+                    data_page += '</div>';
+                }
+                $("#data_wrapper").html(data_page);
+            } else if (sell_type == '1') {//CPD
+                console.log(result);
+                for (var i = 0; i < pages; i++) {
+                    if (i == 0) {
+                        data_page += '<div class="dates_wrapper display_block">';
+                    } else {
+                        data_page += '<div class="dates_wrapper display_none">';
+                    }
+                    for (var j = 0; j < 16; j++) {
+                        if (data_flag < dataArray.length) {//非空单元格
+                            var ischecked = '';
+                            if (selects[data_flag] == 1) {//当已选时设为checked属性；
+                                ischecked = 'checked'
+                            } else {
+                                ischecked = ''
+                            }
+                            var data_content = '<div class="date_content eneditable">'
+                                + '<div class="time">' + dataArray[data_flag] + '</div>'
+                                + '<div class="checkbox"><label class="buy_label"><input type="checkbox" class="buy canSubmit" disabled="disabled" ' + ischecked + '>购买</label></div>'
+                                + '</div>';
+                            data_page += data_content;
+                            data_flag += 1;
+                        } else {//空单元格
+                            var data_content = '<div class="date_content">'
+                                + '<div class="time" style="visibility: hidden">' + dataArray[data_flag] + '</div>'
+                                + '<div class="checkbox"  style="visibility: hidden"><label class="buy_label"><input type="checkbox" class="buy">购买</label></div>'
+                                + '</div>';
+                            data_page += data_content;
+                        }
+                    }
+                    data_page += '</div>';
+                }
+                $("#data_wrapper").html(data_page);
+            }
+        } else {
+            alert("请求失败，返回信息：" + res.msg);
+        }
+    }
+
+    //    查看排期按钮
+    $("#setSchedule").bind('click', function () {
+        $("#dialog_wrapper").show();
+    });
+    $("#stock_submit").bind('click', function () {
+        $("#dialog_wrapper").hide();
+    });
+    //    排期左翻
+    $("#left_btn_dialog").bind('click', function () {
+        var now_wrapper = $(".display_block");
+        if (now_wrapper.prev(".dates_wrapper").length !== 0) {
+            now_wrapper.removeClass('display_block').addClass('display_none');
+            now_wrapper.prev(".dates_wrapper").removeClass('display_none').addClass('display_block');
+        } else {
+            console.log('别按了我的哥，左边没啥了')
+        }
+    });
+    //    排期右翻
+    $("#right_btn_dialog").bind('click', function () {
+        var now_wrapper = $(".display_block");
+        if (now_wrapper.next(".dates_wrapper").length !== 0) {
+            now_wrapper.removeClass('display_block').addClass('display_none');
+            now_wrapper.next(".dates_wrapper").removeClass('display_none').addClass('display_block');
+        } else {
+            console.log('别按了我的哥，右边没啥了')
+        }
+    });
+</script>

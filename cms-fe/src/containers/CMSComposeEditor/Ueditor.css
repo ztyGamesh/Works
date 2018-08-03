@@ -1,0 +1,20 @@
+/*因为copy图片上传需要一个响应时间，在此时间内进行的提交操作，图片src不会被替换为阿里云地址，所以加个loading*/
+.Ueditor .editorLoading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 200px;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.Ueditor .editorLoading .editorMsg {
+    position: relative;
+    top: 50%;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    background: white;
+}

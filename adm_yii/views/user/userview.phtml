@@ -1,0 +1,125 @@
+
+<form id="edit" method="post" class="form-horizontal list-form">
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">账户名：</label>
+        <div class="col-sm-6 " id="name"></div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">邮箱：</label>
+        <div class="col-sm-6 " id="mail"></div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">手机：</label>
+        <div class="col-sm-6 " id="tel"></div>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label control-label2">联盟媒体</label>
+        <div class="col-sm-6" id="unionmedia_group"></div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/user/userpermissionview', 1);
+
+$.ajax({
+    url: '/user/userdetail?uid=<?php echo $_GET["uid"]; ?>',
+    dataType: 'json',
+    success: function(ret){
+        // 如果返回正常，而且data有值而且格式正确
+        if (ret.status == 1 && ret.data != undefined) {
+            putData(ret.data);
+        } else {
+            // 异常处理
+            console.log('error');
+        }
+    }
+});
+
+function dfs(nodes, child, url) {
+    var ret = {};
+    if (!child[url]) {
+        return nodes[url];
+    }
+
+    ret = nodes[url]? nodes[url]: {};
+    ret.children = [];
+    for (var i = 0; i < child[url].length; i++) {
+        ret.children.push(dfs(nodes, child, child[url][i]));
+    }
+    return ret;
+}
+
+var permission = {
+    '0': '无权限',
+    '1': '只读',
+    '2': '读写'
+};
+
+function getTreeContext(tree, deep) {
+    var html = '';
+
+    if (tree.children) {
+        for (var i = 0; i < tree.children.length; i++) {
+            html += getTreeContext(tree.children[i], deep + 1);
+        }
+    }
+
+    if (tree.name && !tree.children) {
+        html += '<div class="form-group"><label class="col-sm-3 control-label">' + tree.name + '</label>';
+        // if (!tree.children) {
+            html += '<div class="col-sm-6">' + permission[tree.authority] + '</div>';
+        // }
+        html += '</div>';
+    }
+    return html;
+}
+
+
+// 支持多个层级，但是目前只有两层
+function recoverTree(data) {
+    var nodes = {};
+    var childs = {};
+    for (var i = 0; i < data.length; i++) {
+        nodes[data[i].url] = data[i];
+        if (!childs[data[i].pid]) {
+            childs[data[i].pid] = [data[i].url];
+        } else {
+            childs[data[i].pid].push(data[i].url);
+        }
+    }
+    return dfs(nodes, childs, '/');
+}
+
+function putData(data) {
+    // 基本信息
+    var showList = ['mail', 'name', 'tel'];
+    for (var i = 0; i < showList.length; i++) {
+        $('#' + showList[i]).text(data[showList[i]] == undefined? '': data[showList[i]]);
+    }
+
+    // 媒体
+    if (data.media) {
+        var unionmedia_grouphtml = '';
+        for (var i = 0; i < data.media.length; i++) {
+            if (data.media[i].platform_role == 'alliance') {
+                unionmedia_grouphtml += '<small>' + data.media[i].name + '</small><br/>'
+            } else {
+                console.log('ERROR:当前媒体无自营/联盟标识');
+            }
+        }
+        $('#unionmedia_group').append(unionmedia_grouphtml);
+
+    } else {
+        // 异常处理
+    }
+}
+
+
+</script>

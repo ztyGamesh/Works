@@ -1,0 +1,81 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+  
+<form id="edit" method="post" action="/bill/billsave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">订单号</label>
+        <div class="col-sm-6 ">
+            <?php echo $item['bid'];?>
+            <input id="id" class="form-control" type="hidden" name="id"  value="<?php echo $item['id'];?>">
+        </div>
+    </div>
+     
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">客户</label>
+        <div class="col-sm-6 ">
+           
+			<?php foreach($client_menu as $key => $val):?>
+			 <?php if($item['pid'] ==$key) echo $val; ?>
+			<?php endforeach;?>
+            
+        </div>
+    </div>
+    
+    <div class="form-group hidden">
+        <label class="col-sm-3 control-label">订单完成时间</label>
+        <div class="col-sm-6 ">
+            <?php echo $item['complete_time'];?>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">账单金额</label>
+        <div class="col-sm-6 ">
+            <?php echo $item['amount'];?>
+        </div>
+    </div>
+
+    <div class="form-group hidden">
+        <label class="col-sm-3 control-label">账单未结清时间</label>
+        <div class="col-sm-6 ">
+            <?php echo $item['unpay_time'];?>
+        </div>
+    </div>
+    
+    <div class="form-group hidden">
+        <label class="col-sm-3 control-label">支付状态</label>
+        <div class="col-sm-6 ">
+           
+            
+            <input type="radio" name="paid" id="optionsRadios1" checked  value="1">
+<!--            <input type="radio" name="paid" id="optionsRadios1" value="0" --><?php //if($item['paid']== 0) echo 'checked';?><!--> &nbsp;&nbsp;未支付 -->
+			  &nbsp;  &nbsp;  &nbsp;  &nbsp;
+<!--			<input type="radio" name="paid" id="optionsRadios2" value="1" --><?php //if($item['paid']== 1) echo 'checked';?><!-->&nbsp;&nbsp;支付-->
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">付款金额<span style="color:red"> *</span></label>
+        <div class="col-sm-6 " >
+            <input id="pay_amount" class="form-control" type="text" name="pay_amount" placeholder="请输入付款金额">
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">付款时间</label>
+        <div class="col-sm-6 " >
+            <input id="datepicker" class="form-control" type="text" name="pay_time"  value="<?php echo $item['pay_time'];?>">
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/bill/bill', 2);
+
+	  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+	</script>

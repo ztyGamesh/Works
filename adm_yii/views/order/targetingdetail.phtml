@@ -1,0 +1,108 @@
+<?php 
+    $name   = $item['name'];
+    $uid    = $item['uid'];
+    $info    = $item['info'];
+
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/order/targeting">定向及播控</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">查看定向</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<form id="edit" method="post" action="/order/ordersave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">广告名称</label>
+        <div class="col-sm-6 ">
+           
+            <div><?php echo $name;?></div>
+        </div>
+    </div>
+     
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">说明</label>
+        <div class="col-sm-6 ">
+           
+           <div><?php echo $item['info'];?></div>
+        </div>
+    </div>
+    
+     <div class="form-group ">
+        <label class="col-sm-3 control-label">星期定向</label>
+        <div class="col-sm-6 ">
+            
+            <div><?php echo $item['week'];?></div>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">时段控制</label>
+        <div class="col-sm-6 ">
+            
+				<div><?php echo $item['hour'];?></div>
+           
+        </div>
+    </div>
+
+    
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">地域定向</label>
+        <div class="col-sm-6 ">
+            
+				<div><?php echo $item['area'];?></div>
+           
+        </div>
+    </div>
+    
+   
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">日频次控制</label>
+        <div class="col-sm-6 ">
+            
+        	
+				<div><?php echo $item['daily'];?></div>
+           
+            </select>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">小时平次控制</label>
+        <div class="col-sm-6 ">
+            
+             <div><?php echo $item['hourly'];?></div>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">创建时间</label>
+        <div class="col-sm-6 ">
+             <div><?php echo $item['create_time'];?></div>
+        </div>
+    </div>
+    <br /> <br /> <br />
+     <div class="form-group ">
+		<label class="col-sm-3 control-label"></label>
+		<div class="col-sm-6 ">
+			<div style="padding-left:100px;">
+			
+			<button type="button" style="width:120px;line-height:30px;background:#4183cd;font-size:12px;color:#fff;border-radius: 26px;margin-left:30px;" onclick="javascript:window.location.href='/order/targeting'">返回</button>
+			
+			</div>
+		</div>
+	</div>
+    
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/order/targeting', 1);
+</script>

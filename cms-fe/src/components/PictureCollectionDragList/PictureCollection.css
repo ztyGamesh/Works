@@ -1,0 +1,37 @@
+.pictureCollection .pic-collection-uploader,
+.pictureCollection .pic-collection-uploader-trigger,
+.pictureCollection .avatar {
+    width: 150px;
+    height: 150px;
+}
+
+.pictureCollection .pic-collection-uploader {
+    display: inline-block;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pictureCollection .pic-collection-uploader-trigger {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 28px;
+    color: #999;
+}
+
+.pictureCollection .picGroup {
+    width: 20%;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0 2px 0 0;
+}
+/*操作栏：删除、下移*/
+.pictureCollection .action span {
+    cursor: pointer;
+    padding: 0 0px;
+}
+
+.pictureCollection .picDescription {
+    resize: none;
+}

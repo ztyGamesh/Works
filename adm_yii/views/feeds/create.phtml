@@ -1,0 +1,179 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+<link rel="stylesheet" href="/css/dlMultiMenu.css?v=20170814">
+
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/media/feeds">内容合作</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">新建</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="width:100%;height:79px;padding-top: 10px">
+
+</div>
+
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label  Dl-required">内容合作名称:</label>
+        <div class="col-sm-7 ">
+            <input class="form-control" id="cooperate_name" type="text" name="cooperate_name" maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">所属应用:</label>
+        <div class="col-sm-7">
+            <select id="media_name" name="media_name" class="form-control selectpicker">
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">接入方式:</label>
+        <div class="col-sm-7">
+            <select id="use_mode" class="form-control selectpicker">
+                <option  value="api" checked >API</option>
+            </select>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">内容条数:</label>
+        <div class="col-sm-7">
+            <input id="content_count" class="form-control" type="text" name="content_count" placeholder="请填写1-50之间的整数">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告条数:</label>
+        <div class="col-sm-7 ">
+            <input id="ad_count" class="form-control" type="text" name="ad_count" value="1" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $(function () {
+
+
+//获得所属应用列表
+        getMediaListAPI(getMediaListAPIonSuccess);
+        function getMediaListAPIonSuccess(result) {
+            var req = JSON.parse(result);
+            if (req.status == 1){
+                var data = req.data;
+                var option = '';
+                for (var i = 0; i < data.length; i++) {
+                    option += '<option value="' + data[i].uid + '">';
+                    option += data[i].name;
+                    option += '</option>';
+                }
+                $('#media_name').html(option);
+            }else{
+                layer.msg(req.msg);
+            }
+        }
+//设置下拉框内最多显示8条数据
+        jQuery('.selectpicker').selectpicker({
+//            liveSearch: true,
+            size:8
+        });
+
+        $('#cooperate_name').blur(function () {
+            if (!vaWordNumberLimit1_25($(this).val())) {
+                vaError($('#name'), '名称长度应为1-50个字符:汉字占2个字符');
+            } else {
+                vaSuccess($('#name'));
+            }
+        });
+        $('#content_count').blur(function () {
+            if (!vaIsNotNull($(this).val())) {
+                vaError($('#content_count'), '内容条数不能为空');
+            } else if(!isPositiveInt1_50($(this).val())) {
+                vaError($('#content_count'), '请输入1-50之间的整数');
+            } else {
+                vaSuccess($('#content_count'));
+            }
+        });
+
+        //校验规则：渠道不能空；手机号码可以空、校验格式；
+        function mediaaddVilidate() {
+            $("#Deepleaper_loading").show();
+            var cooperate_name = $('#cooperate_name');
+            var nameVal = cooperate_name.val();
+            var content_count = $('#content_count');
+            var content_countVal = content_count.val();
+
+            if (!vaWordNumberLimit1_25(nameVal)) {
+                $("#Deepleaper_loading").hide();
+                vaError(cooperate_name, '名称长度应为1-50个字符:汉字占2个字符');
+                return false;
+            } else if (!isPositiveInt1_50(content_countVal)) {
+                $("#Deepleaper_loading").hide();
+                vaError(content_count, '请输入1-50之间的整数');
+                return false;
+            }  else {
+                $("#Deepleaper_loading").hide();
+                return true;
+            }
+        }
+
+
+        // 路径导航栏 结束
+        $("#submit").bind('click', function () {
+            if (!mediaaddVilidate()) {
+                return false;
+            }
+            var obj = {
+                'cooperate_name': $('#cooperate_name').val(), //内容合作名称
+                'media_uid': $('#media_name').val(),//所属应用
+                'use_mode': $('#use_mode').val(),//接入方式
+                'content_count': $('#content_count').val(),//内容条数
+                'ad_count': $('#ad_count').val(),//广告条数
+            };
+
+            storeAPI(obj, function (result) {
+                var req = JSON.parse(result);
+                if (req.status == 1) {
+                    layer.msg('内容合作添加成功');
+                    setTimeout(function () {
+                        window.location = '/media/feeds';
+                    }, 1000)
+                } else {
+                    layer.msg(req.msg);
+                }
+            })
+        });
+        $("#cancel").bind('click', function () {
+            window.location = '/media/feeds';
+        });
+
+
+    });
+</script>
+<script src="/js/dlMultiMenuAll.js?v=20170814" type="text/javascript"></script>
+

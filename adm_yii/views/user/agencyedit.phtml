@@ -1,0 +1,68 @@
+
+
+<form id="add" method="post" action="/user/agencysave" class="form-horizontal list-form" novalidate="novalidate">
+    <input id="uid" type="hidden" name="uid" value="<?php   echo $item['uid']; ?>"  >
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">邮箱</label>
+        <div class="col-sm-6 ">
+            <input id="mail" type="text" name="mail" value="<?php   echo $item['mail']; ?>"  <?php if($item['mail'])    echo 'readonly'; ?>  class="form-control" check-type="required" required-message="不能为空。">
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">姓名</label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" value="<?php   echo $item['name']; ?>" class="form-control" check-type="required" required-message="不能为空。">
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">密码</label>
+        <div class="col-sm-6 ">
+            <input id="password" type="password" name="password" class="form-control"  >
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">重复密码</label>
+        <div class="col-sm-6 ">
+            <input id="password2" type="password" name="password2" class="form-control"  >
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">关联代理商</label>
+        <div class="col-sm-6  ">
+            <select name="pid" class="form-control selectpicker" data-live-search="true">
+                <?php foreach($agencyList as $key => $val):?>
+                    <option value="<?php echo $key?>" <?php if($item['pid'] ==$key) echo 'selected="selected"'?>><?php echo $val;?></option>
+                <?php endforeach;?>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">权限</label>
+        <div class="col-sm-6 ">
+            <select id="permission" class="form-control selectpicker" data-live-search="true"  name="permission">
+                <option  <?php if( $item['permission']  == 'readonly' ){echo 'selected';} ?> value="readonly">只读权限</option>
+                <option <?php if( $item['permission']  == 'full' ){echo 'selected';} ?>  value="full">自助权限</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">财务数据</label>
+        <div class="col-sm-6 ">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default <?php   if( $item['finance']  == 1 ){echo 'active';} ?> ">
+                    <input <?php if( $item['finance']  == 1 ){echo 'checked';} ?>  type="radio" name="finance" value="1">开启
+                </label>
+                <label class="btn btn-default <?php   if( $item['finance']  == 0 || !isset($item ) ){echo 'active';} ?>  ">
+                    <input <?php if( $item['finance']  == 0 || !isset($item ) ){echo 'checked';} ?>  type="radio" name="finance" value="0">关闭
+                </label>
+            </div>
+        </div>
+    </div>
+
+</form>

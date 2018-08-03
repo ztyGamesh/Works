@@ -1,0 +1,197 @@
+<?php if($item){
+    $name   = $item['name'];
+    $uid    = $item['uid'];
+    $ext    = $item['ext'];
+    $filename    = $item['filename'];
+	
+?>
+
+<form id="edit" method="post" action="/materiel/materielsave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">素材名称</label>
+        <div class="col-sm-6 ">
+           
+            <div><?php echo $item['name'];?></div>
+        </div>
+    </div>
+     
+    <?php if ($item['type'] != 'App_开屏') {?>
+    
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">文件名称</label>
+			<div class="col-sm-6 ">
+				 <div><?php echo $item['filename'];?></div>
+			</div>
+		</div>
+
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['uid'];   ?>.<?php echo $item['ext'];?>" style="width:300px;" />
+			</div>
+		</div>
+		
+    <?php } else { ?>
+    
+     	<?php if ($item['s_720_1280']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_720_1280</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_720_1280'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($item['s_1242_2208']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_1242_2208</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_1242_2208'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+
+		<?php if ($item['s_480_800']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_480_800</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_480_800'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($item['s_640_960']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_640_960</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_640_960'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($item['s_768_1024']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_768_1024</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_768_1024'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		<?php if ($item['s_1536_2048']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">s_1536_2048</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['s_1536_2048'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		
+		
+		<?php if ($item['b_320_50']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">b_320_50</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['b_320_50'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+		
+		
+		<?php if ($item['b_640_100']) {?>
+     	<hr />
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">b_640_100</label>
+			<div class="col-sm-6 ">
+				
+			</div>
+		</div>
+	
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">素材预览</label>
+			<div class="col-sm-6 ">
+				<img src="//static.adm.deepleaper.com/material/<?php echo $item['b_640_100'];?>" style="width:300px;"/>
+			</div>
+		</div>
+		<?php } ?>
+    <?php } ?>
+
+	<?php if ($item['b_mp4']) {?>
+		<div class="form-group ">
+			<label class="col-sm-3 control-label">视频</label>
+			<div class="col-sm-6 ">
+
+                <div><?php echo "http://{$_SERVER['HTTP_HOST']}//static.adm.deepleaper.com/material/{$item['b_mp4']}";?></div>
+
+<!--				<div>http://adm.deepleaper.com//static.adm.deepleaper.com/material/--><?php //echo $item['b_mp4'];?><!--</div>-->
+			</div>
+		</div>
+	<?php } ?>
+
+
+</form>
+<?php }?>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/materiel/materiel', 1);
+</script>

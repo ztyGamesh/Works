@@ -1,0 +1,143 @@
+/*这里是Deepleaper后台自定义样式库*/
+/*Dl_form.css是表单相关样式*/
+/*author:liuchangyu*/
+/*date:2016.11.22*/
+
+/*项目小标题*/
+.Dl-title {
+    font-size: 14px;
+    line-height: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-bottom: 30px;
+    padding-top: 20px;
+}
+
+.Dl-part-title {
+    color: #00d5cd;
+    font-size: 12px;
+    line-height: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-bottom: 30px;
+    /*padding-top: 20px;*/
+    text-align: center;
+    background: #F6F6F6;
+    margin-right: -40px;
+    margin-left: -40px;
+}
+
+/*小标题左侧提示符*/
+.identifier::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #00d5cd;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+
+/*提示语*/
+.Dl-prompt {
+    color: #c2c2c2;
+}
+
+/*分割线*/
+.Dl-divider {
+    border-bottom: 1px dashed #fff;
+    margin: 0;
+}
+
+/*通屏横线*/
+.Dl-fullscreen-line {
+    margin-left: -25px;
+    margin-right: -25px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    color: #414145;
+}
+
+/*复选框、单选框*/
+input[type=checkbox][class=Dl-checkbox], input[type=radio][class=Dl-checkbox] {
+    /*margin-right: 5px;*/
+    /*top: 5px;*/
+}
+
+.templateContainer {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/*复制一些bootstrap表单错误提示的样式*/
+.help-inline {
+    display: inline-block;
+    padding-left: 5px;
+    vertical-align: middle;
+    margin-bottom: 0;
+    padding-top: 7px;
+}
+
+.form-group.has-error .label, .form-group.has-error .help-block, .form-group.has-error .help-inline {
+    color: #b94a48;
+}
+
+.Dl-required:after {
+    content: "*";
+    color: red;
+    position: absolute;
+    right: 5px;
+    padding-top: 2px;
+}
+
+/*提交按钮样式 开始*/
+.submit_box {
+    margin: 30px -42px;
+    background-color: #F6F6F6;
+
+}
+.submit_box .submit_btn_wrapper{
+    width: 380px;
+    position: relative;
+    left: 50%;
+    margin-left: -190px;
+}
+.submit_box .submit_btn {
+    display: inline-block;
+    float: left;
+    text-align: center;
+    height: 55px;
+    line-height: 55px;
+    background-color: #eeeeee;
+    cursor: pointer;
+    width: 190px;
+}
+
+.submit_box .submit_btn_default {
+    background-color: #d7d7d7;
+}
+
+.submit_box .submit_btn_active {
+    background-color: #d7d7d7;
+}
+
+.submit_box .submit_btn_unactive {
+    background-color: #eeeeee;
+}
+/*提交按钮样式 结束*/
+header {
+    font-size: 30px;
+    margin-top: 50px;
+}
+
+/*表单组样式重写*/
+.form-group {
+    margin-bottom: 8px;
+}
+
+.help-block {
+    min-height: 16px;
+    margin-top: 3px;
+    margin-bottom: 0;
+}

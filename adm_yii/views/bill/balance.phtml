@@ -1,0 +1,93 @@
+<?php
+    echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+
+<div id="toolbar">
+	<div class="form-inline" role="form">
+	   
+		<div class="form-group">
+			<span>目标客户: </span>
+			<select name="client_name" class="selectpicker show-tick"  value="<%=search.type||''%>">
+			<option value="">全部</option>
+			<?php foreach ($item['client_menu']  as $k => $v) { ?>
+			<option value="<?php echo $v;?>"><?php echo $v;?></option>
+			<?php } ?>
+			</select>
+		</div>
+		
+		<div class="form-group">
+			<input name="search" class="form-control" type="text" placeholder="Search">
+		</div>
+		<button id="ok" type="submit" class="btn btn-default">OK</button>
+	</div>
+</div>
+	
+	
+<table id = "table" class="list-table"></table>
+<script>
+
+    var ListPageConfig = {
+        tableId:'#table',   // 表格id
+        tableIndexCol :'uid', //数据索引字段 一般为 uid 或者 id
+        table : {           //表格配置
+            url: '/bill/balance',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign:'left',
+            pagination: true,
+            pageSize: 25,  //获取所有数据,建立二级结构
+            sortOrder: 'desc',
+            detailView:true,
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'saveId',
+            onExpandRow:function(index,row,$detail){
+                 $detail.html('<table></table>').find('table').bootstrapTable({
+                    columns: ListPageConfig.table.columns,
+                    data: row.rows
+                });
+            },
+            columns: [{
+                field: 'name',
+                title: '客户'
+            },{
+                field: 'balance',
+                title: '余额（RMB）',
+                sortable:true,
+        	},{
+                field: 'deposit',
+                title: '冻结金额',
+                sortable:true,
+            },{
+                field: 'update_time',
+                title: '更新时间',
+                sortable:true,
+       
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url:{
+            add         : '/order/orderadd',         //添加 数据 html 地址
+            edit        : '/order/orderedit',         //编辑数据 html 地址
+            del         : '/order/orderdel' ,         //删除数据地址
+            detail      : false                      //详细内容地址,为空则取编辑的地址
+        },
+        title:{
+            addTitle:'添加订单',
+            editTitle:'编辑订单',
+        },
+        showDetail:false         //是否显示详细信息按钮
+    }
+
+</script>
+
+
+<?php
+    echo $this->renderFile('@app/views/layouts/listPublicFooter.phtml');
+?>

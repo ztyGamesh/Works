@@ -1,0 +1,127 @@
+<!--<h1><?php echo $translate('A 404 error occurred') ?></h1>-->
+<!--<h2><?php echo $message ?></h2>-->
+<style>
+    .content .wrapper {
+        background-color: #fdfdfd;
+    }
+    .content .right-wrap .inner {
+        border: 0;
+        background-color: #fdfdfd;
+    }
+    .content .right-wrap {
+        padding: 0;
+    }
+    .left-wrap {
+        display: none;
+    }
+</style>
+<?php if (isset($reason) && $reason): ?>
+
+<?php
+$reasonMessage= '';
+switch ($reason) {
+    case 'error-controller-cannot-dispatch':
+        $reasonMessage = $translate('The requested controller was unable to dispatch the request.');
+        break;
+    case 'error-controller-not-found':
+        $reasonMessage = $translate('The requested controller could not be mapped to an existing controller class.');
+        break;
+    case 'error-controller-invalid':
+        $reasonMessage = $translate('The requested controller was not dispatchable.');
+        break;
+    case 'error-router-no-match':
+        $reasonMessage = $translate('The requested URL could not be matched by routing.');
+        break;
+    default:
+        $reasonMessage = $translate('We cannot determine at this time why a 404 was generated.');
+        break;
+}
+?>
+
+<div style="width: 30%; margin: 20px auto; text-align: center;">
+    <img src="/img/404.gif" alt="" style="width: 100%; margin-bottom: 10px;" />
+    <a class="btn btn-danger href"><i class = "glyphicon glyphicon-send"></i> 返回首页</a>
+</div>
+<script>
+    var href = window.location.href.split('com/')[0] + 'com';
+    $('.href').attr('href', href);
+</script>
+<?php endif ?>
+
+<?php if (isset($controller) && $controller): ?>
+
+<dl>
+    <!--<dt><?php echo $translate('Controller') ?>:</dt>-->
+    <!--<dd><?php echo $escapeHtml($controller) ?>-->
+<?php
+if (isset($controller_class)
+    && $controller_class
+    && $controller_class != $controller
+) {
+    echo '(' . sprintf($translate('resolves to %s'), $escapeHtml($controller_class)) . ')';
+}
+?>
+</dd>
+</dl>
+
+<?php endif ?>
+
+<?php if (isset($display_exceptions) && $display_exceptions): ?>
+
+<?php if(isset($exception) && $exception instanceof Exception): ?>
+<hr/>
+<h2><?php echo $translate('Additional information') ?>:</h2>
+<h3><?php echo get_class($exception); ?></h3>
+<dl>
+    <dt><?php echo $translate('File') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $exception->getFile() ?>:<?php echo $exception->getLine() ?></pre>
+    </dd>
+    <dt><?php echo $translate('Message') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $exception->getMessage() ?></pre>
+    </dd>
+    <dt><?php echo $translate('Stack trace') ?>:</dt>
+    <dd>
+        <pre class="prettyprint linenums"><?php echo $exception->getTraceAsString() ?></pre>
+    </dd>
+</dl>
+<?php
+    $e = $exception->getPrevious();
+    if ($e) :
+?>
+<hr/>
+<h2><?php echo $translate('Previous exceptions') ?>:</h2>
+<ul class="unstyled">
+    <?php while($e) : ?>
+    <li>
+        <h3><?php echo get_class($e); ?></h3>
+        <dl>
+            <dt><?php echo $translate('File') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $e->getFile() ?>:<?php echo $e->getLine() ?></pre>
+            </dd>
+            <dt><?php echo $translate('Message') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $e->getMessage() ?></pre>
+            </dd>
+            <dt><?php echo $translate('Stack trace') ?>:</dt>
+            <dd>
+                <pre class="prettyprint linenums"><?php echo $e->getTraceAsString() ?></pre>
+            </dd>
+        </dl>
+    </li>
+    <?php
+        $e = $e->getPrevious();
+        endwhile;
+    ?>
+</ul>
+<?php endif; ?>
+
+<?php else: ?>
+
+<!--<h3><?php echo $translate('No Exception available') ?></h3>-->
+
+<?php endif ?>
+
+<?php endif ?>

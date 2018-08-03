@@ -1,0 +1,68 @@
+.list-sort-demo-drag-wrapper {
+    position: relative;
+    /*background: #404040;*/
+    border: 1px solid #108ee9;
+    padding: 4px;
+    background-color: rgba(255, 255, 255, 0);
+    overflow: scroll;
+    height: 1000px;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.list-sort-demo-drag {
+    margin: 0 auto;
+    /* max-width: 800px; */
+    /*cursor: url('http://gtms02.alicdn.com/tps/i2/T1_PMSFLBaXXcu5FDa-20-20.png') 10 10,pointer!important;*/
+    position: relative;
+    height: 880px;
+}
+
+.list-sort-demo-drag>div {
+    overflow: hidden;
+}
+
+.list-sort-demo-drag-list {
+    background: #fff;
+    border-radius: 6px;
+    margin: 5px auto;
+    padding: 10px;
+    height: 220px;
+    width: 90%;
+    transition: box-shadow .5s, transform .5s;
+}
+
+.list-sort-demo-drag-list.list-drag-selected {
+    box-shadow: 0 8px 20px #E6E6E6;
+    transform: scale(1.1) !important;
+}
+
+.list-sort-demo-drag-icon {
+    width: 20%;
+    display: inline-block;
+    text-align: center;
+    font-size: 24px;
+    line-height: 50px;
+    vertical-align: top;
+}
+
+.list-sort-demo-drag-text {
+    width: 80%;
+    display: inline-block;
+}
+
+.list-sort-demo-drag-text h1 {
+    font-size: 18px;
+}
+
+.list-sort-demo-drag-text p {
+    font-size: 12px;
+}
+
+@media screen and (max-width: 320px) {
+    .list-sort-demo-drag-text h1 {
+        font-size: 14px;
+        line-height: 28px;
+    }
+}

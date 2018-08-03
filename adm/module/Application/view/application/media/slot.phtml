@@ -1,0 +1,212 @@
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<script>
+    var platform_role = '';
+    getcurrentuserauthorityAPI(getcurrentuserauthorityAPIonSuccessFun);
+    function getcurrentuserauthorityAPIonSuccessFun(result) {//获取媒体角色
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var user = req.user;
+            platform_role = user.platform_role;
+        } else {
+            console.log('getcurrentuserauthorityAPI返回错误');
+        }
+    }
+    function editUrl() {//根据媒体角色动态改变地址
+        if (platform_role == 'selfsupport') {
+            return '/media/slotedit'
+        } else if (platform_role == 'alliance') {
+            return '/media/alliancesloteditview'
+        }
+    }
+    function addUrl() {//根据媒体角色动态改变地址
+        if (platform_role == 'selfsupport') {
+            return '/media/slotadd'
+        } else if (platform_role == 'alliance') {
+            return '/media/allianceslotaddview'
+        }
+    }
+
+    //获取广告形式,用value汉字当key真是恶心,如果有机会一定改了这坨shit
+    var slotclass = {};
+    currentroleslotclassAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            for (var i in req.data) {
+                slotclass[req.data[i]] = req.data[i]
+            }
+        } else {
+            layer.msg('获取广告形式失败');
+        }
+    });
+
+    //获取媒体,用value汉字当key真是恶心,如果有机会一定改了这坨shit
+    var media = {};
+    medialistAIP('uid',function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            for (var i in req.data) {
+                media[req.data[i]] = req.data[i]
+            }
+        } else {
+            layer.msg('获取媒体失败');
+        }
+    });
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+        },
+        executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('slotclass');
+            bindTableFilterAction('media');
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/media/slot',
+            queryParams: function (params) {
+                params.search = $("input[name=search]").val();
+                params.media = $("input[name=media]:checked").val();
+                params.slotclass = $("input[name=slotclass]:checked").val();
+                return params;
+            },
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortName: 'create_time',
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '广告位名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'slot_class_name',
+                title: '广告形式' + jointTableFilter('slotclass', slotclass)
+            }, {
+                field: 'media_name',
+                title: '所属媒体' + jointTableFilter('media', media)
+            }, {
+                field: 'media_type',
+                title: '媒体类型'
+
+            }, {
+                field: 'template_count',
+                title: '样式数量',
+
+            }, {
+                field: 'create_time',
+                title: '创建时间',
+                sortable:true
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        },
+        url: {
+            add: addUrl(),         //添加 数据 html 地址
+            info: '/media/slotinfo',         //编辑数据 html 地址
+            detail: '/media/slotdetail',         //编辑数据 html 地址
+            edit: editUrl(),
+            del: '/media/slotdel',         //删除数据地址
+        },
+        title: {
+            addTitle: '添加频道及广告位',
+            infoTitle: '广告位代码',
+            detailTitle: '广告位详情信息',
+            editTitle: '编辑频道及广告位',
+        },
+        action: {
+            info: true,
+            edit: true,
+            del: true
+        },
+        showDetail: false         //是否显示详细信息按钮
+    };
+
+
+    var auth = getAuthorityByUrl('/media/slot');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                info: false,
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                info: true,
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                info: true,
+                edit: true,
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+</script>
+
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加广告位
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" class="form-control" placeholder="广告位名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+
+<table id="table" class="list-table"></table>
+<?php
+echo $this->partial('layout/listPublicFooter3.phtml');
+?>
+
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

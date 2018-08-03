@@ -1,0 +1,64 @@
+<?php
+if ($item) {
+    $name = $item['name'];
+    $uid = $item['uid'];
+    $info = $item['info'];
+?>
+
+<form id="edit" method="post" action="/media/categorysave"
+	class="form-horizontal list-form"
+	novalidate="novalidate">
+
+	<div class="form-group ">
+
+		<label class="col-sm-3 control-label control-label2">媒体：</label>
+		<div class="col-sm-6 ">
+			<?php echo $item['media_name'] ?>
+		</div>
+	</div>
+
+	<div class="form-group ">
+		<label class="col-sm-3 control-label control-label2">广告位名称：</label>
+		<div class="col-sm-6 ">
+			<?php echo $item['name']; ?>
+		</div>
+	</div>
+	
+	
+	
+	<div class="form-group ">
+		<label class="col-sm-3 control-label control-label2">广告位ID：</label>
+		<div class="col-sm-6 ">
+			<?php echo $item['uid'] ?>
+		</div>
+	</div>
+	
+	<div class="form-group hidden">
+		<label class="col-sm-3 control-label control-label2">数字ID：</label>
+		<div class="col-sm-6 ">
+			<?php echo $item['nid'] ?>
+		</div>
+	</div>
+	
+	<div class="form-group hidden">
+		<label class="col-sm-3 control-label control-label2">位置尺寸：</label>
+		<div class="col-sm-6 ">
+			<?php echo $item['w']."-".$item['h']; ?>
+		</div>
+	</div>
+	
+	<div class="form-group ">
+		<label class="col-sm-3 control-label control-label2">广告位代码：</label>
+		<div class="col-sm-6 ">
+            &lt;script &nbsp; src="http://web.adm.deepleaper.com/slot/<?php echo $item['uid'] ?>"&gt;&lt;/script&gt;
+		</div>
+	</div>
+</form>
+<?php }?>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/media/slot', 1);
+</script>
+

@@ -1,0 +1,158 @@
+<?php
+    echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+
+<script>
+
+    var ListPageConfig = {
+        tableId:'#table',   // 表格id
+        func:function(data){  
+        },
+        tableIndexCol :'uid', //数据索引字段 一般为 uid 或者 id
+        table : {           //表格配置
+            url: '/order/template',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign:'left',
+            pagination: true,
+            pageSize: 50,  //获取所有数据,建立二级结构
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'saveId',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '样式名称'
+            },{
+                field: 'info',
+                title: '样式说明',
+            },{
+                field: 'scope',
+                title: '广告位类型',   
+            }, {
+                field: 'create_time',
+                title: '修改时间',
+             }, {
+                field: 'create_user',
+                title: '修改人',
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url:{
+            add       : '/order/templateadd',         //添加 数据 html 地址
+            edit      : '/order/templateedit',         //编辑数据 html 地址
+            del       : '/order/templatedel',         //删除数据地址
+            detail    : '/order/templatedetail',         //删除数据地址
+        },
+       	action:{
+        	 detail:true,
+        	 edit: true,
+             del: true,
+        },
+        title:{
+        	//detailTitle:'查看样式',
+            addTitle:'添加样式',
+        	editTitle:'编辑样式',
+        },
+        validate:{      //添加提交验证
+            add:function () {
+                var name = $('#name');
+                var nameVal = name.val();
+                var code = $('#code');
+                var codeVal = code.val();
+
+                if (!vaIsNotNull(nameVal)){
+                    vaError(name,'样式名称不能为空');
+                    return false;
+                }else if (!vaIsNotNull(codeVal)){
+                    vaError(code,'样式代码不能为空');
+                    return false;
+                }else {
+                    return true;
+                }
+            },
+            edit:function () {
+                var name = $('#name');
+                var nameVal = name.val();
+                var code = $('#code');
+                var codeVal = code.val();
+
+                if (!vaIsNotNull(nameVal)){
+                    vaError(name,'样式名称不能为空');
+                    return false;
+                }else if (!vaIsNotNull(codeVal)){
+                    vaError(code,'样式代码不能为空');
+                    return false;
+                }else {
+                    return true;
+                }
+            }
+        }
+       
+    }
+
+
+    var auth = getAuthorityByUrl('/order/template');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                detail: false,
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: true,
+            //    del: true
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+
+</script>
+
+<div id="toolbar">
+	<div class = "btn-group pull-left" id="for_change">
+		<a class = "btn btn-warning plus"><i class = "glyphicon glyphicon-plus"></i> 添加样式</a>
+<!--		<button id = "dropdown" class = "btn btn-warning dropdown-toggle" data-toggle = "dropdown" disabled><span-->
+<!--				class = "caret"></span></button>-->
+<!--		<ul class = "dropdown-menu">-->
+<!--			<li><a href = "#" class = "allremove"><i class = "glyphicon glyphicon-remove"></i> 删除</a></li>-->
+<!---->
+<!--		</ul>-->
+	</div>
+	<div class = "input-group pull-left paddingleft10" style = 'width:300px;'>
+		<input type = "text" id = "searchKeyword" class = "form-control" placeholder = "样式名称" value = "" name = "search">
+		<span class = "input-group-btn">
+			<a id = "ok" class = "btn btn-default dropdown-toggle deepleaper-search-btn" type = "button" data-toggle = "dropdown"><span
+					class = "glyphicon glyphicon-search"></span></a>
+		</span>
+	</div>
+</div>
+<table id = "table" class="list-table"></table>
+<?php
+    echo $this->renderFile('@app/views/layouts/listPublicFooter2.phtml');
+?>
+
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>
+

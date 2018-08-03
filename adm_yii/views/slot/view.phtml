@@ -1,0 +1,198 @@
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="/css/dlMultiMenu.css?v=20170814">
+
+<!--<link rel="stylesheet" href="../css/application/media/alliancesloteditview.css"/>-->
+<link rel="stylesheet" href="../css/application/media/slotadd.css"/>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/slot/slotPriceView">跃盟内部配置</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">查看广告位</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="infor_flow" id="infor_flow">
+            <div class="container-fluid">
+                <div class="row" style="padding-top: 20px;">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告位名称</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control dl-notNull" value="" id="name">
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label Dl-required">所属媒体</label>
+                        <div class="col-md-7">
+                            <select id="media" name="media" class="form-control selectpicker" data-live-search="true"
+                                    disabled="disabled">
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label Dl-required">媒体平台属性</label>
+                        <div class="col-md-7">
+                            <div id="media_type" class="form-control"></div>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告位类型</label>
+                        <div class="col-md-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="adForm" value="29076f0d-a923-47d4-bfef-2e3cf28fc099" checked>
+                                动态信息流
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="adForm" value="c96089f7-9cff-4149-997f-bb03d617cda0" >
+                                固定信息流
+                            </label>
+
+                            <!--                            <label class="radio-inline">-->
+                            <!--                                <input type="radio" name="adForm" value="987b7cd8-2752-4a15-bc94-6c0a2764a5c4"> 开屏-->
+                            <!--                            </label>-->
+                            <label class="radio-inline">
+                                <input type="radio" name="adForm" value="7b62026a-23aa-4592-836a-f4ee78f7ea2e"> 横幅
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="adForm" value="5b3e416f-d93a-4632-87de-5d4fbcc942fb"> 插屏
+                            </label>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group ">
+                        <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告位频道分类</label>
+                        <div class="col-md-7">
+                            <select class="selectpicker" data-width="100%" id="channelParent" data-size="6">
+
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-1  control-label"></label>
+                        <div class="col-md-7">
+                            <select class="selectpicker" data-width="100%" id="channelChild" title="请选择" multiple>
+                            </select>
+                        </div>
+                        <span class="help-block col-md-7 col-md-offset-3"></span>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-md-2 col-md-offset-1 control-label ">广告投放行业屏蔽:</label>
+                    <div class="col-sm-7 ">
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="shield" value="0" id="type_unshielded" checked>不屏蔽
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="shield" value="1" id="type_shielded">屏蔽
+                            </label>
+                        </div>
+                        <div id="dl-list" class=""></div>
+                        <span id="marker" class="marker">
+                            注：跃盟已为您屏蔽彩票交易、敏感医药、成人及丰胸产品、烟草制品、微信销售及微商业务推广、不正当休闲会所类广告。以及广告法禁投行业！
+                        </span>
+
+                    </div>
+                    <span class="help-block col-md-7 col-md-offset-3"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+                <div class="row Dl-part-title">
+                    <div class="col-md-10 col-md-offset-1">
+                        <span class="identifier">选择模版</span>
+                        <small class="Dl-prompt">请点击缩略图预览样式，根据广告位尺寸比例推荐适配较好的样式</small>
+                    </div>
+                </div>
+                <!-- 模板联动-->
+                <div class="row" id="templateWrapper">
+                </div>
+                <div class="form-group " id="ad_access_type" style="display: none">
+                    <label class="col-md-2 col-md-offset-1 control-label Dl-required">广告位接入方式</label>
+                    <div class="col-sm-7 ">
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="access_type" value="float" id="type_suspension" checked>悬浮
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="access_type" value="embedded" id="type_embedded">嵌入
+                            </label>
+                        </div>
+                    </div>
+                    <span class="help-block col-md-7 col-md-offset-3"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="Dl-divider"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div id ="setting-detail"></div>
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="row submit_box">-->
+<!--                    <div class="submit_btn_wrapper">-->
+<!--                        <div class="submit_btn" id="cancel">-->
+<!--                            返回列表-->
+<!--                        </div>-->
+<!--                        <div class="submit_btn submit_btn_default submit_btn_active" id="submit">-->
+<!--                            完成修改-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("input").attr('disabled', 'disabled');
+            $(".selectpicker").attr('disabled', 'disabled');
+            $("button").attr('disabled', 'disabled');
+        }, 1000)
+        $("input").attr('disabled', 'disabled');
+        $(".selectpicker").attr('disabled', 'disabled');
+
+    });
+</script>
+
+<script type="text/javascript" src="/js/adFormAndPreview/adFormAndPreview.js?v=20170908"></script>
+<script type="text/javascript" src="/js/application/media/allianceslotsetting.js?v=20170908"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<script type="text/javascript" src="/js/application/media/alliancesloteditview.js?v=20171226"></script>
+<script src="/js/dlMultiMenuAll.js?v=20170814" type="text/javascript"></script>
+
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicFooter.phtml');
+?>

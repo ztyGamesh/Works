@@ -1,0 +1,117 @@
+<!--账户信息-->
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+
+<form class="form-horizontal list-form" style="margin-top: 30px">
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">基本信息</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">账户名:</label>
+        <div class="col-sm-7">
+            <input id="name" type="text" name="name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">公司名称:</label>
+        <div class="col-sm-7">
+            <input id="corporation_name" type="text" name="corporation_name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">邮箱:</label>
+        <div class="col-sm-7">
+            <input id="mail" type="text" name="mail" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">联系人:</label>
+        <div class="col-sm-7">
+            <input id="link_name" type="text" name="link_name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">手机:</label>
+        <div class="col-sm-7">
+            <input id="tel" type="text" name="tel" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">财务信息</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户银行:</label>
+        <div class="col-sm-7">
+            <input id="bank" type="text" name="bank" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">银行账户:</label>
+        <div class="col-sm-7">
+            <input id="bank_account" type="text" name="bank_account" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户名:</label>
+        <div class="col-sm-7">
+            <input id="account_name" type="text" name="account_name" class="form-control" autocomplete="off" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label">信息截图存根:</label>
+        <div class="col-md-7">
+            <img src="" id="attach" style="width: 100%;" alt="无截图存根">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/account/mediaaccountview', 1);
+
+    mediaaccountAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            $("#name").val(data.name);
+            $("#corporation_name").val(data.corporation_name);
+            $("#mail").val(data.mail);
+            $("#link_name").val(data.link_name);
+            $("#tel").val(data.tel);
+            $("#bank").val(data.bank);
+            $("#bank_account").val(data.bank_account);
+            $("#account_name").val(data.account_name);
+            $("#attach").attr('src', 'http://static.adm.deepleaper.com/material/' + data.attach[0]);
+        } else {
+            layer.msg(req.msg);
+        }
+    });
+
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

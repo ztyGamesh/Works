@@ -1,0 +1,1024 @@
+<!--广告计划列表-->
+<?php
+echo $this->renderFile('@app/views/layouts/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="/css/bootstrap-table.css?v=20170719">
+<link rel="stylesheet" href="/css/datepicker.css"/>
+<script type="text/javascript" src="/js/bootstrap-tableFilter-deepleaper.js"></script>
+<style>
+    .layui-layer-dialog {
+        width: 500px !important;
+    }
+    .layui-layer-content {
+        max-height: 400px;
+    }
+    .bootstrap-table {
+        height: calc(100% - 60px);
+        overflow: hidden;
+    }
+    .bootstrap-table .fixed-table-container {
+        height: calc(100% - 150px);
+    }
+    .bootstrap-table .fixed-table-body {
+        overflow: auto;
+        min-height: 230px;
+    }
+    .bootstrap-table .fixed-table-body .fixed-table-loading {
+        top: 0 !important;
+        height: 100%;
+        padding-top: 80px;
+        font-size: 14px;
+        background-color: rgba(255,255,255,0.85);
+    }
+    .thead-position {
+        position: absolute;
+        z-index: 999;
+        top: 0;
+    }
+    .tbody-block {
+        display: block;
+    }
+    table td:not(:hover) .ad-table-edit-open {
+        visibility: hidden !important;
+    }
+</style>
+<?php
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"></span>
+                <img class="separator hidden" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name hidden"></span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<input type="hidden" name="group_id" id="group_id">
+<div class="toolbar" id="toolbar">
+    <div class="btn-group pull-left create" id="for_change">
+        <div class="btn deepleaper-btn-normal ignore-plus" id="add-new-open">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">新建广告计划
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;margin-right: 14px'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="请输入广告计划名称" value=""
+               name="search">
+        <span class="input-group-btn">
+            <a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+        </span>
+    </div>
+    <div class="input-group pull-left date dl-date-range-wrapper">
+        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+        <span class="caret dl-date-range-input-icon"></span>
+    </div>
+
+    <!-- 批量操作开始 -->
+    <br/>
+    <div class="input-group pull-left" style="margin-top: 8px;" id="all-update">
+        <a class="btn" data-status="active" style="color: #337ab7;" href="javascript:;">启用</a>
+        <a class="btn" data-status="pause" style="color: #337ab7;" href="javascript:;">暂停</a>
+        <a class="btn" data-status="delete" style="color: #337ab7;" href="javascript:;">删除</a>
+    </div>
+    <div class="input-group pull-left" style="margin-top: 8px;">
+        <button style="margin-left: 6px;" type="button" class="btn deepleaper-btn-normal" data-toggle="dropdown" aria-expanded="true" id="dropdownMenu1">
+            <div style="text-align: center;">
+                <span>批量操作</span>
+                <span class="caret"></span>
+            </div>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li><a href="javascript:;" id="all-price-open">修改出价</a></li>
+            <li><a href="javascript:;" id="all-budget-open">修改日预算</a></li>
+            <li><a href="javascript:;" id="all-word-open">添加关键词</a></li>
+            <li><a href="javascript:;" id="all-copy-open">复制广告计划</a></li>
+        </ul>
+    </div>
+    <!-- 批量操作结束 -->
+</div>
+
+<!-- 新建广告计划模态框 -->
+<div class="modal fade" id="add-new-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">选择广告组</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group data-search" style="width: 200px;padding: 6px;">
+                    <input type="text" class="form-control" placeholder="搜索广告组">
+                    <div class="input-group-addon btn btn-primary">搜索</div>
+                </div>
+                <div style="max-height: 300px;overflow: auto;">
+                    <div class="data-main" style="display: table;padding: 12px 6px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="add-new">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改出价模态框 -->
+<div class="modal fade" id="all-price-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div style="display: table-cell;">修改出价：</div>
+                    <input style="margin-left: 5px;margin-right: 5px;display: table-cell;padding: 6px 12px;font-size: 12px;color: #555;border: 1px solid #ccc;border-radius: 6px;"/>
+                    <div style="display: table-cell;">元</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="all-price">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 修改日预算模态框 -->
+<div class="modal fade" id="all-budget-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div style="display: table-cell;">修改日预算：</div>
+                    <input style="margin-left: 5px;margin-right: 5px;display: table-cell;padding: 6px 12px;font-size: 12px;color: #555;border: 1px solid #ccc;border-radius: 6px;"/>
+                    <div style="display: table-cell;">元</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="all-budget">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 复制模态框 -->
+<div class="modal fade" id="all-copy-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="all-copy-modal-radio" style="margin-top: 0;" value="1" checked="checked"/>
+                        <span>复制广告计划及其广告计划下的广告创意</span>
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="all-copy-modal-radio" style="margin-top: 0;" value="0"/>
+                        <span>仅复制广告计划</span>
+                    </label>
+                </div>
+                <div class="input-group data-search" style="width: 200px;padding: 6px;">
+                    <input type="text" class="form-control" placeholder="搜索广告组">
+                    <div class="input-group-addon btn btn-primary">搜索</div>
+                </div>
+                <div style="padding-left: 6px;">选择广告组</div>
+                <div style="max-height: 300px;overflow: auto;">
+                    <div class="data-main" style="display: table;padding: 12px 6px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="all-copy">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="table" class="list-table"></table>
+<?php
+echo $this->renderFile('@app/views/layouts/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+<!-- 表格工具 -->
+<script src="/js/listUtils/index.js"></script>
+<!-- 表格可编辑 -->
+<script src="/js/listUtils/editAbleUtil.js"></script>
+<!-- 表格批量操作 -->
+<script src="/js/listUtils/batchOperation.js"></script>
+
+<script>
+    clientaccountAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1 && req.data != null) {
+            $("#companyName").html(req.data.name);
+        }
+    });
+    var statusArry = {'active': '启用', 'pause': '暂停'};
+    var purpose = {'landing': '落地页', 'download': '应用下载'};
+    // var bid_type = {'cpm': '按千次展示收费', 'cpc': '按点击收费'};
+    var bid_type = {'cpm': 'CPM', 'cpc': 'CPC'};
+    $("#group_id").val(GetQueryString('groupId'));
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+        },
+        executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('purpose');
+            bindTableFilterAction('status');
+            bindTableFilterAction('bid_type');
+        },
+        url: {
+            addCreative: '/promotion/adcreativeaddview',           //动态添加广告创意
+//            addfixedCreative: '/promotion/adcreativefixedaddview',           //固定添加广告创意
+            add: '/promotion/adplanaddview?groupId=' + GetQueryString('groupId') + '&entrance=plan',         //新建广告计划
+            editCreative: '/promotion/adplaneditview',         //修改页面
+            colModify: '/promotion/adplanupdatestatus' //状态(有效/暂停)修改接口
+        },
+        api: {
+            colModify: adgroupupdatestatusAPI //修改状态接口
+        },
+        htmlConfig: {
+            addCreative: ['<div class="addCreative dl-list-action-btn-wrapper"  title="添加广告创意">',
+                '<img src="../img/icon/icon_add.png" class="dl-list-action-btn">',
+                '</div>'],
+            editCreative: ['<div class="editCreative dl-list-action-btn-wrapper"  title="修改">',
+                '<img src="../img/icon/icon_edit.png" class="dl-list-action-btn">',
+                '</div>']
+        },
+        operateEvents: {
+            'click .addCreative': function (e, value, row, index) {
+                window.location.href = ListPageConfig.url.addCreative + '?planId=' + row.id + '&groupId=' + row.goup_id + '&entrance=plan';
+                //查询广告计划信息
+//                fetchadplanAPI(row.id, function (result) {
+//                    var req = JSON.parse(result);
+//                    if (req.status == 1) {
+//                        if (req.data.class == 'c96089f7-9cff-4149-997f-bb03d617cda0') {
+//                            window.location.href = ListPageConfig.url.addfixedCreative + '?planId=' + row.id + '&groupId=' + GetQueryString('groupId') + '&entrance=plan';
+//                        } else {
+//                            window.location.href = ListPageConfig.url.addCreative + '?planId=' + row.id + '&groupId=' + GetQueryString('groupId') + '&entrance=plan';
+//                        }
+//                    } else {
+//                        layer.msg(req.msg);
+//                    }
+//                });
+            },
+            'click .editCreative': function (e, value, row, index) {
+                window.location.href = ListPageConfig.url.editCreative + '?id=' + row.id + '&groupId=' + row.goup_id;
+            }
+        },
+        title: {
+            addTitle: '添加用户权限',
+            editTitle: '修改用户权限'
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {
+            editCreative: true,
+            addCreative: true,
+            status: true
+        },
+        toolbar: function () {
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/promotion/adplanlist',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                var parent = $('#table').parent();
+                parent.attr('data-scrollTop', parent.scrollTop());
+                var loading = parent.find('.fixed-table-loading:first');
+                loading.show();
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                params['begin'] = searchDate[0].replace(/\//g, '-');
+                params['end'] = searchDate[1].replace(/\//g, '-');
+                params['search'] = $("#searchKeyword").val();
+                params['status'] = $("input[name=status]:checked").val();
+                params['group_id'] = $("#group_id").val();
+                params['purpose'] = $("input[name=purpose]:checked").val();
+                params['bid_type'] = $("input[name=bid_type]:checked").val();
+                return params;
+            },
+            onLoadSuccess: function(res){
+                var parent = $('#table').parent();
+                var top = parent.attr('data-scrollTop') || 0;
+                parent.scrollTop(top);
+                positionTableHeader();
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                console.log(res)
+                var loading = $('#table').parent().find('.fixed-table-loading:first');
+                loading.hide();
+                if (res.status == 1) {
+                    if(res.data.group_id){
+                        $("#adgroupName").html(res.data.group_name).removeClass('hidden')
+                                .prev().removeClass('hidden');
+                    }
+                    return res.data;
+                } else {
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: true,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            },
+            onMouseoverRow:function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display','inline-block');
+            },
+            onMouseoutRow:function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display','none');
+            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '广告计划',
+                formatter: function (value, row, index) {
+                    return '<a class="planname" style="color: #3d5d9f;cursor: pointer;"><span class="cutValue">' + cutstrbyChar(value, 16) + '</span></a>' + tableEditTemplate.content;
+                },
+                events: Object.assign({
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    },
+                    'click .planname': function (e, value, row, index) {
+                        window.location.href = '/promotion/adcreativelistview?planId=' + row.id + '&groupId=' + row.goup_id;
+                    },
+                },
+                //修改广告计划名称
+                tableEditTemplate.getEvents({
+                    validate: 'charSize',
+                    min: 1, max: 50,
+                    msg: '名称不能为空！50个以内',
+                    url: '/adplan/update',
+                    query: function(data){
+                        return {
+                            type: 'name',
+                            id: data.id,
+                            name: data.value,
+                        }
+                    }
+                }))
+            }, {
+                field: 'status',
+                title: '状态' + jointTableFilter('status', statusArry),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'pause':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_start" src="../img/icon/icon_start.png" title="启用">';
+                            break;
+                        case 'active':
+                            return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" src="../img/icon/icon_pause.png" title="暂停">';
+                            break;
+                        default:
+                            return value;
+                    }
+                },
+                events: {
+                    'click .status_modify': function (e, value, row, index) {//status开关
+                        if ('active' == row.status) {
+                            row.status = 'pause';
+                        } else {
+                            row.status = 'active';
+                        }
+                        var postData = {
+                            'ids': row.id,
+                            'status': row.status
+                        };
+                        ListPageConfig.api.colModify(ListPageConfig.url.colModify, postData, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh',{silent: true});
+                            } else {
+                                Comm.error(data.msg);
+                            }
+                        });
+                    }
+                },
+                width: '85px'
+            }, {
+                field: 'goup_name',
+                title: '广告组',
+                formatter: function (value, row, index) {
+                    return '<a class="planname" style="color: #3d5d9f;cursor: pointer;"><span class="cutValue">' + cutstrbyChar(value, 16) + '</span></a>';
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    },
+                    'click .planname': function (e, value, row, index) {
+                        window.location.href = '/promotion/adplanlistview?groupId=' + row.goup_id;
+                    },
+                }
+            }, {
+                field: 'purpose',
+                title: '推广目的' + jointTableFilter('purpose', purpose),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'landing':
+                            return '落地页';
+                            break;
+                        case 'download':
+                            return '应用下载';
+                            break;
+                        default:
+                            return value;
+                    }
+                }
+            }, {
+                field: 'price',
+                title: '出价(元)',
+                formatter: function(value, row, index) {
+                    return '<span>' + value + '</span>' + tableEditTemplate.content;
+                },
+                //修改出价
+                events: tableEditTemplate.getEvents({
+                    validate: 'numSizeDecial',
+                    min: 0.01, max: 10, decial: 2,
+                    msg: '请输入最多两位小数的数值！范围：0.01~9999999999.99',
+                    url: '/adplan/update',
+                    query: function(data){
+                        return {
+                            type: 'price',
+                            id: data.id,
+                            price: data.value,
+                        }
+                    }
+                }),
+            }, {
+                field: 'bid_type',
+                title: '出价方式' + jointTableFilter('bid_type', bid_type),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'cpm':
+                            return 'CPM';
+                            break;
+                        case 'cpc':
+                            return 'CPC';
+                            break;
+                        default:
+                            return value;
+                    }
+                }
+            }, {
+                field: 'period',
+                title: '投放周期',
+                width: '100px'
+            }, {
+                field: 'budget',
+                title: '日预算(元)',
+                formatter: function(value, row, index) {
+                    return '<span>' + value + '</span>' + tableEditTemplate.content;
+                },
+                //修改日预算
+                events: tableEditTemplate.getEvents({
+                    validate: 'numSizeDecial',
+                    min: 50, max: 10, decial: 2,
+                    msg: '请输入最多两位小数的数值！范围：50~9999999999.99',
+                    url: '/adplan/update',
+                    query: function(data){
+                        return {
+                            type: 'budget',
+                            id: data.id,
+                            budget: data.value,
+                        }
+                    }
+                }),
+            }, {
+                field: 'spend_budget',
+                title: '花费(元)'
+
+            }, {
+                field: 'imp',
+                title: '展示数'
+
+            }, {
+                field: 'clk',
+                title: '点击数'
+
+            }, {
+                field: 'ctr',
+                title: '点击率',
+                formatter: function (value, row, index) {
+                    return value == null ? null : strToPercent(value);
+                }
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        }
+    };
+    initdaterangepicker($("#searchDate"), moment(), moment(), moment(), moment('1970-01-01'));
+    $("#companyName").bind('click', function () {
+        window.location.href = '/promotion/adgrouplistview';
+    });
+    var auth = getAuthorityByUrl('/promotion/adgrouplistview');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                editCreative: false,
+                addCreative: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                editCreative: false,
+                addCreative: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                editCreative: true,
+                addCreative: true
+            };
+        }
+    }
+    checkAuthority();
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<!-- 批量操作开始 -->
+<script>
+    /* 批量启用，暂停，删除操作 **/
+    initBatchUpdateStatus({
+        id: 'all-update',
+        name: '广告计划',
+        url: '/adplan/batchUpdate',
+    });
+
+    /* 批量修改出价 **/
+    initBatchUpdateOperation({
+        id: 'all-price',
+        name: '广告计划',
+        title: '修改出价（已选择#length个广告计划）',
+        url: '/adplan/batchUpdate',
+        init: function(parent){
+            parent.find('.modal-body input').val('');
+        },
+        query: function(parent, dataIds){
+            var input = parent.find('.modal-body input');
+            var value = input.val();
+            if(!validateString(value, 'numSizeDecial', 0.01, 10, 2)){
+                layer.msg('请输入最多两位小数的数值！范围：0.01~9999999999.99');
+                input.focus();
+                return false;
+            }
+            return {
+                type: 'price',
+                ids: dataIds,
+                price: value,
+            }
+        },
+    });
+
+    /* 批量修改日预算 **/
+    initBatchUpdateOperation({
+        id: 'all-budget',
+        name: '广告计划',
+        title: '修改日预算（已选择#length个广告计划）',
+        url: '/adplan/batchUpdate',
+        init: function(parent){
+            parent.find('.modal-body input').val('');
+        },
+        query: function(parent, dataIds){
+            var input = parent.find('.modal-body input');
+            var value = input.val();
+            if(!validateString(value, 'numSizeDecial', 50, 10, 2)){
+                layer.msg('请输入最多两位小数的数值！范围：50~9999999999.99');
+                input.focus();
+                return false;
+            }
+            return {
+                type: 'budget',
+                ids: dataIds,
+                budget: value,
+            }
+        },
+    });
+    
+    /* 批量复制 **/
+    initBatchUpdateOperation({
+        id: 'all-copy',
+        name: '广告计划',
+        title: '复制广告计划（已选择#length个广告计划）',
+        url: '/adplan/batchCopy',
+        purpose: true,
+        init: function(parent, purpose){
+            $(document).data('purpose', purpose);
+            getGroups4copy();
+            parent.find('.modal-body input:first').selected();
+        },
+        query: function(parent, dataIds){
+            var groupIds = [].slice.call(
+                parent.find('.modal-body input[type=checkbox]:checked')
+            ).map(t=>$(t).val());
+            if(!groupIds.length){
+                layer.msg('请选择广告组！');
+                return false;
+            }
+            var value = parent.find('.modal-body input[type=radio]:checked').val();
+            return {
+                pid: dataIds,
+                gid: groupIds,
+                recurse: value
+            }
+        },
+        success: function(parent, param){
+            window.location.href = '/promotion/adplanlistview?groupId=' + param.gid[0];
+        },
+    });
+
+    /* 打开新建 **/
+    $('#add-new-open').on('click', function(){
+        var groupId = GetQueryString('groupId');
+        if(groupId === null){
+            getGroups4new();
+            $('#add-new-modal .modal-body .data-search input').val('');
+            $('#add-new-modal').modal('show');
+            return;
+        }
+        window.location.href = '/promotion/adplanaddview?groupId=' + groupId + '&entrance=plan';
+    });
+    
+    /* 新建广告组 **/
+    $('#add-new').on('click', function(){
+        var groupId = $('#add-new-modal .modal-body .data-main input:checked').val();
+        if(!groupId){
+            layer.msg('请选择广告组！');
+            return;
+        }
+        window.location.href = '/promotion/adplanaddview?groupId=' + groupId + '&entrance=plan';
+    });
+
+    /* 新建时查找广告组 **/
+    $('#add-new-modal .modal-body .data-search div').on('click', function(){
+        var search = $('#add-new-modal .modal-body .data-search input').val();
+        getGroups4new(search);
+    });
+
+    /* 复制时查找广告组 **/
+    $('#all-copy-modal .modal-body .data-search div').on('click', function(){
+        var search = $('#all-copy-modal .modal-body .data-search input').val();
+        getGroups4copy(search);
+    });
+
+    /* 获取广告组 **/
+    function getGroups(data, callback){
+        var url = '/adgroup/groups';
+        http_post_data(url, 'get', {
+            plan: 0,
+            search: data.search || '',
+            purpose: data.purpose || '',
+        }, function(res){
+            if(1 === res.status){
+                callback && callback(res.data);
+            }else{
+                layer.msg(res.msg);
+            }
+        });
+    }
+
+    /* 新建获取广告组 **/
+    function getGroups4new(search){
+        getGroups({search, search}, function(data){
+            $('#add-new-modal .modal-body .data-main').html(
+                data.map(function(t, index){
+                    var name = t.group_name.replace(/</g, '&lt;');
+                    return `<div style="display: table-row;">
+                        <div style="display: table-cell;max-width: 300px;overflow: hidden;text-overflow: ellipsis;">
+                            <label style="white-space: nowrap;position: relative;" class="radio-inline" title="${name}">
+                                <input type="radio" value="${t.group_id}" ${
+                                        index === 0 ? 'checked="checked"' : ''
+                                } name="add-new-modal-radio" style="top: -4px;left: 22px;"/>
+                                ${name}
+                            </label>
+                        </div>
+                        <div style="display: table-cell;padding-left: 50px;">${purpose[t.purpose] || t.purpose}</div>
+                    </div>`
+                }).join('')
+            );
+        });
+    };
+
+    /* 复制获取广告组 **/
+    function getGroups4copy(search){
+        var p = $(document).data('purpose');
+        getGroups({search, search, purpose: p}, function(data){
+            $('#all-copy-modal .modal-body .data-main').html(
+                data.map(function(t, index){
+                    var name = t.group_name.replace(/</g, '&lt;');
+                    return `<div style="display: table-row;">
+                        <div class="selected" style="display: table-cell;max-width: 300px;overflow: hidden;text-overflow: ellipsis;">
+                            <label style="font-weight: 400;white-space: nowrap;" title="${name}">
+                                <input type="checkbox" value="${t.group_id}"></input>
+                                ${name}
+                            </label>
+                        </div>
+                        <div style="display: table-cell;padding-left: 50px;">${purpose[t.purpose] || t.purpose}</div>
+                    </div>`
+                }).join('')
+            );
+        });
+    };
+</script>
+<!-- 批量操作结束 -->
+
+<!-- 关键词模板开始 -->
+<?php
+echo $this->renderFile('@app/views/promotion/templatekeyword.phtml');
+?>
+<script>
+    var keywords;//旧关键词
+
+    /* 隐藏关键词导出功能 **/
+    $('#keywordExport,#denykeywordExport').addClass('hidden');
+
+    /* 打开批量添加关键词 **/
+    $('#all-word-open').on('click', function(){
+        var data = $('table').bootstrapTable('getSelections');
+        var length = data.length;
+        if(!length){
+            layer.msg('请选择一个或多个广告计划后再进行该操作');
+            return;
+        }
+        keywords = {};
+        http_post_data('/adplan/keywords', 'get', {
+            ids: data.map(t=>t.id).join(','),
+            target_type: 0,
+        }, function(res){
+            if(1 === res.status){
+                keywords = res.data;
+            }else{
+                layer.msg(res.msg);
+            }
+        });
+        $('#keywordModal').find('.data-files').html('');
+        $('#keywordModal').find('textarea').val('');
+        $('#keywordModal').modal('show');
+        $('#denyctrl-group-keyword-text-num-line').html('1');
+        $('#ctrl-group-keyword-text-num-line').html('1');
+        $('#keywordnum').html('（0）');
+        $('#denykeywordnum').html('（0）');
+        $('#keywordModal [role="presentation"]:first>a').click();
+    });
+
+    /* 清空关键词 **/
+    $('#keyworddeleteAll,#denykeyworddeleteAll').on('click', function(){
+        var parent = $(this).parents('[role="tabpanel"]:first');
+        parent.find('textarea').val('');
+        var line = parent.find('.ctrl-group-keyword-text-num-line');
+        initKeywordIndex(line, 1);
+        parent.find('.ctrl-group-keyword-tab-tab-title-for-panel>span>span').html('（0）');
+    });
+
+    /* 筛选旧关键词 **/
+    function getOldWords(arr, targetType, matchType){
+        return arr.filter(t => 
+            targetType == t.target_type && matchType == t.match_type
+        ).map(t => t.word);
+    }
+
+    /* 筛选关键词 **/
+    function getWords(newStr, oldArr){
+        var arr = [];
+        for(var i = 0, l = oldArr.length; i < l; i++){
+            var d = oldArr[i].trim();
+            if('' !== d && -1 === arr.indexOf(d)){
+                arr.push(d);
+            }
+        }
+        var newArr = newStr.split('\n');
+        var allArr = [].concat(oldArr, newArr);
+        var all = [];
+        for(var i = 0, l = allArr.length; i < l; i++){
+            var d = allArr[i].trim();
+            if('' !== d && -1 === all.indexOf(d)){
+                all.push(d);
+            }
+        }
+        return {
+            arr: arr,//旧关键词
+            all: all,//总关键词
+        }
+    }
+
+    /* 生成关键词数据结构 **/
+    function initWords(arr, words, targetType, matchType){
+        words.forEach(t => {
+            arr.push({
+                word: t,
+                target_type: targetType,
+                match_type: matchType,
+            });
+        });
+    }
+
+    /* 保存关键词 **/
+    $('#keywordSubmit').on('click', function(){
+        var datas = $('table').bootstrapTable('getSelections');
+        var value = $('#ctrl-group-keyword').val();
+        var denyValue = $('#denyctrl-group-keyword').val();
+        var size = 1000;
+        if(!(value || denyValue)){
+            layer.msg('请输入关键词！');
+            return;
+        }
+        var param = {
+            type:'word',
+            plans: {},
+        };
+        var plans = param.plans;
+        var isSuccess = false;//记录是否有可上传的关键词和否定关键词
+        var errorNames = [];//记录关键词数量过大计划名称
+        var errorDenyNames = [];//记录否定关键词数量过大计划名称
+        for(var i = 0, length = datas.length; i < length; i++){
+            var data = datas[i];
+            var oldWords = getOldWords(keywords[data.id], 1, 1);//旧关键词
+            var oldDenyWords = getOldWords(keywords[data.id], 2, 1);//旧否定关键词
+            var newWordsInfo = getWords(value, oldWords);//总关键词
+            var newDenyWordsInfo = getWords(denyValue, oldDenyWords);//总否定关键词
+            var plan = plans[data.id] = [];
+            console.log(newWordsInfo)
+            if(newWordsInfo.all.length > 1000){
+                errorNames.push(data.name);
+                initWords(plan, newWordsInfo.arr, 1, 1);//只添加旧关键词
+            }else{
+                if(value){
+                    isSuccess = true;
+                }
+                initWords(plan, newWordsInfo.all, 1, 1);//添加总关键词
+            }
+            if(newDenyWordsInfo.all.length > 1000){
+                errorDenyNames.push(data.name);
+                initWords(plan, newDenyWordsInfo.arr, 2, 1);//只添加旧关键词
+            }else{
+                if(denyValue){
+                    isSuccess = true;
+                }
+                initWords(plan, newDenyWordsInfo.all, 2, 1);//添加总关键词
+            }
+        }
+        console.log(param);
+        console.log(errorNames);
+        console.log(errorDenyNames);
+        var msgInfo = '';
+        var isError = false;
+        if(errorNames.length){
+            msgInfo += '关键词批量添加到“' + errorNames.join('”、“') + '”' + errorNames.length + '个广告计划时关键词个数超出1000个，添加失败。<br>';
+            isError = true;
+        }
+        if(errorDenyNames.length){
+            msgInfo += '否定关键词批量添加到“' + errorDenyNames.join('”、“') + '”' + errorDenyNames.length + '个广告计划时关键词个数超出1000个，添加失败。<br>';
+            isError = true;
+        }
+        if(!isSuccess){
+            layer.alert(msgInfo + '请删减后再上传！');
+            return;
+        }
+        var msg = '确认上传关键词？<br>';
+        if(isError){
+            msg += msgInfo + "如需继续添加到其他计划，请单击“确认”，如需返回修改，请点击“取消”。";
+        }
+        layer.confirm(msg, function(e){
+            layer.close(e);
+            $("#Deepleaper_loading").show();
+            $('#table').bootstrapTable('refresh');
+            http_post_data('/adplan/batchUpdate', 'post', param, function(res){
+                if(1 === res.status){
+                }else{
+                    layer.msg(res.msg);
+                }
+                $("#Deepleaper_loading").hide();
+                $('#keywordModal').modal('hide');
+            });
+        });
+    });
+
+    /* 关键词行序号 **/
+    $('#ctrl-group-keyword').on('input', function(e){
+        var value = $(this).val();
+        var length = value.split('\n').length;
+        initKeywordIndex($('#ctrl-group-keyword-text-num-line'), length);
+        var data = getKeywords(value);
+        $('#keywordnum').html('（' + data.length + '）');
+    }).scroll(function () {
+        $('#ctrl-group-keyword-text-num-line').scrollTop($(this).scrollTop());
+    });
+    $('#denyctrl-group-keyword').on('input', function(e){
+        var value = $(this).val();
+        var length = value.split('\n').length;
+        initKeywordIndex($('#denyctrl-group-keyword-text-num-line'), length);
+        var data = getKeywords(value);
+        $('#denykeywordnum').html('（' + data.length + '）');
+    }).scroll(function () {
+        $('#denyctrl-group-keyword-text-num-line').scrollTop($(this).scrollTop());
+    });
+
+    /* 关键词筛选行数 **/
+    $('#ctrl-group-keyword,#denyctrl-group-keyword').on('keydown', function(e){
+        if(13 === e.keyCode){
+            if($(this).val().split('\n').length >= 1000){
+                e.preventDefault();
+                layer.msg('最多输入1000行');
+            }
+        }
+    }).on('paste', function(e){
+        var newValue = e.originalEvent.clipboardData.getData('Text');
+        var oldValue = $(this).val();
+        var info = getKeywordRows(newValue, oldValue);
+        if(info.size > 1000){
+            layer.msg('最多输入1000行');
+            return false;
+        }
+    });
+</script>
+<!-- 关键词模板结束 -->
+
+
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>

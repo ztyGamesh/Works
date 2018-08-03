@@ -1,0 +1,499 @@
+<!--广告位模板价管理界面-->
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+
+?>
+<link rel="stylesheet" href="/css/application/slot/slot.css">
+
+
+
+<table id="table" class="list-table"></table>
+<script>
+    var ad_status = {'active': '启用', 'pause': '暂停'};
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        showDetail: false,         //是否显示详细信息按钮
+        func: function () {
+            $("[data-toggle='popover']").popover();
+        },
+        executeFilterBind: function (data) {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('status');
+        },
+        url:{
+            colModify: '/slot/saveStatus' //状态(开/关)修改接口
+        },
+        api:{
+            colModify: slotpriceviewAPI //修改状态接口
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: 'create_time',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/slot/getStatusAndPriceConf',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                params.search = $("input[name=search]").val();
+                params.status = $("input[name=status]:checked").val();
+                $('.white_list').popover('hide');
+                return params;
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+                    return res.data;
+                } else {
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            align:'center',
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+//            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+//            search: true,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: false,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {};
+            },
+            onMouseoverRow: function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display', 'inline-block');
+            },
+            onMouseoutRow: function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display', 'none');
+            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'slot_name',
+                title: '广告位名称',
+                formatter: function (value, row, index) {
+                    return '<span class="planname" style="color: #3d5d9f;cursor: pointer;"><span class="cutValue">' + cutstrbyChar(value, 16) + '</span></span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    },
+                }
+            }, {
+                field: 'status',
+                title: '状态' + jointTableFilter('status', ad_status),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'pause':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_start" src="../img/icon/icon_start.png" title="启用">';
+                            break;
+                        case 'active':
+                            return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" src="../img/icon/icon_pause.png" title="暂停">';
+                            break;
+                        default:
+                            return value;
+                    }
+                },
+                events: {
+                    'click .status_modify': function (e, value, row, index) {//status开关
+                        if ('active' == row.status) {
+                            row.status = 'pause';
+                        } else {
+                            row.status = 'active';
+                        }
+                        var postData = {
+                            'uid': row.uid,
+                            'status': row.status,
+                        };
+                        ListPageConfig.api.colModify(ListPageConfig.url.colModify, postData, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh', {silent: true});
+                            } else {
+                                layer.msg(data.msg);
+//                                alert('status change error')
+                            }
+                        });
+                    }
+                },
+                width: '85px',
+            }, {
+                field: 'media_name',
+                title: '媒体名称',
+                formatter: function (value, row, index) {
+                    return '<span class="planname" style="color: #3d5d9f;cursor: pointer;"><span class="cutValue">' + cutstrbyChar(value, 16) + '</span></span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    },
+                }
+            }, {
+//                支持修改
+                field: 'cooperate_mode',
+                title: '合作方式',
+                editable: {
+                    type: 'select',
+                    title: '合作方式',
+                    source:[
+                        {
+                            value:"0",
+                            text:"固定价格"
+                        },{
+                            value:"1",
+                            text:"分成"
+                        },{
+                            value:"2",
+                            text:"底价+分成"
+                        },{
+                            value:"3",
+                            text:"技术服务费"
+                        },{
+                            value:"4",
+                            text:"公开竞价"
+                        },{
+                            value:"5",
+                            text:"cpm合约"
+                    }]
+                }
+            }, {
+//  当合作模式为分成：底价默认为0，不可修改
+                field: 'price',
+                title: '底价(元/CPM)',
+                editable:{
+                    type:'text',
+                    title: '底价(元/CPM))',
+                    validate:function(v){
+                        if (!v) return '底价(元/CPM)不能为空';
+                        if (isNaN(v)) return '输入格式错误';
+                        if(v == 0 || v < 0) return '底价设置需大于0！';
+                    },
+                }
+
+            },{
+//                为0则不支持修改,非0 支持手动修改
+                field: 'media_share',
+                title: '媒体分成比例(%)',
+                editable:{
+                    type:'text',
+//                    clear:false,
+                    title: '媒体分成比例(%)',
+                    validate:function(v){
+                        if (!v) return '媒体分成比例不能为空';
+                        if (isNaN(v)) return '输入格式错误';
+                        if (v < 0 || v > 100 || v == 0) return '媒体分成比例范围是：大于0且小于等于100%';
+                    },
+                }
+            },{
+//                支持手动修改
+                field: 'profit_rate',
+                title: '最低利润率(%)',
+                editable:{
+                    type:'text',
+                    clear:false,
+                    title: '最低利润率',
+                    validate:function(v){
+                        if (!v) return '最低利润率不能为空';
+                        if (isNaN(v)) return '输入格式错误';
+                        if (v < -100 || v > 99.99) return '最低利润率的范围是：-100% ~ 99.99%';
+                    },
+                }
+
+            },{
+//                不支持修改
+                field: 'profit_price',
+                title: '广告成本'
+            },{
+                field: 'create_time',
+                title: '创建时间',
+                width: '100px',
+            },{
+                field: 'operate',
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    if(row.has_white_list == 1){
+                        return '<span class="ad_show" style="cursor: pointer; text-decoration: dashed; text-decoration-line: underline;text-decoration-color: #0088cc;">查看广告位</span>' +
+                            '<br/>' +
+                            '<span class="white_list"  hasWhite='+ row.has_white_list +' ishide_id=' + row.uid  + ' '+
+                            'data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content=""> ' +
+                            '修改保护策略 </span>'
+                    }else{
+                        return '<span class="ad_show" style="cursor: pointer; text-decoration: dashed; text-decoration-line: underline;text-decoration-color: #0088cc;">查看广告位</span>' +
+                            '<br/>' +
+                            '<span class="white_list"  hasWhite='+ row.has_white_list +' ishide_id=' + row.uid  + ' '+
+                            'data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-content=""> ' +
+                            '创建保护策略 </span>'
+                    }
+                },
+                events:{
+                    'click .ad_show':function (e, value, row, index) {
+                        setTimeout(function () {
+                            window.location = '/slot/view?uid=' + row.uid ;
+                        }, 1000)
+                    },
+                    'click .white_list':function (e, value, row, index) {
+                        $('.white_list').popover('hide');
+                        //  根据请求获得的数据显示，如果获得数据中是仅限定，那么添加的时候分开添加，等拿到接口时再测试是否适用
+                        var isQualified = 0;
+                        var data_class ;
+                        var slot_id = $(this).attr('ishide_id');
+                        getWhiteListAPI(slot_id, function (result) {
+                            var req = JSON.parse(result);
+                            var data = req.data;
+                            if (req.status == 1) {
+                                if(data != '' && data.length != 0){
+                                    isQualified = 1;
+                                    var dataClientIds = [];
+                                    for(var i = 0; i < data.length; i++){
+                                        dataClientIds[i] = data[i].client_id;
+                                    }
+                                    data_class = dataClientIds.join(',');
+                                    data_class = data_class.replace(/\s+/g,"");
+                                }
+
+                            } else {
+                                layer.msg(req.msg);
+                            }
+                        });
+
+
+                        setTimeout(function () {
+                            $('span[ishide_id=' + row.uid + ']').popover('show');
+                            $(".white_list").attr('data-content', '');
+                        }, 0);
+
+                        var html = '<div class="list_close" >' +
+                            '<img src="/img/list_close.png" ' +
+                            'onclick="fun_close(\''+row.uid+'\')">' +
+                            '</div>';
+                        html += '<div class="list_container">';
+                        html += '<div>广告主&nbsp;&nbsp;&nbsp;&nbsp;';
+                        if(isQualified){
+                            html +=
+                                '<input type="radio" name="ad_id" value="0" id="input_unqualified" onclick="unqualified(this)" >不限 &nbsp;&nbsp;' +
+                                '<input type="radio" name="ad_id" value="1" id="input_qualified" onclick="qualified(this)" checked>仅限定&nbsp;&nbsp;' +
+                                '<input id="aduser" type="text" placeholder="请输入广告主id" value = "'+ data_class +'" style="visibility:visible;"></div>';
+                        }
+                        else {
+                            html +=
+                                '<input type="radio" name="ad_id" value="0" id="input_unqualified" onclick="unqualified(this)" checked>不限 &nbsp;&nbsp;' +
+                                '<input type="radio" name="ad_id" value="1" id="input_qualified" onclick="qualified(this)">仅限定&nbsp;&nbsp;' +
+                                '<input id="aduser" type="text" placeholder="请输入广告主id"></div>';
+                        }
+                        html += '<div> <input id="save_btn" type="button" value="√" onclick="ad_save(\''+row.uid+'\')" onmouseover="ad_mouseover(this)" onmouseleave="ad_mouseleave(this)"> ' +
+                            '<input id="cancel_btn" type="button" value="X" onclick="ad_cancel(\''+row.uid+'\')" onmouseover="ad_mouseover_cancel(this)" onmouseleave="ad_mouseleave_cancel(this)"></div>';
+                        html += '</div>'
+                        $(".white_list").attr('data-content', html);
+                    },
+                },
+                width: '100px',
+            }],
+            onEditableSave: function (field, row, oldValue, $el) {
+                if(row.cooperate_mode == 0 || row.cooperate_mode == 4 || row.cooperate_mode == 5) {
+                    row.media_share = '0';
+                }else if(row.cooperate_mode == 1) {
+                    row.price = '0';
+                }
+                else if(row.cooperate_mode == 3) {
+                    row.media_share = '100';
+                    row.profit_rate = '0';
+                }
+                if(row.profit_rate == 100){
+                    var profit_price = 0;
+                    profit_price = profit_price.toFixed(2);
+                }
+                else {
+                    var profit_price = (row.price / (1 - (row.profit_rate)/100)).toFixed(2);//保留两位小数
+                }
+
+                var data = {
+                    'uid': row.uid,
+                    'cooperate_mode':row.cooperate_mode, //合作方式
+                    'price':row.price, //底价
+                    'media_share':row.media_share,
+                    'profit_rate': row.profit_rate,//最低利润率
+                    'profit_price': profit_price,//广告成本
+                };
+                $.ajax({
+                    type: "post",
+                    url: "/slot/savePriceConf",
+                    data: JSON.stringify(data),
+                    dataType: 'JSON',
+                    contentType:'application/json',
+                    success: function (data, status) {
+                        if (status == "success") {
+                            if (data.status == 1) {
+                                layer.msg('提交数据成功');
+                                List.$table.bootstrapTable('refresh');
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        }
+                    },
+                    error: function () {
+                        layer.msg('编辑失败');
+                    },
+                    complete: function () {
+
+                    }
+                });
+            }
+        }
+    };
+
+    function fun_close(obj) {
+//        console.log('fun_close')
+        $('span[ishide_id=' + obj + ']').popover('hide');
+    }
+    function ad_mouseover(obj) {
+        $(obj).css('background-color','#00d5cd');
+    }
+    function ad_mouseleave(obj) {
+        $(obj).css('background-color','#c3c3c3');
+    }
+    function ad_mouseover_cancel(obj) {
+        $(obj).css('background-color','#c3c3c3');
+    }
+    function ad_mouseleave_cancel(obj) {
+        $(obj).css('background-color','#ffffff');
+    }
+    function unqualified(obj) {
+        if($(obj).is(":checked")){
+            $("#aduser").css('visibility','hidden');
+        }
+    }
+
+    function qualified(obj) {
+        if($(obj).is(":checked")){
+            $("#aduser").css('visibility','visible');
+        }
+    }
+
+   function ad_save(obj) {
+//        console.log('保存');
+
+       var slot_id = obj;
+       var client_id = '';
+
+       $('span[ishide_id=' + obj + ']').popover('hide');
+
+       if($("#input_qualified").is(":checked")){
+           var clients = $("#aduser").val().split(',');
+           var new_clients = unique1(clients);
+           client_id = new_clients.join(',');
+           client_id = client_id.replace(/\s+/g,"");
+       }
+       setTimeout(function () {
+           addWhiteListAPI(slot_id, client_id, function (result) {
+               var req = JSON.parse(result);
+               if (req.status == 1) {
+                   layer.msg('创建保护策略成功');
+                   setTimeout(function () {
+                       window.location = '/slot/slotPriceView';//保存修改
+                   }, 1000);
+               } else {
+                   layer.msg(req.msg);
+               }
+           })
+       }, 100);
+   }
+
+   function ad_cancel(obj) {
+//        console.log('取消');
+
+       $('span[ishide_id=' + obj + ']').popover('hide');
+   }
+
+
+    // 数组去重
+    function unique1(array){
+        var n = []; //一个新的临时数组
+        for(var i = 0; i < array.length; i++){
+            if (n.indexOf(array[i]) == -1){
+                n.push(array[i]);
+            }
+        }
+        return n;
+    }
+//2、如果我要点击非目标对象关闭提示层怎么办？
+
+//    说明：每个提示会生成一个class为popover的div容器，
+    // 因此只需要在body上绑定一个click事件实现对class为popover的div销毁即可。
+    // 值得注意的是，目标对象的click事件的冒泡要取消掉。
+//    (function(){
+//        $('body').find('.popovers').each(function(){
+//            $(this).click(function(e){
+//                $('.popover').remove();
+//                e.preventDefault();
+//                return false;
+//            });
+//            $(this).popover({
+//                trigger : 'click'
+//            });
+//        });
+//        $('body').click(function(){
+//            $('.popover').remove();
+//        });
+//    })();
+
+    var auth = getAuthorityByUrl('/user/userpermissionview');
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<div id="toolbar">
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" class="form-control" placeholder="搜索广告位名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>

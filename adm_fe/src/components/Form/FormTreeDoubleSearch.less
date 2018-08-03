@@ -1,0 +1,90 @@
+@import "~antd/lib/style/themes/default.less";
+
+.body {
+  min-width: 450px;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  display: block;
+  background-color: #f7f7f7;
+  padding: 12px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    >div {
+      width: calc(50% - 6px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      height: 30px;
+      padding: 0 12px;
+    }
+    >div+div {
+      margin-left: 12px;
+    }
+  }
+  .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-top: 12px;
+    .item {
+      width: calc(50% - 6px);
+      padding: 12px;
+      min-height: 100px;
+      max-height: 340px;
+      background-color: #fff;
+      >div {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+    }
+    .item+.item {
+      margin-left: 12px;
+    }
+  }
+}
+
+.radio {
+  position: relative;
+  left: -24px;
+}
+
+.close {
+  >span[class~=ant-tree-node-content-wrapper] {
+    width: calc(100% - 24px);
+  }
+  &.closeradio {
+    >span[class~=ant-tree-node-content-wrapper] {
+      width: auto;
+      position: relative;
+    }
+    .closebody {
+      >div:first-child {
+        margin-right: 12px;
+      }
+    }
+    &.radio {
+      left: -18px;
+    }
+  }
+  .closebody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    >div:first-child {
+      margin-right: 18px;
+      width: calc(100% - 12px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.input {
+  position: relative;
+  width: calc(100% + 24px);
+  left: -65px;
+}

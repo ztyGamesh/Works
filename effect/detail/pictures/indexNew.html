@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <title>图集类详情页效果模板</title>
+    <!--本地开发-->
+    <link type="text/css" rel="stylesheet" href="picturesNew-v001.css">
+    <!--线上发布-->
+    <!-- <link type="text/css" rel="stylesheet" href="http://effect.deepleaper.com/effect/css/pictures-v001.css"> -->
+</head>
+<body>
+    <div class="content"></div>
+    <div class="articleContent show"></div>
+</body>
+<!-- 引入阿里百川API 提供deeplink功能 开始 -->
+<script type="text/javascript" src="//g.alicdn.com/mtb/lib-applink/0.3.6/??callApp.js,linksdk.js"></script>
+<!-- 引入阿里百川API 提供deeplink功能 结束 -->
+
+<!-- 图集详情页数据的获取 开始 -->
+<script type="text/javascript">
+    var objs = {
+        //文章标题
+        title: '这是一个新内容标题，你可以在这个地方预览到',
+        //马甲名
+        marksman: '马甲名',
+        //图集内容对象
+        content: [
+            {
+                //图片url地址
+                pic: './imgIgnore/articlePictureDetail.png',
+                //描述
+                description: '近日发布会前的各种爆料信息已经成为了苹果新品亮相的重要组成部分，但这次 iOS11GM固件的提前泄露。',
+                //商品
+                goodsPromotion: [
+                    {
+                        //商品主图url地址
+                        pic: './imgIgnore/articleCommodityPicture.png',
+                        //商品描述
+                        title: '其实这是去时装周第一Look因为够日常呀 …',
+                        //商品价格
+                        price: '28.00',
+                        //app打开链接
+                        link: '//s.click.taobao.com/ItYlcXx',
+                        pid: 'xxx',
+                        //商品点击监测url地址
+                        clk: 'http://track.deepleaper.com/clk/123?dfdfdf',
+                        // 商品位置
+                        position: [50, 0]
+                    }
+                ],
+            }, {
+                pic: './imgIgnore/xiaochangtu.jpg',
+                description: '近日发布会前的各种爆料信息已经成为了苹果新品亮相的重要组成部分，但这次 iOS11GM固件的提前泄露。',
+                goodsPromotion: [
+                    {
+                        pic: './imgIgnore/articleCommodityPicture.png',
+                        title: '其实这是去时装周第一Look因为够日常呀 …',
+                        price: '200.00',
+                        link: '//s.click.taobao.com/ItYlcXx',
+                        pid: 'xxx',
+                        clk: 'http://track.deepleaper.com/clk/123?dfdfdf',
+                        // 商品位置
+                        position: [80, 100]
+                    }
+                ]
+            }, {
+                pic: './imgIgnore/changtu.jpg',
+                description: '近日发布会前的各种爆料信息已经成为了苹果新品亮相的重要组成部分，但这次 iOS11GM固件的提前泄露。近日发布会前的各种爆料信息已经成为了苹果新品亮相的重要组成部分，但这次 iOS11GM固件的提前泄露。',
+                goodsPromotion: [
+                    {
+                        pic: './imgIgnore/articleCommodityPicture.png',
+                        title: '其实这是去时装周第一Look因为够日常呀 …',
+                        price: '199.00',
+                        link: '//s.click.taobao.com/ItYlcXx',
+                        pid: 'xxx',
+                        clk: 'http://track.deepleaper.com/clk/123?dfdfdf',
+                        // 商品位置
+                        position: [160, 93]
+                    }
+                ]
+            }
+        ]
+    };
+</script>
+<!-- 图集详情页数据的获取 结束 -->
+
+<!-- 图集详情页模板渲染 开始 -->
+<script>
+    var renderObj = function (obj, title, marksman, index, length) {
+        var subContent = document.createElement('div');
+        subContent.className = 'subContent';
+        // var goodsPromotionsText = obj.goodsPromotion.map(function (t) {
+        //     return '<div class="articleCommodity" data-link="' + t.link + '" data-pid="' + t.pid + '" data-clk="' + t.clk + '">' +
+        //         '<img class="articleCommodityPicture" src="' + t.pic + '">' +
+        //         '<div class="articleCommodityWrapper">' +
+        //         '<h1 class="articleCommodityTitle">' + t.title + '</h1>' +
+        //         '<p class="articleCommodityPrice">&yen;' + t.price + '</p>' +
+        //         '</div>' +
+        //         '<img class="articleCommodityBuy" src="http://effect.deepleaper.com/effect/img/articleCommodityBuy.png">' +
+        //         '</div>'
+        // }).join('');
+
+        // var goodsPromotionsText = '<div class="goodsPoint"></div><div class="arrow_box"></div>';
+        var goodsPromotionsText = '<canvas class=shopLabel></canvas>';
+        subContent.innerHTML = '<img class="articlePicture" src="' + obj.pic + '">' +
+            '<div class="articleContent">' +
+            '<div class="articleCommoditiesPosition">' +
+            '<div class="articleCommodities">' + goodsPromotionsText + '</div>' +
+            '</div>' +
+            '<div class="articleDetail">' +
+            '<div class="articleTool">'+
+            '<div class="goodsName">商品名称</div><div class="goodsJump">去看看&nbsp;＞</div>'+
+            '</div>'+
+            '<div class="articlePage">' +
+            '<span class="articlePageLength">/' + length + '</span>' +
+            '<span class="articlePageNum">' + index + '</span>' +
+            '</div>'+
+            '<p class="articleCharacter">' + obj.description + '（' + marksman + '）</p>' +
+            '</div>' +
+            '</div>';
+        return subContent;
+    };
+</script>
+<!-- 图集详情页模板渲染 结束 -->
+
+<!-- 鼠标模拟touchEvent 开始 -->
+<script>
+    function touchSimulator(document) {
+        var initTouchEvent = function (type, event) {
+            var obj = new MouseEvent(type, event);
+            obj.touches = [{
+                clientX: obj.clientX,
+                clientY: obj.clientY,
+                pageX: obj.pageX,
+                pageY: obj.pageY,
+                screenX: obj.screenX,
+                screenY: obj.screenY
+            }];
+            return obj;
+        };
+
+        var touchHandle = {
+            handleEvent: function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                switch (e.type) {
+                    case "mousedown":
+                        this.start(e);
+                        break;
+                    case "mousemove":
+                        this.move(e);
+                        break;
+                    case "mouseup":
+                        this.end(e);
+                        break;
+                    case "mouseout":
+                        this.end(e);
+                        break;
+                }
+            },
+            start: function (e) {
+                var evt = initTouchEvent('touchstart', e);
+                e.target.dispatchEvent(evt);
+                var _this = this;
+                setTimeout(function () {
+                    document.addEventListener('mousemove', _this, false);
+                    document.addEventListener('mouseup', _this, false);
+                    document.addEventListener('mouseout', _this, false);
+                }, 50);
+            },
+            move: function (e) {
+                var evt = initTouchEvent('touchmove', e);
+                e.target.dispatchEvent(evt);
+            },
+            end: function (e) {
+                var evt = initTouchEvent('touchend', e);
+                e.target.dispatchEvent(evt);
+                document.removeEventListener('mousemove', this, false);
+                document.removeEventListener('mouseup', this, false);
+                document.removeEventListener('mouseout', this, false);
+            }
+        }
+        document.addEventListener('mousedown', touchHandle, false);
+    }
+</script>
+<!-- 鼠标模拟touchEvent 结束 -->
+
+<!-- 图集详情页功能 开始 -->
+<script>
+    window.onload = function () {
+
+
+        /** 参数 **/
+        var body = document.body;
+        //屏幕宽度
+        var screenWidth = +body.getBoundingClientRect().width.toFixed(1);
+        var screenHeight = +body.getBoundingClientRect().height.toFixed(1);
+        //商品个数
+        var pictureNum = objs.content.length;
+        //content商品列表
+        var content = document.getElementsByClassName('content')[0];
+        //文章显示
+        var article = document.getElementsByClassName('articleContent show')[0];
+
+        /** 初始化dom **/
+        // content根据子元素个数修改宽度
+        pictureNum && (content.style.width = pictureNum * screenWidth + 'px');
+        //添加商品，获取商品列表
+        objs.content.forEach(function (t, index) {
+            t.pic = t.pic + '?x-oss-process=image/resize,w_' + (screenWidth >> 0);
+            var subContent = renderObj(t, objs.title, objs.marksman, index + 1, pictureNum);
+            subContent.style.width = screenWidth + 'px';
+            content.appendChild(subContent);
+        });
+        // 商品主图尺寸适应屏幕
+        ;[].slice.call(document.getElementsByClassName('articlePicture')).forEach(function (t) {
+            t.onload = function () {
+                if (t.naturalHeight * screenWidth > t.naturalWidth * screenHeight) {
+                    t.style.height = '100%';
+                } else {
+                    t.style.width = '100%';
+                }
+            }
+        });
+
+        // 获取所有的标签画布
+        var canvas = [].slice.call(document.getElementsByClassName('shopLabel'));
+        // 画布绘制函数
+        function drawLabel(config) {
+
+            var ctx = config.context;
+            var price = "¥" + config.price + "";
+            // 根据文本长度计算商品框宽度
+            var width = ctx.measureText(price).width * 1.8;
+            var height = config.height;
+            var color = config.color;
+            var radius = config.radius;
+            var type = config.type;
+            var x = config.x;
+            var y = config.y;
+
+            // 标签圆点的绘制
+            ctx.beginPath();
+            ctx.arc(x - 20,y + height / 2,4,0,360,false);
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle="rgba(0,0,0,0.3)";
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(x - 20,y + height / 2,4,0,360,false);
+            ctx.fillStyle = "white";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.lineWidth = 1;
+            // 画一个三角 + 圆矩形的东西
+            ctx.beginPath();
+            // ctx.moveTo(x, y + radius);
+            ctx.moveTo(x, y);
+            // ctx.lineTo(x, y + height - radius);
+            ctx.lineTo(x - 10, y + height / 2);
+            ctx.lineTo(x, y + height);
+            ctx.quadraticCurveTo(x, y + height, x + radius, y + height);
+            ctx.lineTo(x + width - radius, y + height);
+            ctx.quadraticCurveTo(x + width, y + height, x + width, y + height - radius);
+            ctx.lineTo(x + width, y + radius);
+            ctx.quadraticCurveTo(x + width, y, x + width - radius, y);
+            ctx.lineTo(x + radius, y);
+            // ctx.quadraticCurveTo(x, y, x, y + radius);
+            ctx[type + 'Style'] = color;
+            ctx.closePath();
+
+            // 绘制商品文字
+            ctx.fillStyle = "white";
+            ctx.font = "15px Helvetica";
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "left";
+            ctx.fillText(price, x + width / 10 , y + height / 2);
+
+            ctx[type]();
+        }
+        // 对标签进行绘画
+        canvas.forEach(function (canvas, index) {
+            // 获取画布实例
+            // console.log(canvas)
+            // 获取商品位置坐标
+            var position = objs.content[index].goodsPromotion[0].position;
+            // 获取商品价格
+            var price = objs.content[index].goodsPromotion[0].price;
+            // 获取画布上下文
+            var context = canvas.getContext('2d');
+
+            var width = canvas.width;
+            var height = canvas.height;
+            if (window.devicePixelRatio) {
+                // 解决画布在移动端不清晰的问题
+                canvas.style.width = width + "px";
+                canvas.style.height = height + "px";
+                canvas.height = height * window.devicePixelRatio;
+                canvas.width = width * window.devicePixelRatio;
+                context.scale(window.devicePixelRatio, window.devicePixelRatio);
+            }
+            // 商品标签的相关配置
+            var labelConfig = {
+                context: context,
+                x: position[0],
+                y: position[1],
+                width: 69,
+                height: 25,
+                radius: 5,
+                color: 'rgba(255,255,255,0.3)',
+                type: 'stroke',
+                price: price
+            }
+            drawLabel(labelConfig);
+        });
+
+        //隐藏的文章列表
+        var articleDoms = [].slice.call(document.getElementsByClassName('articleDetail'));
+        var initArticle = function (index) {
+            if(typeof index === 'number'){
+                article.innerHTML = articleDoms[index].outerHTML;
+            }
+        };
+        initArticle(0);
+
+        /** 商品列表的移动 **/
+        var moveContent = function (distance, time, index) {
+            content.style.transitionDuration = (time || 0) + 'ms';
+            content.style.transform = 'translateX(' + distance + 'px)';
+            initArticle(index);
+        };
+
+        /** 页面左右滑动切换 **/
+        //content变化值
+        var contentStyle = {
+            index: 0,//当前子元素
+            distance: 0,//偏移量
+            direction: 0//滑动方向
+        };
+        //content滑动前坐标，时间
+        var contentMoveStart = {};
+        //content滑动时坐标的变化
+        var contentMoveChange = {};
+        //滑动事件
+        var touchHandle = {
+            handleEvent: function (e) {
+                switch (e.type) {
+                    case "touchstart":
+                        this.start(e);
+                        break;
+                    case "touchmove":
+                        this.move(e);
+                        break;
+                    case "touchend":
+                        this.end(e);
+                        break;
+                }
+                e.stopPropagation();
+            },
+            start: function (e) {
+                //content移动初始值
+                contentMoveStart = {
+                    x: e.touches[0].pageX,
+                    y: e.touches[0].pageY,
+                    time: +new Date()
+                };
+                contentMoveChange = {};
+                body.addEventListener('touchmove', this, false);
+                body.addEventListener('touchend', this, false);
+            },
+            move: function (e) {
+                //content移动变化值
+                contentMoveChange.x = e.touches[0].pageX - contentMoveStart.x;
+                contentMoveChange.y = e.touches[0].pageY - contentMoveStart.y;
+                if (0 === contentStyle.direction) {//刚开始移动，确定移动方向
+                    if (Math.abs(contentMoveChange.y) > Math.abs(contentMoveChange.x)) {
+                        contentStyle.direction = 2;//上下滑动
+                        body.removeEventListener('touchmove', this, false);
+                        return;
+                    } else {
+                        contentStyle.direction = 1;//左右滑动
+                    }
+                }
+                e.preventDefault();
+                if (1 === contentStyle.direction) {//左右滑动
+                    moveContent(contentStyle.distance + contentMoveChange.x);
+                }
+            },
+            end: function (e) {
+                if (1 === contentStyle.direction) {//左右滑动
+                    //短时间内快速滑动一定距离也将翻页
+                    if (+new Date() - contentMoveStart.time < 250 &&
+                        (Math.abs(contentMoveChange.x) > 20) ||
+                        (Math.abs(contentMoveChange.x) > screenWidth / 2)) {
+                        if (contentMoveChange.x > 0 && contentStyle.index > 0) {
+                            contentStyle.distance += screenWidth;
+                            contentStyle.index--;
+                        } else if (contentMoveChange.x < 0 && contentStyle.index < pictureNum - 1) {
+                            contentStyle.distance -= screenWidth;
+                            contentStyle.index++;
+                        }
+                    }
+                    moveContent(contentStyle.distance, 300, contentStyle.index);
+                }
+                //清除移动
+                contentStyle.direction = 0;
+                body.removeEventListener('touchmove', this, false);
+                body.removeEventListener('touchend', this, false);
+                //监测：图集浏览完成率
+                doReadScale(contentStyle.index + 1);
+            }
+        };
+        body.addEventListener('touchstart', touchHandle, false);
+
+        /** 初始化阿里百川API **/
+        window.BC_SDK = BCSDK_AppLink.init({
+            appkey: '23082328', //必填，输入百川应用的appkey
+            backURL: '', //必填，默认为空字符串，applink的tips的回跳url， 设置能在手机淘宝里面调回你自己应用的url，格式为`tbopen${appkey}`。
+            openApp: false, //非必填，默认为true，非必填，是否唤起客户端，设置false，只会做H5跳转。
+            linkKey: 'TB', //非必填，默认为TB, 唤起手淘(TB)/天猫(TM)。
+            isNeedDownload: false, //非必填，默认为false, 没有app的情况下跳转目标h5页面还是下载页, 默认跳转目标h5页面。
+            isDefaultRedirect: true, //选填, 没有唤起app的情况下是否默认跳转, 默认true。
+            params: {}, //非必填，带给applink协议的扩展参数,用户自定义参数也传在这里, 如scm、pvid、pid、subpid、e、unionId等业务参数会放到这里。
+            trackParams: {}, //非必填，ybhpss的映射对象，传入这里的参数会被拼为ybhpss字符串带到协议上。  
+            timeout: 5000 // 非必填，默认跳转(目标h5页/下载页)的延时时长。
+        });
+
+        /** 点击前往app商品购买页 **/
+        [].slice.call(document.getElementsByClassName('articleCommodity')).forEach(function (t) {
+            t.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var linkUrl = this.getAttribute('data-link');
+                var clkUrl = this.getAttribute('data-clk');
+                var pid = this.getAttribute('data-pid');
+                //商品点击监测
+                var img = document.createElement('img');
+                img.onload = img.onerror = function () {
+                    //使用阿里百川API调起手机淘宝APP
+                    window.BC_SDK.goTaoke({
+                        tkUrl: linkUrl,
+                        params: {
+                            pid: pid, // 淘客必填
+                            subpid: "xxx",
+                            unionId: "xxx"
+                        }
+                    });
+                };
+                img.setAttribute('src', clkUrl);
+            });
+        });
+
+        //监测：详情页停留时长 每10秒请求一次
+        //readDurationUrl:占位符 监测链接
+        //单位：毫秒
+        var readDurationUrl = '';
+        var startDate = new Date();
+        setInterval(function () {
+            var endDate = new Date();
+            var readDuration = endDate.getTime() - startDate.getTime();
+            var readDurationEle = document.createElement('img');
+            readDurationEle.setAttribute('src', readDurationUrl + '?time=' + readDuration);
+        }, 10000);
+
+        //监测：图集浏览完成率
+        //readScaleUrl:占位符 监测链接
+        var readScaleUrl = '';
+        var readIndex = 0;
+        var readScaleEle = document.createElement('img');
+        function doReadScale(index){
+            if(index > readIndex){
+                readIndex = index;
+                var scale = + (index / pictureNum).toFixed(4);
+                readScaleEle.setAttribute('src', readScaleUrl + '?scale=' + scale);
+            }
+        }
+        doReadScale(1);
+
+        /** 阻止IOS橡皮效果 **/
+        document.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+        }, false);
+
+        /** 鼠标模拟touchEvent **/
+        touchSimulator(document);
+    }
+</script>
+<!-- 图集详情页功能 结束 -->
+</html>

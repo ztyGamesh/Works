@@ -1,0 +1,33 @@
+<form id="add" method="post" action="/user/modifypwd" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">账号</label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" disabled="disabled" value="<?php echo $this->user['mail']?>">
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">旧密码</label>
+        <div class="col-sm-6 ">
+            <input type="password" name="oldpasswd" class="form-control" value="" check-type="required" required-message="不能为空。">
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">新密码</label>
+        <div class="col-sm-6 ">
+            <input type="password" name="newpasswd" class="form-control" check-type="required" required-message="不能为空。">
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">重复密码</label>
+        <div class="col-sm-6 ">
+            <input type="password" name="newpasswd2" class="form-control" check-type="required" required-message="不能为空。">
+        </div>
+    </div>
+
+</form>
+
+<script src="/js/bootstrap-validation.js"></script>
+
+

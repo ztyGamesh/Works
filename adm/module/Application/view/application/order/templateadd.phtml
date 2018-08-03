@@ -1,0 +1,75 @@
+
+<form id="edit" method="post" action="/order/templatesave" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">模板名称:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" value="<?php echo $this->item['name'];?>">
+            <input id="uid" class="form-control" type="hidden" name="uid"  value="<?php echo $this->item['uid'];?>">
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+    
+    <!--
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">媒体类型</label>
+        <div class="col-sm-6 ">
+         			<select name="type" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					<?php foreach ($this->type  as $k => $v) { ?>
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+        </div>
+    </div>
+    -->
+     
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">广告位类型:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+         			<select name="scope" class="selectpicker show-tick"  value="<%=search.type||''%>">
+					
+					<?php foreach ($this->slotclass_menu  as $k => $v) { ?>
+					
+					<option value="<?php echo $v;?>"><?php echo $v;?></option>
+					<?php } ?>
+					</select>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">模板使用说明</label>
+        <div class="col-sm-6 ">
+            <input id="info" class="form-control" type="text" name="info"  value="<?php echo $this->item['info'];?>">
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">模板代码:<span style="color:red"> *</span></label>
+        <div class="col-sm-6 ">
+             <textarea id="code"  name="code" rows="3" cols="100" class="form-control"><?php echo $code;?></textarea>
+            <small class="help-block" style="display: block;"></small>
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/order/template', 2);
+
+    $('#name').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#name'),'模板名称不能为空');
+        }else{
+            vaSuccess($('#name'));
+        }
+    });
+    $('#code').blur(function () {
+        if(!vaIsNotNull($(this).val())){
+            vaError($('#code'),'模板代码不能为空');
+        }else{
+            vaSuccess($('#code'));
+        }
+    });
+
+</script>

@@ -1,0 +1,79 @@
+<div class="row Dl-title">
+    <div class="col-md-10">
+        <span class="identifier">账户信息</span>
+    </div>
+</div>
+
+<form class="form-horizontal" role="form" dl-set="public_price">
+    <div class="form-group ">
+        <label class="col-md-3 col-sm-2  control-label Dl-required">账户名</label>
+        <label id="name" class="col-md-9 col-sm-10  control-label" style="text-align: left"></label>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-3 col-sm-2  control-label Dl-required">公司名称</label>
+        <label id="corporation_name" class="col-md-9 col-sm-10  control-label" style="text-align: left"></label>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-3 col-sm-2  control-label Dl-required">邮箱</label>
+        <label id="mail" class="col-md-9 col-sm-10  control-label" style="text-align: left"></label>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-3 col-sm-2  control-label Dl-required">手机</label>
+        <label id="tel" class="col-md-9 col-sm-10  control-label" style="text-align: left"></label>
+    </div>
+
+    <div class="row Dl-title">
+        <div class="col-md-10">
+            <span class="identifier">配置媒体名单</span>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="col-md-3 col-sm-2  control-label">选择媒体</label>
+        <label id="resource" class="col-md-9 col-sm-10  control-label" style="text-align: left"></label>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        checkActionAuth('/user/clientuserlistview', 2);
+
+        var uid = '<?php echo $_GET["uid"]; ?>';
+        var lastmedia = [];
+        userdetailAPI(uid, function (result) {
+            var req = JSON.parse(result);
+            if (req.status == 1 && req.data != undefined) {
+                $('#name').html(req.data.name);
+                $('#corporation_name').html(req.data.corporation_name);
+                $('#mail').html(req.data.mail);
+                $('#tel').html(req.data.tel);
+                lastmedia = req.data.media;
+                if(lastmedia.length == 0)
+                { //不选择任何的媒体，默认是选择全部，显示出去重后的配置媒体名单
+                    getAllMediaAPI(getAllMediaAPIonSuccess);
+                    function getAllMediaAPIonSuccess(result) {
+                        var req = JSON.parse(result);
+                        if (req.status == 1){
+                            var html = '';
+                            for (var i = 0; i < req.data.length; i++) {
+                                html += req.data[i].name + "</br>"
+                            }
+                            $('#resource').append(html);
+
+                        }else {
+                            layer.msg(req.msg);
+                        }
+                    }
+                }else{
+                    var html = '';
+                    for (var i = 0; i < lastmedia.length; i++) {
+                        html += lastmedia[i].name + "</br>"
+                    }
+                    $('#resource').append(html);
+                }
+
+            }
+        });
+    });
+
+</script>

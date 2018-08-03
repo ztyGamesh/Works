@@ -1,0 +1,114 @@
+<?php
+    echo $this->partial('layout/listPublicHeader.phtml');
+?>
+
+<div id = "toolbar">
+		<?php 
+		
+		if ($this->userPower['power'] == 'admin') { ?>
+		<div class = "btn-group pull-left">
+			
+			<a class = "btn btn-warning plus"><i class = "glyphicon glyphicon-plus"></i> 添加</a>
+			
+			<button id = "dropdown" class = "btn btn-warning dropdown-toggle" data-toggle = "dropdown" disabled><span
+					class = "caret"></span></button>
+			<ul class = "dropdown-menu">
+				<li><a href = "#" class = "allremove"><i class = "glyphicon glyphicon-remove"></i> 删除</a></li>
+
+			</ul>
+		</div>
+		<?php }?>
+		<div class = "input-group pull-left paddingleft10" style = 'width:300px;'>
+			<input type = "text" id = "searchKeyword" class = "form-control" placeholder = "搜索" value = "" name = "search">
+		
+	   
+		
+		
+			<span class = "input-group-btn">
+				<a id = "ok" class = "btn btn-default dropdown-toggle deepleaper-search-btn" type = "button" data-toggle = "dropdown"><span
+						class = "glyphicon glyphicon-search"></span></a>
+			</span>
+		</div>
+	</div>
+<table id = "table" class="list-table"></table>
+
+<script>
+
+    var ListPageConfig = {
+        tableId:'#table',   // 表格id
+        tableIndexCol :'uid', //数据索引字段 一般为 uid 或者 id
+        table : {           //表格配置
+            url: '/user/site',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign:'left',
+            pagination: true,
+            pageSize: 50,  //获取所有数据,建立二级结构
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'saveId',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'mail',
+                title: '账号'
+            },{
+                field: 'name',
+                title: '姓名'
+            }, {
+                field: 'belong',
+                title: '所属媒体'
+          
+            }, {
+                field: 'is_deleted',
+                title: '启用状态',
+                formatter:function(value, row, index){
+                    if(0 == parseInt(value)){
+                        return '可用';
+                    }else{
+                        return '已禁用';
+                    }
+                }
+            }, {
+                field: 'finance',
+                title: '财务状态',
+                formatter:function(value, row, index){
+                    if(0 == parseInt(value)){
+                        return '开通';
+                    }else{
+                        return '关闭';
+                    }
+                }
+            },   {
+                field: 'create_time',
+                title: '创建时间',
+                sortable:true,
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url:{
+            add         : '/user/siteadd',         //添加 数据 html 地址
+            edit        : '/user/siteedit',         //编辑数据 html 地址
+            del         : '/user/sitedel' ,         //删除数据地址
+            detail      : false                     //详细内容地址,为空则取编辑的地址
+        },
+        title:{
+            addTitle:'添加媒体用户',
+            editTitle:'编辑媒体用户',
+        },
+        showDetail:false         //是否显示详细信息按钮
+    }
+
+</script>
+
+
+<?php
+    echo $this->partial('layout/listPublicFooter.phtml');
+?>

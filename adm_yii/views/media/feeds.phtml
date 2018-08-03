@@ -1,0 +1,187 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<script>
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/feeds/getFeeds',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,
+            pageList: '[30, 50, 100]',
+            showRefresh: true,
+            sortName: 'create_time',
+            sortOrder: 'desc',
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+                    return res.data;
+                } else {
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'cooperate_name',
+                title: '内容合作名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 28) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 28) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'media_name',
+                title: '接入应用',
+                formatter: function (value, row, index) {
+//                    console.log('row', row)
+//                    return '<a href="/media/slot"> 广告位</a>'
+                    return '<span class="cutValue">' + cutstrbyChar(value, 32) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 32) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 32) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'use_mode',
+                title: '接入方式',
+            }, {
+                field: 'create_time',
+                title: '创建时间',
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var result = '';
+                    result += '<button class="info dl-list-action-btn-wrapper"  title="查看">'
+                        + '<img src="../img/icon/icon_detail.png" class="dl-list-action-btn showimg">'
+                        + '</button>';
+                    if(row.tb_media == null
+                        || row.tb_media == ''
+                        || row.tb_pid == null
+                        || row.tb_pid == ''
+                        || row.tb_app_key == null
+                        || row.tb_app_key == ''
+                        || row.tb_app_secret == null
+                        || row.tb_app_secret == ''){
+//                        此时没有关联PID，需要显示关联PID
+                        result += '<a href="/media/pidadd?uid=' + row.uid + '" style="color: dodgerblue; margin-left: 5px;">关联pid</a>'
+                    } else {
+//                        此时存在关联PID，则显示修改PID
+                        result += '<a href="/media/pidedit?uid=' + row.uid + '" style="color: dodgerblue; margin-left: 5px;">修改pid</a>'
+                    }
+                    return result;
+                },
+                events: {
+                    'click .showimg': function (e, value, row, index) {
+                        var indexId = row[ListPageConfig.tableIndexCol];
+                        List.infoItem(indexId);
+                    },
+                },
+                width: '140px',
+            },]
+        },
+        url: {
+            add: '/media/create',
+            info: '/media/feedsinfo', //显示查看详情弹出框的页面地址，在feedsinfo中写好弹出框中的具体内容，真正调用后台数据的请求在这个页面中写，Controller中要声明一下
+            addPID: '/media/pidadd',//关联PID
+            editPID: '/media/pidedit',//修改PID
+        },
+
+        title: {
+            infoTitle:'内容合作信息'
+        },
+        action: {
+            info: true,
+        },
+        showDetail: false         //是否显示详细信息按钮
+    }
+
+    var auth = getAuthorityByUrl('/media/feeds');
+    function checkAuthority() {
+
+        if (auth == 0) {
+            ListPageConfig.action = {
+                info: false,
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                info: true,
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                info: true,
+            };
+        }
+    }
+    checkAuthority();
+</script>
+
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">新建
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="内容合作名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>
+
+<!--<script>-->
+<!--    hideChangeBtnIfNeed(auth);-->
+<!--</script>-->

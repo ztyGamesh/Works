@@ -1,0 +1,54 @@
+<div class="areaCon clr clearfix" id="geo">
+    <div class="choose"><i class="l"><input type="text" name="area_search" id="area_search" class="sch" placeholder="搜索">&nbsp;&nbsp;&nbsp;<!-- <i class="btn b2"><input type="button" name="yt0" value="搜索" id="area_search_button"></i> --></i>
+        <a href="javascript:;" class="selectFirstLine">一线城市</a>
+        <a href="javascript:;" class="selectSecondLine">二线城市</a>
+        <a href="javascript:;" class="selectThirdLine">三线城市</a>
+        <a id="unAll" class="unAll" href="javascript:;">清空</a>
+        <a id="unSet" class="unAll" href="javascript:;">反选&nbsp;&nbsp;&nbsp;</a>
+        <a id="inAll" class="unAll" href="javascript:;">全选&nbsp;&nbsp;&nbsp;</a>
+    </div>
+    <div class="fl areaL">
+        <?php
+        foreach ($this->cityGeos as $key => $val) {
+            $mainAreaCheckHtml = '';
+            if ($val['checked']) {
+                $mainAreaCheckHtml = 'checked="checked"';
+            }
+            $num = 0;
+            $searchTitle = $val['privince'];
+            if (isset($val['city'])) {
+                $num = count($val['city']);
+                foreach ($val['city'] as $city) {
+                    $searchTitle .= "," . $city['city'];
+                }
+            }
+            ?>
+        <div class="areaP">
+            <?php if ($num > 0):?>
+            <i class="areaNum"><em class="selectedNum">0</em><em>/</em><em class="totalNum"><?php echo $num?></em></i>
+            <?php endif;?>
+
+            <input type="hidden" class="hideTag" value="<?= $searchTitle ?>">
+            <label class="labelin" title="<?= $val['privince'] ?>">
+                <input type="checkbox" data-level="<?= $val['city_level'] ?>" name="target_geos[]" value="<?= $val['code'] ?>" <?= $mainAreaCheckHtml ?> class="mainArea" id="area<?= $val['index'] ?>"><?= $val['privince'] . $numDesc ?>
+            </label>
+            <?php
+            if (isset($val['city'])) {
+                echo '<div class="subCity"> <ul>';
+                foreach ($val['city'] as $cityKey => $city) {
+                    $checkHtml = '';
+                    if ($city['checked']) {
+                        $checkHtml = 'checked="checked"';
+                    }
+                    echo '<li>
+                            <label class="labelin" title="' . $city['city'] . '">
+                            <input data-level="' . $city['city_level'] . '" type="checkbox" ' . $checkHtml . ' value="' . $city['code'] . '" name="target_geos[]" id="area' . $city['code'] . '">' . $city['city'] . '</label>
+                        </li>';
+                }
+                echo '</ul> </div>';
+            }
+            echo '</div>';
+        }
+        ?>
+    </div>
+</div>

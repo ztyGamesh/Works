@@ -1,0 +1,13 @@
+.container-fluid{padding:0}
+.nav-tabs>li>a{color:#333;}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{color:#333}
+/*.tab-content{padding:15px;width:100%;border:1px solid #ddd;border-top:none;}*/
+.tab-content{width:100%;border-top:none;}
+label{line-height: 31px;font-weight: normal}
+.star{font-style: normal;color:red;padding:3px 3px 0}
+.tab-content p{line-height: 3;}
+.tab-content .form-horizontal .form-group{margin-left: 0;margin-right:0}
+.tab-content .control-label {padding-top: 0;}
+.form-group>.col-sm-12,.col-sm-12>div,.form-group label{padding:0}
+.col-sm-12>div{padding:15px 0}
+.form-group label{width:84px}

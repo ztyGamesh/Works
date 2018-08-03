@@ -1,0 +1,203 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/media/feeds">内容合作</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">修改pid</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="width:100%;height:79px;padding-top: 10px">
+
+</div>
+
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label  Dl-required">淘宝联盟media:</label>
+        <div class="col-sm-7 ">
+            <input class="form-control" id="taobao_media" type="text" name="taobao_media" >
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">淘宝联盟pid:</label>
+        <div class="col-sm-7">
+            <input id="taobao_PID" class="form-control" type="text" name="taobao_PID" placeholder="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">AppKey:</label>
+        <div class="col-sm-7">
+            <input id="appkey" class="form-control" type="text" name="appkey" placeholder="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">AppSecret:</label>
+        <div class="col-sm-7">
+            <input id="appsecret" class="form-control" type="text" name="appsecret" placeholder="">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    //获取URL参数来判断登录类型，选择下发数据
+    var Request = new Object();
+    Request = GetRequest();
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+
+    var uid;
+    uid = Request.uid;
+
+    getFeedsAPI(uid, getFeedsAPIonSuccess);
+    function getFeedsAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1){
+            var data = req.data;
+            $("#taobao_media").val(data.tb_media);
+            $("#taobao_PID").val(data.tb_pid);
+            $("#appkey").val(data.tb_app_key);
+            $("#appsecret").val(data.tb_app_secret);
+        }else {
+            layer.msg(req.msg);
+        }
+    }
+    $(function () {
+
+        $('#taobao_media').blur(function () {
+            if (!vaIsNotNull($(this).val())) {
+                vaError($('#taobao_media'), '淘宝联盟meida不能为空');
+                return false;
+            } else {
+                vaSuccess($('#taobao_media'));
+            }
+        });
+        $('#taobao_PID').blur(function () {
+            if (!vaIsNotNull($(this).val())) {
+                vaError($('#taobao_PID'), '淘宝联盟pid不能为空');
+                return false;
+            } else if (!vaWordNumberLimit1_20($(this).val())) {
+                vaError($('#taobao_PID'), '淘宝联盟pid长度应为1-40个字符:汉字占2个字符');
+                return false;
+            }else {
+                vaSuccess($('#taobao_PID'));
+            }
+        });
+
+        $('#appkey').blur(function () {
+            if (!vaIsNotNull($(this).val())) {
+                vaError($('#appkey'), 'AppKey不能为空');
+                return false;
+            } else {
+                vaSuccess($('#appkey'));
+            }
+        });
+        $('#appsecret').blur(function () {
+            if (!vaIsNotNull($(this).val())) {
+                vaError($('#appsecret'), 'AppSecret不能为空');
+                return false;
+            } else {
+                vaSuccess($('#appsecret'));
+            }
+        });
+
+        //校验规则
+        function mediaaddVilidate() {
+            $("#Deepleaper_loading").show();
+            var taobao_media = $('#taobao_media');
+            var taobao_mediaVal = taobao_media.val();
+            var taobao_PID = $('#taobao_PID');
+            var taobao_PIDVal = taobao_PID.val();
+
+            if (!vaIsNotNull(taobao_mediaVal)) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('淘宝联盟meida不能为空');
+                return false;
+            } else if (!vaIsNotNull(taobao_PIDVal)) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('淘宝联盟pid不能为空');
+                return false;
+            } else if (!vaWordNumberLimit1_20(taobao_PIDVal)) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('淘宝联盟pid长度应为1-40个字符:汉字占2个字符');
+                return false;
+            } else if (!vaIsNotNull($("#appkey").val())) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('AppKey不能为空');
+                return false;
+            } else if (!vaIsNotNull($("#appsecret").val())) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('AppSecret不能为空');
+                return false;
+            } else {
+                $("#Deepleaper_loading").hide();
+                return true;
+            }
+        }
+
+
+        // 路径导航栏 结束
+        $("#submit").bind('click', function () {
+            if (!mediaaddVilidate()) {
+                return false;
+            }
+            var obj = {
+                'tb_media': $('#taobao_media').val(),
+                'tb_pid': $('#taobao_PID').val(),
+                'uid': uid,
+                'tb_app_key': $("#appkey").val(),
+                'tb_app_secret': $("#appsecret").val()
+            };
+
+            saveTbPidAPI(obj, function (result) {
+                var req = JSON.parse(result);
+                if (req.status == 1) {
+                    layer.msg('修改pid成功');
+                    setTimeout(function () {
+                        window.location = '/media/feeds';
+                    }, 1000)
+                } else {
+                    layer.msg(req.msg);
+                }
+            })
+        });
+        $("#cancel").bind('click', function () {
+            window.location = '/media/feeds';
+        });
+    });
+</script>
+

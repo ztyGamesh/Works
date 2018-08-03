@@ -1,0 +1,738 @@
+<!--创意审核列表界面-->
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<style type="text/css">
+    /*解决外部toolbar视觉上融入table的问题 begin*/
+    .bootstrap-table {
+        margin-top: -30px;
+    }
+
+    .toolbar {
+        position: relative;
+        top: 11px;
+    }
+
+    /*解决外部toolbar视觉上融入table的问题 end*/
+</style>
+<div class="toolbar">
+    <div class="form-inline" role="form" style="position: relative">
+        <div class="btn-group dl-table-filter" style="width: 172px">
+            <select id="auditChannel" class="selectpicker" data-width="100%" title="筛选审核渠道">
+            </select>
+        </div>
+
+        <div class="input-group deepleaper-search-control" style='width:250px;padding-left: 0;margin-left: 10px'>
+            <input type="text" id="searchKeyword" class="form-control" placeholder="请输入创意名称" value=""
+                   name="search">
+            <span class="input-group-btn">
+                <a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+                   data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-search"></span>
+                </a>
+            </span>
+        </div>
+        <br/>
+        <div class="btn-group" id="deepleaperBatch" style="margin-top: 10px">
+            <div class="btn deepleaper-btn-normal">
+                Deepleaper内审批量操作
+            </div>
+        </div>
+        <div class="btn-group" id="channelBatch" style="margin-top: 10px;margin-left: 10px">
+            <div class="btn deepleaper-btn-normal">
+                渠道外审批量操作
+            </div>
+        </div>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+
+<script>
+    $('body').append('<div id="batch" style="display: none"><table class="table table-condensed"><thead><tr><th style="font-size: 13px;">创意名称</th><th style="font-size: 13px;">审核状态</th></tr></thead><tbody></tbody></table></div>');
+    $('body').append('<textarea id="comment" type="text" placeholder="请输入拒绝理由(必填项)" style="display:none;margin: 10px 20px;width: 320px;height: 100px;"></textarea>');
+    //获取全部审核渠道信息
+    getallmediumAPI(getallmediumAPIonSuccess);
+    function getallmediumAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            var option = '';
+            for (var i = 0; i < data.length; i++) {
+                if (i == 0) {
+                    option += '<option selected value="' + data[i].uid + '">' + data[i].name + '</option>';
+                } else {
+                    option += '<option value="' + data[i].uid + '">' + data[i].name + '</option>';
+                }
+            }
+            $('#auditChannel').html(option);
+        } else {
+            layer.msg(req.msg);
+        }
+    }
+    //外审渠道修改触发列表重绘
+    $('#auditChannel').bind('change', function () {
+        ListPageConfig.updateShowColumns()
+    });
+    //Deepleaper内审批量操作
+    $("#deepleaperBatch").bind('click', function () {
+        var getSelections = $("#table").bootstrapTable('getSelections');
+        if (getSelections.length == 0) {
+            layer.msg('请选中需要审核的创意');
+        } else {
+            console.log(getSelections);
+            var html = '';
+            var ids = [];
+            for (var i = 0; i < getSelections.length; i++) {
+                ids.push(getSelections[i].id);
+                var audit_status = '';
+                switch (getSelections[i].audit_status) {
+                    case "audit":
+                        audit_status = "审核中";
+                        break;
+                    case "reject":
+                        audit_status = "审核拒绝";
+                        break;
+                    case "pass":
+                        audit_status = "审核通过";
+                        break;
+                }
+                html += '<tr><td>' + getSelections[i].creative_name + '</td>' +
+                    '<td>' + audit_status + '</td></tr>'
+            }
+            $("#batch table tbody").html(html);
+            layer.open({
+                type: 1,
+                title: 'Deepleaper内审批量操作',
+                area: '600px',
+                resize: false,
+                content: $('#batch'),
+                skin: 'deepleaper-layer',
+                btn: ['批量审核通过', '批量审核拒绝'],
+                yes: function (index, layero) {
+                    adcreativeupdateauditstatusAPI(ids.join(','), 'pass', '', function (result) {
+                        var req = JSON.parse(result);
+                        if (req.status == 1) {
+                            $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            layer.close(index);
+                        } else {
+                            console.log('adcreativeupdateauditstatusAPI返回错误')
+                        }
+                    });
+                },
+                btn2: function (index1, layero) {
+                    layer.open({
+                        type: 1,
+                        content: $('#comment'),
+                        btn: ['确认提交'],
+                        yes: function (index2, layero) {
+                            if ($("#comment").val() == '') {
+                                $("#comment").focus();
+                            } else {
+                                var comment = $('#comment').val();
+                                $('#comment').val('');
+                                adcreativeupdateauditstatusAPI(ids.join(','), 'reject', comment, function (result) {
+                                    var req = JSON.parse(result);
+                                    if (req.status == 1) {
+                                        $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                        layer.close(index2);
+                                        layer.close(index1);
+                                    } else {
+                                        console.log('adcreativeupdateauditstatusAPI返回错误')
+                                    }
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            $('#comment').val('');
+                        }
+                    });
+
+                }
+            })
+            ;
+        }
+    });
+    //外审批量操作
+    $("#channelBatch").bind('click', function () {
+        var getSelections = $("#table").bootstrapTable('getSelections');
+        if (getSelections.length == 0) {
+            layer.msg('请选中需要审核的创意');
+        } else {
+            var html = '';
+            var waitIds = [];
+            var nowaitIds = [];
+            for (var i = 0; i < getSelections.length; i++) {
+                var other_audit_status = '';
+                switch (getSelections[i].other_audit_status) {
+                    case "wait":
+                        other_audit_status = "待审核";
+                        waitIds.push(getSelections[i].id);
+                        break;
+                    case "audit":
+                        other_audit_status = "审核中";
+                        nowaitIds.push(getSelections[i].id);
+                        break;
+                    case "reject":
+                        other_audit_status = "审核拒绝";
+                        nowaitIds.push(getSelections[i].id);
+                        break;
+                    case "pass":
+                        other_audit_status = "审核通过";
+                        nowaitIds.push(getSelections[i].id);
+                        break;
+                }
+                html += '<tr><td>' + getSelections[i].creative_name + '</td>' +
+                    '<td>' + other_audit_status + '</td></tr>'
+            }
+            $("#batch table tbody").html(html);
+            layer.open({
+                type: 1,
+                title: '渠道外审批量操作',
+                area: '600px',
+                resize: false,
+                content: $('#batch'),
+                skin: 'deepleaper-layer',
+                btn: ['批量审核通过', '批量审核拒绝', '批量审核中'],
+                yes: function (index, layero) {//将所选审核中、审核通过、审核拒绝创意改为审核通过
+                    layer.closeAll();
+                    if (nowaitIds.length) {
+                        layer.confirm('将选中的"批量审核通过"、"批量审核拒绝"、"批量审核中"创意批量改为"审核通过"?', {
+                                title: '渠道外审批量审核通过',
+                                btn: ['确认', '取消']
+                            },
+                            function (index1) {
+                                adcreativeupdateauditstatusothersAPI(nowaitIds.join(','), $("#auditChannel option:selected").val(), 'pass', '', function (result) {
+                                    var req = JSON.parse(result);
+                                    if (req.status == 1) {
+                                        $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                        layer.close(index1);
+                                    } else {
+                                        console.log('adcreativeupdateauditstatusAPI返回错误')
+                                    }
+                                });
+                            },
+                            function () {
+                            });
+                    } else {
+                        layer.msg('当前无选中"批量审核通过"或"批量审核拒绝"或"批量审核中"创意,不能执行审核通过操作');
+                    }
+                },
+                btn2: function (index, layero) {//将所选审核中、审核通过、审核拒绝创意改为审核拒绝
+                    if (nowaitIds.length) {
+                        layer.confirm('将选中的"批量审核通过"、"批量审核拒绝"、"批量审核中"创意批量改为"审核拒绝"?', {
+                                title: '渠道外审批量审核拒绝',
+                                btn: ['确认', '取消']
+                            },
+                            function (index1) {
+                                layer.open({
+                                    type: 1,
+                                    content: $('#comment'),
+                                    btn: ['确认提交'],
+                                    yes: function (index2, layero) {
+                                        if ($("#comment").val() == '') {
+                                            $("#comment").focus();
+                                        } else {
+                                            var comment = $('#comment').val();
+                                            $('#comment').val('');
+                                            adcreativeupdateauditstatusothersAPI(nowaitIds.join(','), $("#auditChannel option:selected").val(), 'reject', comment, function (result) {
+                                                var req = JSON.parse(result);
+                                                if (req.status == 1) {
+                                                    $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                                    layer.close(index2);
+                                                    layer.close(index1);
+                                                } else {
+                                                    console.log('adcreativeupdateauditstatusAPI返回错误')
+                                                }
+                                            });
+                                        }
+                                    },
+                                    cancel: function () {
+                                        $('#comment').val('');
+                                    }
+                                });
+                            },
+                            function () {
+                            });
+                    } else {
+                        layer.msg('当前无选中"批量审核通过"或"批量审核拒绝"或"批量审核中"创意,不能执行审核拒绝操作');
+                    }
+                },
+                btn3: function (index, layero) {
+                    if (waitIds.length) {
+                        layer.confirm('将选中的"待审核"创意批量改为"审核中"?', {
+                                title: '渠道外审批量审核中',
+                                btn: ['确认', '取消']
+                            },
+                            function (index1) {
+                                adcreativeupdateauditstatusothersAPI(waitIds.join(','), $("#auditChannel option:selected").val(), 'audit', '', function (result) {
+                                    var req = JSON.parse(result);
+                                    if (req.status == 1) {
+                                        $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                        layer.close(index1);
+                                    } else {
+                                        console.log('adcreativeupdateauditstatusAPI返回错误')
+                                    }
+                                });
+                            },
+                            function () {
+                            });
+                    } else {
+                        layer.msg('当前无选中"待审核"创意');
+                    }
+
+
+                }
+            })
+            ;
+        }
+    });
+    var audit_status = {'audit': '审核中', 'pass': '审核通过', 'reject': '审核拒绝'};
+    var other_audit_status = {'wait': '待审核', 'audit': '审核中', 'pass': '审核通过', 'reject': '审核拒绝'};
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+        },
+        executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('audit_status');
+            bindTableFilterAction('other_audit_status');
+            $(".deepleaper-radio-wrapper input[name=audit_status]").unbind('change').bind('change', function () {
+                $("#audit_status .deepleaper-radio-box-wrapper").hide();
+                if ($("#audit_status input[name=audit_status]:checked").val() !== $("#audit_status input[name=audit_status][default_select=true]").val()) {//如果是默认选项，去掉漏斗高亮
+                    $(this).parents(".deepleaper-radio-wrapper").children(".deepleaper-list-funnel").addClass('opacity_1');
+                } else {
+                    $(this).parents(".deepleaper-radio-wrapper").children(".deepleaper-list-funnel").removeClass('opacity_1');
+                }
+                //将渠道外审状态筛选置为全部
+                $(".deepleaper-radio-wrapper input[name=other_audit_status][value='']").prop('checked', 'checked');
+                //筛选清除页码cookie
+                List.$table.bootstrapTable('deleteCookie', ['pageNumber']);
+                //跳到第一页
+                List.$table.bootstrapTable('selectPage', 1);
+                //列表刷新
+                List.$table.bootstrapTable('refresh', {
+                    query: {offset: 0}
+                });
+            });
+            $(".deepleaper-radio-wrapper input[name=other_audit_status]").unbind('change').bind('change', function () {
+                $("#other_audit_status .deepleaper-radio-box-wrapper").hide();
+                if ($("#other_audit_status input[name=other_audit_status]:checked").val() !== $("#other_audit_status input[name=other_audit_status][default_select=true]").val()) {//如果是默认选项，去掉漏斗高亮
+                    $(this).parents(".deepleaper-radio-wrapper").children(".deepleaper-list-funnel").addClass('opacity_1');
+                } else {
+                    $(this).parents(".deepleaper-radio-wrapper").children(".deepleaper-list-funnel").removeClass('opacity_1');
+                }
+                //将内审状态筛选置为全部
+                $(".deepleaper-radio-wrapper input[name=audit_status][value='']").prop('checked', 'checked');
+                //筛选清除页码cookie
+                List.$table.bootstrapTable('deleteCookie', ['pageNumber']);
+                //跳到第一页
+                List.$table.bootstrapTable('selectPage', 1);
+                //列表刷新
+                List.$table.bootstrapTable('refresh', {
+                    query: {offset: 0}
+                });
+            });
+        },
+        url: {
+            creativedetail: '/promotion/adcreativeview',
+        },
+        htmlConfig: {
+            creativedetail: ['<div class="creativedetail dl-list-action-btn-wrapper"  title="查看创意详情">',
+                '<img src="../img/icon/icon_detail.png" class="dl-list-action-btn">',
+                '</div>']
+        },
+        operateEvents: {
+            'click .creativedetail': function (e, value, row, index) {
+                window.location.href = ListPageConfig.url.creativedetail + '?id=' + row.id;
+            }
+        },
+        title: {
+            addTitle: '添加用户权限',
+            editTitle: '修改用户权限'
+        },
+        action: {
+            creativedetail: true
+        },
+        updateShowColumns: function () {//更新列表中列的显示/隐藏状态
+            var dimensionSplit = $('#dimensionSplit').val();
+            var columns = this.table.columns;
+            columns[3].title = $("#auditChannel option:selected").html() + jointTableFilter('other_audit_status', other_audit_status);
+            List.$table.bootstrapTable('refreshOptions', {columns: columns});
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: 'commit_time',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/audit/adcreativeauditlist',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                params.search = $("input[name=search]").val();
+                params.audit_status = $("input[name=audit_status]:checked").val();
+                params.other_audit_status = $("input[name=other_audit_status]:checked").val();
+                params.medium = $("#auditChannel option:selected").val();
+                return params;
+            },//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+                    $("#adgroupName").html(res.data.group_name);
+                    return res.data;
+                } else {
+                    layer.msg(res.msg);
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: '[30, 50, 100]',//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: true,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            },
+            onMouseoverRow: function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display', 'inline-block');
+            },
+            onMouseoutRow: function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display', 'none');
+            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'creative_name',
+                title: '创意名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'audit_status',
+                title: '审核状态' + jointTableFilter('audit_status', audit_status, 'audit'),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'audit':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">审核中</span><img class="status_modify status_aduit_pass" src="../img/icon/icon_pass.png" title="审核通过"><img class="status_modify status_aduit_reject" src="../img/icon/icon_reject.png" title="审核拒绝" style="margin-left: 3px">';
+                            break;
+                        case 'reject':
+                            return '<span style="color: #000;position: relative;top: 2px;margin-right: 5px;">审核拒绝</span><span class="aduit_reject" style="color: #b3b3b3;position: relative;top: 2px;margin-right: 5px;cursor: pointer;">原因</span><img class="status_modify status_aduit_pass" src="../img/icon/icon_pass.png" title="审核通过">';
+                            break;
+                        case 'pass':
+                            return '<span style="color: #000;position: relative;top: 2px;margin-right: 5px;">审核通过</span><img class="status_modify status_aduit_reject" src="../img/icon/icon_reject.png" title="审核拒绝" style="margin-left: 3px">';
+                            break;
+                        default:
+                            return '-';
+                    }
+                },
+                events: {
+                    'mouseenter .aduit_reject': function (e, value, row, index) {
+                        if (row.comment) {
+                            layer.tips(row.comment, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        } else {
+                            layer.tips('获取审核拒绝原因失败', e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .aduit_reject': function (e, value, row, index) {
+                        if (row.comment) {
+                            layer.closeAll()
+                        }
+                    },
+                    'click .status_aduit_pass': function (e, value, row, index) {
+                        adcreativeupdateauditstatusAPI(row.id, 'pass', '', function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                console.log('adcreativeupdateauditstatusAPI返回错误')
+                            }
+                        });
+                    },
+                    'click .status_aduit_reject': function (e, value, row, index) {
+                        layer.open({
+                            type: 1,
+                            content: $('#comment'),
+                            btn: ['确认提交'],
+                            yes: function (index, layero) {
+                                if ($("#comment").val() == '') {
+                                    $("#comment").focus();
+                                } else {
+                                    layer.close(index);
+                                    var comment = $('#comment').val();
+                                    $('#comment').val('');
+                                    adcreativeupdateauditstatusAPI(row.id, 'reject', comment, function (result) {
+                                        var req = JSON.parse(result);
+                                        if (req.status == 1) {
+                                            $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                        } else {
+                                            console.log('adcreativeupdateauditstatusAPI返回错误')
+                                        }
+                                    });
+                                }
+                            },
+                            cancel: function () {
+                                $('#comment').val('');
+                            }
+                        });
+                    }
+                },
+                width: '140px'
+            }, {
+                field: 'other_audit_status',
+                title: $("#auditChannel option:selected").html() + jointTableFilter('other_audit_status', other_audit_status),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'audit':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">审核中</span><img class="status_modify status_aduit_pass" src="../img/icon/icon_pass.png" title="审核通过"><img class="status_modify status_aduit_reject" src="../img/icon/icon_reject.png" title="审核拒绝" style="margin-left: 3px">';
+                            break;
+                        case 'reject':
+                            return '<span style="color: #000;position: relative;top: 2px;margin-right: 5px;">审核拒绝</span><span class="aduit_reject" style="color: #b3b3b3;position: relative;top: 2px;margin-right: 5px;cursor: pointer;">原因</span><img class="status_modify status_aduit_pass" src="../img/icon/icon_pass.png" title="审核通过">';
+                            break;
+                        case 'pass':
+                            return '<span style="color: #000;position: relative;top: 2px;margin-right: 5px;">审核通过</span><img class="status_modify status_aduit_reject" src="../img/icon/icon_reject.png" title="审核拒绝" style="margin-left: 3px">';
+                            break;
+                        case 'wait':
+                            return '<span style="color: #000;position: relative;top: 2px;margin-right: 5px;">待审核</span><img class="status_modify status_aduit_aduit" src="../img/icon/icon_audit.png" title="审核中">';
+                        default:
+                            return '-';
+                    }
+                }, events: {
+                    'mouseenter .aduit_reject': function (e, value, row, index) {
+                        if (row.other_comment) {
+                            layer.tips(row.other_comment, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        } else {
+                            layer.tips('获取审核拒绝原因失败', e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .aduit_reject': function (e, value, row, index) {
+                        if (row.other_comment) {
+                            layer.closeAll()
+                        }
+                    },
+                    'click .status_aduit_pass': function (e, value, row, index) {
+                        adcreativeupdateauditstatusothersAPI(row.id, $("#auditChannel option:selected").val(), 'pass', '', function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                console.log('adcreativeupdateauditstatusAPI返回错误')
+                            }
+                        });
+                    },
+                    'click .status_aduit_reject': function (e, value, row, index) {
+                        layer.open({
+                            type: 1,
+                            content: $('#comment'),
+                            btn: ['确认提交'],
+                            yes: function (index, layero) {
+                                if ($("#comment").val() == '') {
+                                    $("#comment").focus();
+                                } else {
+                                    layer.close(index);
+                                    var comment = $('#comment').val();
+                                    $('#comment').val('');
+                                    adcreativeupdateauditstatusothersAPI(row.id, $("#auditChannel option:selected").val(), 'reject', comment, function (result) {
+                                        var req = JSON.parse(result);
+                                        if (req.status == 1) {
+                                            $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                        } else {
+                                            console.log('adcreativeupdateauditstatusAPI返回错误')
+                                        }
+                                    });
+                                }
+                            },
+                            cancel: function () {
+                                $('#comment').val('');
+                            }
+                        });
+                    },
+                    'click .status_aduit_aduit': function (e, value, row, index) {
+                        adcreativeupdateauditstatusothersAPI(row.id, $("#auditChannel option:selected").val(), 'audit', '', function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                console.log('adcreativeupdateauditstatusAPI返回错误')
+                            }
+                        });
+                    }
+                },
+                width: '140px'
+            }, {
+                field: 'name',
+                title: '账户名称'
+            }, {
+                field: 'group_name',
+                title: '广告组名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'plan_name',
+                title: '广告计划名称',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            },
+//                {
+//                field: 'keywords',
+//                title: '关键词',
+//                formatter: function (value, row, index) {
+//                    return '<span class="keywords" style="color: #3d5d9f;cursor: pointer;">' + cutstr(row.key_words, 16) + '</span>'
+//                },
+//                events: 'ListPageConfig.keywordsEvents'
+//            },
+                {
+                    field: 'commit_time',
+                    title: '提交时间',
+                    sortable: true
+                },
+                {
+                    field:'tag',
+                    title:'广告行业标签'
+                },
+                {
+                    field: 'do',
+                    title: '操作',
+                    align: 'center',
+                    formatter: 'List.operateFormatter',
+                    events: 'List.operateEvents'
+                }]
+        },
+        keywordsEvents: {
+            'click .keywords': function (e, value, row, index) {
+                var keyWords = row.key_words.split(',');
+                var html = '';
+                for (var i = 0; i < keyWords.length; i++) {
+                    if (i == 0) {
+                        html += keyWords[i];
+                    } else {
+                        html += '<br/>' + keyWords[i];
+                    }
+                }
+                layer.tips(html, e.target, {time: 5000});
+            }
+        }
+    };
+
+
+    var auth = getAuthorityByUrl('/audit/adcreativeauditlistview');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                creativedetail: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                creativedetail: true
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                creativedetail: true
+            };
+        }
+    }
+    checkAuthority();
+
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>

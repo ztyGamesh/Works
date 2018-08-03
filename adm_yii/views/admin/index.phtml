@@ -1,0 +1,24 @@
+<style>
+    .links{
+        margin-top: 30px;
+        background-color: #f0ede7;
+        font-size: 1.2em;
+    }
+    .links div{
+        padding-top: 10px;
+    }
+    .links a{
+        color:green;
+    }
+</style>
+<section class="links">
+    <ul>
+        <?php foreach ($links as $link):?>
+        <li>
+            <div>
+                <a href="<?= $link['url']?>"><?= $link['content']?></a>
+            </div>
+        </li>
+        <?php endforeach;?>
+    </ul>
+</section>

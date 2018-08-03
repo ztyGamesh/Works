@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<?php 
+    $skin = 'application';
+?>
+    <head>
+        <meta charset="UTF-8">
+        <title> <?php echo $skin?> Deep开发测试框架 </title>
+        
+        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/css/<?=$skin?>/layout.css"/>
+        <link rel="stylesheet" href="/css/public.css"/>
+        
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/common.js"></script>
+        <script src="/js/<?=$skin?>/layout.js"></script>
+        <script src="/js/jquery.form.js"></script>
+        <script src="/js/jquery.cookie.js"></script>
+    </head>
+    <body>
+        <div class="header">
+<!--            <div class="global-notice">-->
+<!--                <div class="global-notice-info">升级维护，在此期间给您带来的不便敬请见谅。</div>-->
+<!--                <div class="global-notice-icon">OK，我知道了<i class="global-notice-up iconfont">&#xe600;</i></div>-->
+<!--            </div>-->
+            <div class="wrapper">
+                <div class="global-logo"><h1>
+                    <img src='/img/deepleaper_logo_mini.png' width='150' height='40'/>
+                </h1></div>
+                <ul class="global-nav">
+                    <?php
+                    if ( !empty($topNavArr) ){
+                        echo $this->renderFileLoop('@app/views/layouts/topNav.phtml', $topNavArr);
+                    }
+                    ?>
+                </ul>
+                <ul class="global-user">
+                    <li class="global-message" style="display:none;"><i class="global-message-icon iconfont">&#xe601;</i><span>18</span></li>
+                    <li class="global-site">
+                        <!--<i class="glyphicon glyphicon-cog"></i>-->
+                        <a tabindex="0" style="color: #000;" data-toggle="popover" data-placement="bottom" data-trigger="focus"><i class="glyphicon glyphicon-cog"></i></a>
+                    </li>
+                    <li>
+                        <?php if($Clients){ ?>
+                            <div class="global-user-info">
+                        <?php }else{ ?>
+                            <div class="global-user-info" style="top:6px;">
+                        <?php } ?>
+                            <span><?php echo $User['name'] ?></span>
+                            <?php
+                                if($Clients){
+                                    ?>
+                                        <form action="" >   <!--data-toggle="tooltip" data-placement="left" title="点击切换客户"  -->
+                                            <select name="" id="user-list" style="width: 140px">
+                                                <?php
+                                                    $optionHtml =   '';
+                                                    $selectClient   =   $Clients['currentClientUid'];
+                                                    if(!$selectClient){
+                                                        $optionHtml =   '<option value=""请选择客户</option>';
+                                                    }
+                                                    foreach($Clients['clients'] as $uid  =>  $name){
+                                                        if($selectClient    ==  $uid){
+                                                            $selected   =   "selected";
+                                                        }else{
+                                                            $selected   =   "";
+                                                        }
+                                                        $optionHtml.='<option '.$selected.' value="'.$uid.'">'.$name.'</option>';
+                                                    }
+                                                    echo $optionHtml;
+                                                ?>
+                                            </select>
+                                        </form>
+                                    <?php
+                                }
+                            ?>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <div class="wrapper">
+                <div class="left-wrap  <?php
+                if (!($leftNavArr)) {
+                    echo 'left-wrap-act';
+                }
+                ?>">
+                    <div class="btns">
+                        <i class="left-btn-close iconfont">&#xe602;</i>
+                        <i class="left-btn-open iconfont">&#xe603;</i>
+                    </div>
+                    <ul class="left-nav">
+                         
+                        <?php
+                        if (($leftNavArr)) {
+                            echo $this->renderFileLoop('@app/views/layouts/leftNav.phtml', $leftNavArr);
+                        }
+                        ?>
+                    </ul>
+                </div>
+                <div class="right-wrap">
+                    <div class="inner">
+                        <?php echo $content; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-logo"></div><div class="copyright">DeepLeaper 备案号：京ICP备0000001号</div>
+        </div>
+        <div class="global-site-wrap hide">
+            <ul class="global-site-sub">
+                <li><a href="javascript:;" onclick="viewSelf()"><i class="iconfont">&#xe606;</i>账户信息</a></li>
+                <li><a href="javascript:;" onclick="modifyPwd()"><i class="iconfont">&#xe60a;</i>修改密码</a></li>
+                <li><a href="/index/logout"><i class="iconfont">&#xe605;</i>安全退出</a></li>
+            </ul>
+        </div>
+        
+        <link rel="stylesheet" href="/css/select2.css"/>
+        <script src="/js/select2.min.js"></script>
+        
+        <link rel="stylesheet" href="/css/ui-dialog.css" />
+        <script type="text/javascript" src="/js/dialog.js"></script>
+        
+    </body>
+</html>

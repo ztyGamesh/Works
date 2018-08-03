@@ -1,0 +1,258 @@
+<?php
+    echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+?>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+  <script src="http://jqueryui.com/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
+
+<link rel="stylesheet" href="/css/targetingadd.css">
+<link rel="stylesheet" href="/css/select2.css">
+<script src="/js/targetingadd.js" type="text/javascript"></script>
+
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/order/targeting">定向及播控</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">修改定向</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+
+<div style="width:100%;height:80px;text-center">
+	<?php if (isset($form['error']) ) {?>
+	<div class="alert " >
+				<a class="close" data-dismiss="alert">×</a>
+				<strong>Warning!</strong> <?php echo $form['error']; ?></div>
+	<?php } ?>
+</div>
+
+<form id="edit" method="post" action="/order/targetingedit?uid=<?php echo $id; ?>" class="form-horizontal list-form" novalidate="novalidate">
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">定向策略名称</label>
+        <div class="col-sm-6 ">
+            <input id="name" type="text" name="name" class="form-control" check-type="required" required-message="不能为空。"  value="<?php echo $form['name'];?>">
+            <input id="uid" class="form-control" type="hidden" name="uid"  value="<?php echo $uid;?>">
+        </div>
+    </div>
+     
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">定向策略说明</label>
+        <div class="col-sm-6 ">
+            <input id="info" type="text" name="info" class="form-control" check-type="required" required-message="不能为空。"  value="<?php echo $form['info'];?>">
+            
+        </div>
+    </div>
+    
+     <div class="form-group ">
+        <label class="col-sm-3 control-label">制定星期投放</label>
+        <div class="col-sm-6 ">
+            <div class="checkbox">
+            
+				<label>
+				  <input type="checkbox" name="week[]" value="1" <?php if($form['week_arr'][1]) echo 'checked="checked"'?>> 周一
+				</label>
+				<label>
+				  <input type="checkbox" name="week[]" value="2" <?php if($form['week_arr'][2]) echo 'checked="checked"'?>> 周二
+				  </label>
+				<label>
+				  <input type="checkbox" name="week[]" value="3" <?php if($form['week_arr'][3]) echo 'checked="checked"'?>> 周三
+				  </label>
+				<label>
+				  <input type="checkbox" name="week[]" value="4" <?php if($form['week_arr'][4]) echo 'checked="checked"'?>> 周四
+				  </label>
+				<label>
+				  <input type="checkbox" name="week[]" value="5" <?php if($form['week_arr'][5]) echo 'checked="checked"'?>> 周五
+				  </label>
+				<label>
+				  <input type="checkbox" name="week[]" value="6" <?php if($form['week_arr'][6]) echo 'checked="checked"'?>> 周六
+				</label>
+				<label>
+				  <input type="checkbox" name="week[]" value="7" <?php if($form['week_arr'][7]) echo 'checked="checked"'?>> 周日
+				</label>
+		  	</div>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">指定时段投放</label>
+        <div class="col-sm-6 ">
+             
+                 <?php
+                 
+                  foreach($hour_menu as $key => $val):
+                  ?>
+					
+					<label>
+				  	<input type="checkbox" name="hour[]" value="<?php echo $key?>"  <?php if($form['hour_arr'][$key]) echo 'checked="checked"'?>> <?php echo $val?>
+					</label>
+				<?php endforeach;?>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">指定地域投放</label>
+        <div class="col-sm-6 ">
+            
+        <select name="area[]" id="area" multiple="multiple">
+        	
+			<?php
+				
+				
+				foreach($geos as $k => $v)
+				{
+					
+					echo "<option value='$k' ".(in_array($k,$geoValues)?' selected="selected" checked="checked"':'').($v['parent']?' parent-id="'.$v['parent'].'"':'').">{$v['name']}</option>\n";
+				}
+			?>
+		</select>
+
+        </div>
+    </div>
+    
+   
+
+	
+	
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">日频次控制</label>
+        <div class="col-sm-6 ">
+        	
+				<input id="frequency_day" type="text" name="frequency_day" style="width:50px;" value="<?php echo $form['frequency_day'];?>">
+				<!--
+				<input id="frequency_day" type="text" class="form-control" name="frequency_day" value="<?php echo $item['frequency_day'];?>">
+				<div class="input-group-btn-vertical">
+				  <button class="btn btn-default btn_a" type="button"><i class="fa fa-caret-up"></i></button>
+				  <button class="btn btn-default btn_a" type="button"><i class="fa fa-caret-down"></i></button>
+				</div>
+				-->
+			
+			频次/日/用户　0为不进行控制
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">小时频次控制</label>
+        <div class="col-sm-6 ">
+           
+			<input id="frequency_hour" type="text"  name="frequency_hour" style="width:50px;" value="<?php echo $form['frequency_hour'];?>">
+				
+			
+			频次/小时/用户　0为不进行控制
+        </div>
+    </div>
+    
+    
+     <div class="form-group ">
+        <label class="col-sm-3 control-label">指定投放平台</label>
+        <div class="col-sm-6 ">
+            <div class=" inline">
+				
+				  <input type="checkbox" name="platform[]" value="iOS" <?php if($form['platform_arr']['iOS']) echo 'checked="checked"'?>> iOS
+				
+				  <input type="checkbox" name="platform[]" value="Android" <?php if($form['platform_arr']['Android']) echo 'checked="checked"'?>> Android
+				
+				  <input type="checkbox" name="platform[]" value="window_phone" <?php if($form['platform_arr']['window_phone']) echo 'checked="checked"'?>> window_phone
+				
+				  <input type="checkbox" name="platform[]" value="unknown" <?php if($form['platform_arr']['unknown']) echo 'checked="checked"'?>> unknow
+				
+				
+			</div>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">指定设备类型</label>
+        <div class="col-sm-6 ">
+            <div class="inline">
+				<label>
+				  <input type="checkbox" name="device[]" value="Phone" <?php if($form['device_arr']['Phone']) echo 'checked="checked"'?>> Phone
+				</label>
+				<label>
+				  <input type="checkbox" name="device[]" value="Tablet" <?php if($form['device_arr']['Tablet']) echo 'checked="checked"'?>> Tablet
+				</label>
+				<label>
+				  <input type="checkbox" name="device[]" value="unknown" <?php if($form['device_arr']['unknown']) echo 'checked="checked"'?>> unknown
+				</label>
+				
+			</div>
+        </div>
+    </div>
+    
+     <div class="form-group ">
+        <label class="col-sm-3 control-label">指定网络接入类型</label>
+        <div class="col-sm-6 ">
+            <div class="inline">
+				<label>
+				  <input type="checkbox" name="network[]" value="WIFI" <?php if($form['network_arr']['WIFI']) echo 'checked="checked"'?>> WIFI
+				</label>
+				<label>
+				  <input type="checkbox" name="network[]" value="4G" <?php if($form['network_arr']['4G']) echo 'checked="checked"'?>> 4G
+				</label>
+				<label>
+				  <input type="checkbox" name="network[]" value="3G" <?php if($form['network_arr']['3G']) echo 'checked="checked"'?>> 3G
+				</label>
+				<label>
+				  <input type="checkbox" name="network[]" value="2G" <?php if($form['network_arr']['2G']) echo 'checked="checked"'?>> 2G
+				</label>
+				<label>
+				  <input type="checkbox" name="network[]" value="UNKNOWN" <?php if($form['network_arr']['UNKNOWN']) echo 'checked="checked"'?>> UNKNOWN
+				</label>
+				
+			</div>
+        </div>
+    </div>
+    
+    <div class="form-group ">
+        <label class="col-sm-3 control-label">指定手机品牌</label>
+        <div class="col-sm-6 ">
+         
+				<?php foreach($brand_menu as $key => $val):?>
+					
+					<label>
+				  	<input type="checkbox" name="brand[]" value="<?php echo $key?>"  <?php if($form['brand_arr'][$key] ) echo 'checked="checked"'?>> <?php echo $val?>
+					</label>
+				<?php endforeach;?>
+			
+			
+        </div>
+    </div>
+    
+    <div class="form-group text-center">
+   		<input type="button" class="btn " name="goback" id="goback" value="取消" onclick="javascript:window.location.href='/order/targeting'">
+   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   		<input type="submit" class="btn " name="submit" id="submit" value="提交">
+    </div>
+    
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/order/targeting', 2);
+
+$(function(){     
+       
+   $(".js-example-basic-multiple").select2();
+       
+   $(".js-example-basic-multiple").click();
+   regionList('area');
+   setTimeout('clearWord()', 1000);
+  
+});
+    
+function clearWord( )
+{　
+	$( "#frequency_day" ).spinner();
+	$( "#frequency_hour" ).spinner();
+	
+	
+}
+</script>
+

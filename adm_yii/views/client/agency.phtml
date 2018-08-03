@@ -1,0 +1,206 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+
+?>
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加代理商
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="代理商名称" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<script>
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/client/agency',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortOrder: 'desc',
+            sortName: 'create_time',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled:['bs.table.pageNumber'],
+            cookiePath: '/',
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '代理商名称'
+
+            }, {
+                field: 'url',
+                title: '代理商网址'
+            }, {
+                field: 'linkman',
+                title: '联系人'
+            }, {
+                field: 'tel',
+                title: '联系手机号'
+            }, {
+                field: 'create_time',
+                title: '创建时间',
+                sortable: true,
+            }, {
+                field: 'createUserName',
+                title: '创建/修改人'
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url: {
+            add: '/client/agencyadd',         //添加 数据 html 地址
+            edit: '/client/agencyedit',         //编辑数据 html 地址
+            del: '/client/agencydel',         //删除数据地址
+            detail: false                      //详细内容地址,为空则取编辑的地址
+        },
+        title: {
+            addTitle: '添加代理商',
+            editTitle: '编辑代理商',
+        },
+        action: {
+
+            //detail: true,
+            <?php if ($userPower['power'] == 'admin' || $userPower['power'] == 'media') { ?>
+            edit: true,
+            <?php } ?>
+
+            <?php if ($userPower['power'] == 'admin' || $userPower['power'] == 'media') { ?>
+            del: true,
+            <?php } ?>
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        validate: {      //添加提交验证
+            add: function () {
+                $("#Deepleaper_loading").show();
+                var name = $('#name');
+                var nameVal = name.val();
+                var url = $('#url');
+                var urlVal = url.val();
+                var linkman = $('#linkman');
+                var linkmanVal = linkman.val();
+                var tel = $('#tel');
+                var telVal = tel.val();
+                if (!vaIsNotNull(nameVal)) {
+                    vaError(name, '代理商名称不能为空');
+                    $("#Deepleaper_loading").hide();
+                    return false;
+                } else if (!vaIsNotNull(urlVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(url, '代理商网址不能为空');
+                    return false;
+                } else if (!vaIsUrl(urlVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(url, '地址应以http://或者https://开头');
+                } else if (!vaIsNotNull(linkmanVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(linkman, '联系人不能为空');
+                    return false;
+                } else if (!vaIsNotNull(telVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(tel, '请输入联系人手机号码');
+                    return false;
+                } else if (!validatePhoneNum(telVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(tel, '手机号码格式错误');
+                    return false;
+                } else {
+                    $("#Deepleaper_loading").hide();
+                    return checkFormValidByBackend();
+                }
+            },
+            edit: function () {
+                $("#Deepleaper_loading").show();
+                var name = $('#name');
+                var nameVal = name.val();
+                var url = $('#url');
+                var urlVal = url.val();
+                var linkman = $('#linkman');
+                var linkmanVal = linkman.val();
+                var tel = $('#tel');
+                var telVal = tel.val();
+                if (!vaIsNotNull(nameVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(name, '代理商名称不能为空');
+                    return false;
+                } else if (!vaIsNotNull(urlVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(url, '代理商网址不能为空');
+                    return false;
+                } else if (!vaIsUrl(urlVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(url, '地址应以http://或者https://开头');
+                } else if (!vaIsNotNull(linkmanVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(linkman, '联系人不能为空');
+                    return false;
+                } else if (!vaIsNotNull(telVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(tel, '请输入联系人手机号码');
+                    return false;
+                } else if (!validatePhoneNum(telVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(tel, '手机号码格式错误');
+                    return false;
+                } else {
+                    $("#Deepleaper_loading").hide();
+                    return checkFormValidByBackend();
+                }
+            }
+        }
+    }
+
+    var auth = getAuthorityByUrl('/client/agency');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                edit: true,
+                //    del: true
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+
+    hideChangeBtnIfNeed(auth);
+
+</script>
+
+
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter.phtml');
+?>

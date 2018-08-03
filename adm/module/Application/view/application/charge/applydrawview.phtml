@@ -1,0 +1,204 @@
+<!--申请提现页面-->
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/charge/applydrawlistview">财务</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">申请提现</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+
+<form class="form-horizontal list-form">
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">基本信息</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">账户名:</label>
+        <div class="col-sm-7">
+            <input id="name" type="text" name="name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">公司名称:</label>
+        <div class="col-sm-7">
+            <input id="corporation_name" type="text" name="corporation_name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">邮箱:</label>
+        <div class="col-sm-7">
+            <input id="mail" type="text" name="mail" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">联系人:</label>
+        <div class="col-sm-7">
+            <input id="link_name" type="text" name="link_name" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">手机:</label>
+        <div class="col-sm-7">
+            <input id="tel" type="text" name="tel" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">财务信息</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户银行:</label>
+        <div class="col-sm-7">
+            <input id="bank" type="text" name="bank" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">银行账户:</label>
+        <div class="col-sm-7">
+            <input id="bank_account" type="text" name="bank_account" class="form-control" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户名:</label>
+        <div class="col-sm-7">
+            <input id="account_name" type="text" name="account_name" class="form-control" autocomplete="off" disabled>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label">信息截图存根:</label>
+        <div class="col-md-7">
+            <img src="" id="attach" style="width: 100%;" alt="无截图存根">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label"></label>
+        <div class="col-md-7">
+            <p style="color: red;">注:请核对以上信息，如信息有误请及时联系Deepleaper CSM团队修改信息</p>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">申请提现</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">申请提现金额（含税）:</label>
+        <div class="col-sm-7">
+            <input id="amount" type="number" name="amount" placeholder="请输入提现金额" class="form-control dl-notNull">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label">备注:</label>
+        <div class="col-sm-7">
+            <textarea id="comment" name="comment" class="form-control" rows="5"></textarea>
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                立即申请
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+
+    checkActionAuth('/charge/applydrawlistview', 2);
+    var allow_draw_remain = 0;//可提现金额
+    getaccountfinanceinfoAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            allow_draw_remain = data.allow_draw_remain;
+            $("#amount").attr('placeholder', data.allow_draw_remain);
+        } else {
+            layer.msg(req.msg);
+        }
+    });
+    mediaaccountAPI(function (result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            $("#name").val(data.name);
+            $("#corporation_name").val(data.corporation_name);
+            $("#mail").val(data.mail);
+            $("#link_name").val(data.link_name);
+            $("#tel").val(data.tel);
+            $("#bank").val(data.bank);
+            $("#bank_account").val(data.bank_account);
+            $("#account_name").val(data.account_name);
+            $("#attach").attr('src', 'http://static.adm.deepleaper.com/material/' + data.attach[0]);
+        } else {
+            layer.msg(req.msg);
+        }
+    });
+    $("#submit").bind('click', submit);
+    function submit() {
+        if ($('#amount').val() == '') {
+            vaError($('#amount'), '此字段不能为空');
+            return false;
+        } else if ($('#amount').val() > allow_draw_remain) {
+            vaError($('#amount'), '当前最大提现金额为' + allow_draw_remain);
+            return false;
+        } else {
+            var amount = $('#amount').val();
+            var comment = $('#comment').val();
+            applydrawAPI(amount, comment, function (result) {
+                var req = JSON.parse(result);
+                if (req.status == 1) {
+                    layer.msg('申请提现成功');
+                    setTimeout(function () {
+                        window.location = '/charge/applydrawlistview';
+                    }, 3000)
+                } else {
+                    layer.msg(req.msg);
+                }
+            });
+        }
+    }
+    $('#cancel').bind('click', function () {
+        window.location.href = '/charge/applydrawlistview';
+    })
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

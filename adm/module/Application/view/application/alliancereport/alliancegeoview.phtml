@@ -1,0 +1,605 @@
+<!--广告主系统 地域报表界面-->
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<div class="toolbar">
+    <div class="container-fluid" style="margin: 20px 0;">
+        <div class="row">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <div class="input-group date dl-date-range-wrapper">
+                        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+                        <span class="caret dl-date-range-input-icon"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="form-inline" role="form">
+                <div class="btn-group dl-custom-filter" role="group">
+                    <button type="button" class="btn dl-btn-primary dl-custom-filter-all active">账户</button>
+                    <div class="btn-group dl-custom-filter-custom-middle" role="group">
+                        <select id="adgroup_check_custom_select" class="selectpicker" data-width="100%" multiple
+                                title="筛选广告组">
+                        </select>
+                    </div>
+                    <div class="btn-group dl-custom-filter-custom" role="group">
+                        <select id="adplan_check_custom_select" class="selectpicker" data-width="100%" multiple
+                                title="筛选广告计划">
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-group" data-toggle="buttons" style="margin-left: 30px">
+                    <label class="btn dl-btn-primary active">
+                        <input type="radio" name="target" autocomplete="off" value="imp" checked> 展示量
+                    </label>
+                    <label class="btn dl-btn-primary">
+                        <input type="radio" name="target" autocomplete="off" value="clk"> 点击量
+                    </label>
+                    <label class="btn dl-btn-primary">
+                        <input type="radio" name="target" autocomplete="off" value="ctr"> 点击率
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="echars_province" style="width: 100%;height:400px;"></div>
+<div id="echars_city" style="width: 100%;height:400px;"></div>
+
+<div id="toolbar">
+    <div class="form-inline" role="form">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn dl-btn-primary active" id="report_type_hourly">
+                <input type="radio" name="dimension" autocomplete="off" value="province" checked> 省级数据
+            </label>
+            <label class="btn dl-btn-primary" id="report_type_daily">
+                <input type="radio" name="dimension" autocomplete="off" value="city"> 市级数据
+            </label>
+        </div>
+        <div class="form-group download-table" style="vertical-align: top;">
+            <input type="button" class="form-control  btn btn-default" value="下载报表" id="downloadTable">
+        </div>
+    </div>
+</div>
+
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->partial('layout/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script type="text/javascript">
+    //地域报表的查询日期单独写
+    searchDate_daterangepicker(moment(), moment(), moment());
+    function searchDate_daterangepicker(startDate, endDate, maxDate) {
+        $('#searchDate').daterangepicker({
+            startDate: startDate,
+            endDate: endDate,
+            maxDate: maxDate, //最大时间
+            minDate: moment('1970-01-01'), //最小时间
+            dateLimit: {
+                days: 365
+            }, //起止时间的最大间隔
+            showDropdowns: true,
+            showWeekNumbers: false, //是否显示第几周
+            timePicker: false, //是否显示小时和分钟
+            timePickerIncrement: 60, //时间的增量，单位为分钟
+            timePicker12Hour: false, //是否使用12小时制来显示时间
+            ranges: {
+                '今日': [moment().startOf('day'), moment()],
+                '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '过去7天': [moment().subtract('days', 7), moment().subtract('days', 1)],
+                '过去14天': [moment().subtract('days', 14), moment().subtract('days', 1)],
+                '过去30天': [moment().subtract('days', 30), moment().subtract('days', 1)],
+                '上个月': [new Date()
+                    .setFullYear(new Date().getMonth() == 0 ? new Date().getFullYear() - 1 : new Date().getFullYear(), new Date().getMonth() == 0 ? 11 : new Date().getMonth() - 1, 1),
+                    moment().subtract('days', new Date().getDate())]
+            },
+            showCustomRangeLabel: false,
+            alwaysShowCalendars: true,
+            linkedCalendars: false,
+
+            opens: 'top', //日期选择框的弹出位置
+            buttonClasses: ['btn btn-default'],
+            applyClass: 'btn-small btn-primary blue',
+            cancelClass: 'btn-small',
+
+            separator: ' to ',
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                    '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1,
+                format: 'YYYY/MM/DD' //控件中from和to 显示的日期格式
+            }
+        }, function (start, end, label) {
+            $('#searchDate').val(start.format('YYYY/MM/DD') + ',' + end.format('YYYY/MM/DD'));
+        });
+    }
+
+    //初始化广告组、广告计划
+    fetchuseradstructAPI(fetchuseradstructAPIonSuccess);
+    function fetchuseradstructAPIonSuccess(result) {
+        var req = JSON.parse(result);
+        if (req.status == 1) {
+            var data = req.data;
+            var option = '';
+            for (var i = 0; i < data.length; i++) {
+                option += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+            }
+            $('#adgroup_check_custom_select').html(option);
+
+            var planoption = '';
+            for (var i = 0; i < data.length; i++) {
+                planoption += '<optgroup label="' + data[i].name + '">';
+                var adplan = data[i].child;
+                for (var j = 0; j < adplan.length; j++) {
+                    planoption += '<option value="' + adplan[j].id + '">' + adplan[j].name + '</option>';
+                }
+                planoption += '</optgroup>';
+            }
+            $('#adplan_check_custom_select').html(planoption);
+
+        } else {
+            layer.msg(req.msg);
+        }
+    }
+
+    var echartsData = {'city': [], 'province': []};//表格数据用于ECharts图的格式缓存
+
+    function draw(xx) {
+        //省份图
+        var provinceChart = echarts.init(document.getElementById('echars_province'));
+        var provinceOptionSeries = [];
+        var provinceData = echartsData.province;
+        for (var i = 0; i < provinceData.length; i++) {
+            var series = {};
+            series.name = provinceData[i].province_name;
+            series.value = provinceData[i].target;
+            series.occupy = provinceData[i].occupy;
+            provinceOptionSeries.push(series);
+        }
+        var provinceOption = {
+            title: {
+                text: '省级地域分布',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                hideDelay: 1000,
+                formatter: function (params) {//渲染原始数据
+                    var tooltipHtml = '';
+                    var matchSucc = false;
+                    var target = $("input[name='target']:checked").val();//数据指标
+                    if (target == 'ctr') {//点击率没有占比
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color:#149bdf;">数据指标</span><span style="display:inline-block;width: 50px;color:#149bdf;">' + target + '</span>';
+                        tooltipHtml += '<br/>';
+                    } else {
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color:#149bdf;">数据指标</span><span style="display:inline-block;width: 50px;color:#149bdf;">' + target + '</span><span style="display:inline-block;width: 50px;color:#149bdf;">占比</span>';
+                        tooltipHtml += '<br/>';
+                    }
+
+                    var p_name, p_value, p_occupy = "";
+                    for (var i = 0; i < provinceOptionSeries.length; i++) {
+                        if (provinceOptionSeries[i].name == params.name) {
+                            matchSucc = true;
+                            p_name = provinceOptionSeries[i].name;
+                            p_value = provinceOptionSeries[i].value;
+                            p_occupy = provinceOptionSeries[i].occupy;
+                        }
+                    }
+                    if (matchSucc) {//数据存在
+                        if (target == 'ctr') {//点击率没有占比
+                            tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + p_name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">' + p_value + '</span>';
+                            tooltipHtml += '<br/>';
+                        } else {
+                            tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + p_name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">' + p_value + '</span><span style="display:inline-block;width: 50px;color: #aaaef8;">' + p_occupy + '</span>';
+                            tooltipHtml += '<br/>';
+                        }
+                    } else {
+                        if (target == 'ctr') {//点击率没有占比
+                            tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + params.name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">-</span>';
+                            tooltipHtml += '<br/>';
+                        } else {
+                            tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + params.name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">-</span><span style="display:inline-block;width: 50px;color: #aaaef8;">-</span>';
+                            tooltipHtml += '<br/>';
+                        }
+                    }
+                    return tooltipHtml;
+                },
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                borderColor: '#e4e4e4',
+                borderWidth: 1,
+                padding: [10, 20, 10, 10],
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#cad2e2',
+                        type: 'dotted'
+                    }
+                }
+            },
+            visualMap: {
+                min: 0,
+                max: 300,
+                left: 'left',
+                top: 'bottom',
+                text: ['高', '低'],           // 文本，默认为数值文本
+                calculable: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            color: ['#abaa92', '#56b7ad', '#a38f24', '#da8888', '#aaaef8', '#64afdf', '#51af66', '#7177e4', '#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],
+            backgroundColor: "#f9f9f9",
+            series: [
+                {
+                    name: $("input[name='target']:checked").val(),
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data: provinceOptionSeries
+                }
+
+            ]
+        };
+        provinceChart.setOption(provinceOption);
+        //城市图
+        var cityChart = echarts.init(document.getElementById('echars_city'));
+        var cityData = echartsData.city;
+
+        var city_xAxis = [];
+        var city_yAxis = [];
+        var cityOptionSeries = [];
+        var cityOptionSeriesArry = [];
+
+        for (var i = 0; i < cityData.length; i++) {
+            city_xAxis.push(cityData[i].city_name);
+            city_yAxis.push(cityData[i].target);
+            cityOptionSeries.push([cityData[i].city_name, cityData[i].target]);
+
+            var series = {};
+            series.name = cityData[i].city_name;
+            series.value = cityData[i].target;
+            series.occupy = cityData[i].occupy;
+            cityOptionSeriesArry.push(series);
+        }
+        var cityOption = {
+            title: {
+                text: '地级市分布',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                hideDelay: 1000,
+                formatter: function (params) {//渲染原始数据
+                    var tooltipHtml = '';
+                    var target = $("input[name='target']:checked").val();//数据指标
+                    if (target == 'ctr') {//点击率没有占比
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color:#149bdf;">数据指标</span><span style="display:inline-block;width: 50px;color:#149bdf;">' + target + '</span>';
+                        tooltipHtml += '<br/>';
+                    } else {
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color:#149bdf;">数据指标</span><span style="display:inline-block;width: 50px;color:#149bdf;">' + target + '</span><span style="display:inline-block;width: 50px;color:#149bdf;">占比</span>';
+                        tooltipHtml += '<br/>';
+                    }
+
+                    var p_name, p_value, p_occupy = "";
+                    for (var i = 0; i < cityOptionSeriesArry.length; i++) {
+                        if (cityOptionSeriesArry[i].name == params.data[0]) {
+                            p_name = cityOptionSeriesArry[i].name;
+                            p_value = cityOptionSeriesArry[i].value;
+                            p_occupy = cityOptionSeriesArry[i].occupy;
+                        }
+                    }
+                    if (target == 'ctr') {//点击率没有占比
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + p_name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">' + p_value + '</span>';
+                        tooltipHtml += '<br/>';
+                    } else {
+                        tooltipHtml += '<span style="margin-left:10px;display:inline-block;width:80px;color: #aaaef8;">' + p_name + '</span><span style="display:inline-block;width: 50px;color:#aaaef8;">' + p_value + '</span><span style="display:inline-block;width: 50px;color: #aaaef8;">' + p_occupy + '</span>';
+                        tooltipHtml += '<br/>';
+                    }
+                    return tooltipHtml;
+                },
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                borderColor: '#e4e4e4',
+                borderWidth: 1,
+                padding: [10, 20, 10, 10],
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#cad2e2',
+                        type: 'dotted'
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: city_xAxis
+            },
+            yAxis: {
+                type: 'value',
+                min: 0,
+                data: city_yAxis
+            },
+            series: [
+                {
+                    name: $("input[name='target']:checked").val(),
+                    type: 'bar',
+                    data: cityOptionSeries
+                }
+            ]
+        };
+        cityChart.setOption(cityOption);
+    }
+
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        func: function (result) {
+            setTimeout(function () {//重新渲染echarts图
+                draw(echartsData);
+            }, 500);
+        },
+        url: {},
+        reRequest: function () {//改变筛选项并重新发送请求
+            //筛选清除页码cookie
+            List.$table.bootstrapTable('deleteCookie', ['pageNumber']);
+            List.$table.bootstrapTable('refresh', {
+                query: {offset: 0}
+            });
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {},
+        updateShowColumns: function () {//更新列表中列的显示/隐藏状态
+            var dimensionSplit = $('#dimensionSplit').val();
+            var columns = [
+                {//列参数
+                    checkbox: true
+                },
+                {
+                    field: 'province_name',
+                    title: '省份',
+                    visible: $("input[name='dimension']:checked").val() == 'province'
+                },
+                {
+                    field: 'city_name',
+                    title: '城市',
+                    visible: $("input[name='dimension']:checked").val() == 'city'
+                },
+                {
+                    field: 'imp',
+                    title: '展示量',
+                    sortable: true
+                }, {
+                    field: 'clk',
+                    title: '点击量',
+                    sortable: true
+                }, {
+                    field: 'ctr',
+                    title: '点击率',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return value == null ? null : strToPercent(value);
+                    }
+                }, {
+                    field: 'income',
+                    title: '花费(元)',
+                    sortable: true
+                }, {
+                    field: 'ecpm',
+                    title: '平均千次展示费用(元)',
+                    sortable: true
+                }, {
+                    field: 'ecpc',
+                    title: '平均点击单价(元)',
+                    sortable: true
+                }];
+//                    根据维度拆分的值，显示不同的列
+            List.$table.bootstrapTable('refreshOptions', {columns: columns});
+        },
+        toolbar: function () {
+            $("#searchDate,input[name='target'],#adgroup_check_custom_select,#adplan_check_custom_select").bind('change', function () {
+                ListPageConfig.reRequest();
+                ListPageConfig.func();//重新渲染echarts图
+            });
+            $("input[name='dimension']").bind('change', function () {
+                ListPageConfig.updateShowColumns();
+                ListPageConfig.reRequest();
+            });
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/alliancereport/georeport',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                var filter = "client";
+                var ids = '';//广告组或者广告计划筛选item
+                var adgroup_check_custom_select = $("#adgroup_check_custom_select").val();
+                var adplan_check_custom_select = $("#adplan_check_custom_select").val();
+                if (adgroup_check_custom_select !== null) {
+                    filter = "adgroup";
+                    ids = adgroup_check_custom_select.join(',');
+                } else if (adplan_check_custom_select !== null) {
+                    filter = "adplan";
+                    ids = adplan_check_custom_select.join(',');
+                }
+                var target = $("input[name='target']:checked").val();//数据指标
+                var dimension = $("input[name='dimension']:checked").val();//维度拆分
+
+                params['begin'] = searchDate[0].replace(/\//g, '');
+                params['end'] = searchDate[1].replace(/\//g, '');
+                params['filter'] = filter;
+                params['ids'] = ids;
+                params['target'] = target;
+                params['dimension'] = dimension;
+                return params;
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                if (res.status == 1) {
+//                    if ($("input[name='dimension']:checked").val() == "province") {
+//                        List.$table.bootstrapTable('hideColumn', 'city_name');
+//                        List.$table.bootstrapTable('showColumn', 'province_name');
+//                    } else {
+//                        List.$table.bootstrapTable('hideColumn', 'province_name');
+//                        List.$table.bootstrapTable('showColumn', 'city_name');
+//                    }
+
+                    echartsData.city = res.data.city;
+                    echartsData.province = res.data.province;
+                    var result = {};
+                    var rows = res.data.report.rows;
+                    var total = res.data.report.total;
+                    result.rows = rows;
+                    result.total = total;
+                    return result;
+                } else {
+                    layer.msg(res.msg);
+                    return {rows: [], total: 0};
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: false,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            }
+            ,
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            }
+            ,
+            columns: [
+                {//列参数
+                    checkbox: true
+                },
+                {
+                    field: 'province_name',
+                    title: '省份'
+                },
+                {
+                    field: 'city_name',
+                    title: '城市',
+                    visible: false
+                },
+                {
+                    field: 'imp',
+                    title: '展示量',
+                    sortable: true
+                }, {
+                    field: 'clk',
+                    title: '点击量',
+                    sortable: true
+                }, {
+                    field: 'ctr',
+                    title: '点击率',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return value == null ? null : strToPercent(value);
+                    }
+                }, {
+                    field: 'income',
+                    title: '花费(元)',
+                    sortable: true
+                }, {
+                    field: 'ecpm',
+                    title: '平均千次展示费用(元)',
+                    sortable: true
+                }, {
+                    field: 'ecpc',
+                    title: '平均点击单价(元)',
+                    sortable: true
+                }]
+        }
+    };
+    //下载报表
+    $("#downloadTable").on('click', function () {
+        var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+        var filter = "client";
+        var ids = '';//广告组或者广告计划筛选item
+        var adgroup_check_custom_select = $("#adgroup_check_custom_select").val();
+        var adplan_check_custom_select = $("#adplan_check_custom_select").val();
+        if (adgroup_check_custom_select !== null) {
+            filter = "adgroup";
+            ids = adgroup_check_custom_select.join(',');
+        } else if (adplan_check_custom_select !== null) {
+            filter = "adplan";
+            ids = adplan_check_custom_select.join(',');
+        }
+        var target = $("input[name='target']:checked").val();//数据指标
+        var dimension = $("input[name='dimension']:checked").val();//维度拆分
+
+        var url = '/alliancereport/exportcsv?action_name=georeportAction&offset=0&limit=1000000&begin=' + searchDate[0].replace(/\//g, '') + '&end=' + searchDate[1].replace(/\//g, '') + '&filter=' + filter + '&ids=' + ids + '&target=' + target + '&dimension=' + dimension;
+        window.open(encodeURI(url));
+    });
+    var auth = getAuthorityByUrl('/alliancereport/alliancegeoview');
+    function checkAuthority() {
+        if (auth == 0) {
+            toFirstLegalPage();
+        }
+    }
+    checkAuthority();
+</script>
+
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->partial('layout/listAd.phtml');
+?>

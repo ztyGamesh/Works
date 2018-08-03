@@ -1,0 +1,628 @@
+<!--媒体账户添加界面-->
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<link rel="stylesheet" href="/plugin/bootstrap-fileinput-master/css/fileinput.min.css">
+<link rel="stylesheet" href="../css/application/promotion/adformview.css"/>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/fileinput.min.js"></script>
+<script type="text/javascript" src="/plugin/bootstrap-fileinput-master/js/locales/zh.js"></script>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a
+                        href="/user/userpermissionview">媒体账户</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加媒体/平台账户</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+
+<form class="form-horizontal list-form">
+    <div class="form-group id_type_box">
+        <label class="col-md-2 col-md-offset-1 control-label id_type_label">账户类型:</label>
+        <div class="id_type_input_box">
+            <input class="id_type_input_meida" id="id_type_input_meida" type="radio" name="id_type">媒体
+            <input class="id_type_input_ad" id="id_type_input_ad" type="radio" name="id_type" checked>Ad Exchange
+        </div>
+    </div>
+    <div class="form-group id_type_box">
+        <label class="col-md-2 col-md-offset-1 control-label id_type_label">创意审核:</label>
+        <div class="id_type_input_box">
+            <input class="id_type_input_meida" id="creativity_check_yes" type="radio" name="creativity_check" checked>是
+            <input class="id_type_input_ad" id="creativity_check_no" type="radio" name="creativity_check"
+                   style="    margin-left: 60px!important;">否
+        </div>
+    </div>
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">基本信息</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">账户名:</label>
+        <div class="col-sm-7">
+            <input id="name" type="text" name="name" class="form-control " maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">公司名称:</label>
+        <div class="col-sm-7">
+            <input id="corporation_name" type="text" name="corporation_name" class="form-control "
+                   maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">邮箱:</label>
+        <div class="col-sm-7">
+            <input id="mail" type="text" name="mail" class="form-control ">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">联系人:</label>
+        <div class="col-sm-7">
+            <input id="link_name" type="text" name="link_name" class="form-control " maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">手机:</label>
+        <div class="col-sm-7">
+            <input id="tel" type="text" name="tel" class="form-control ">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">财务信息</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户银行:</label>
+        <div class="col-sm-7">
+            <input id="bank" type="text" name="bank" class="form-control " maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">银行账户:</label>
+        <div class="col-sm-7">
+            <input id="bank_account" type="text" name="bank_account" class="form-control">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">开户名:</label>
+        <div class="col-sm-7">
+            <input id="account_name" type="text" name="account_name" class="form-control " autocomplete="off"
+                   maxlength="50">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 col-md-offset-1 control-label">信息截图存根:</label>
+        <div class="col-sm-7">
+            <input type="file" class="file inputUpload_image" id="attach" name="file_data" flag="false">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">设置密码</span>
+        </div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">密码:</label>
+        <div class="col-sm-7">
+            <input id="password" type="password" name="password" class="form-control " autocomplete="off">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-md-2 col-md-offset-1 control-label Dl-required">重复密码:</label>
+        <div class="col-sm-7">
+            <input id="rep_password" type="password" class="form-control " autocomplete="off">
+        </div>
+        <span class="help-block col-md-7 col-md-offset-3"></span>
+    </div>
+
+    <!--平台管理-->
+    <div class="ad_platform" style="display: none;">
+        <div class="row Dl-part-title">
+            <div class="col-md-10 col-md-offset-1">
+                <span class="identifier">平台管理设置</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">服务器地址:</label>
+            <div class="col-sm-7">
+                <input id="server" type="text" name="server" class="form-control " maxlength="50"
+                       placeholder="广告请求发送服务器IP地址">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required ">最大QPS设置(次/秒):</label>
+            <div class="col-sm-7">
+                <input id="max_qps" type="text" name="max_qps" class="form-control dl-number" maxlength="50">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label Dl-required">设备ID加密方式:</label>
+            <div class="col-sm-7">
+                <select id="encrypt_type" class="selectpicker" data-width="100%">
+                    <option value="plain" selected="selected">明文</option>
+                    <option value="md5">MD5</option>
+                    <option value="shal">SHA1</option>
+                </select>
+                <!--            <input id="name" type="" name="name" class="form-control " maxlength="50">-->
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label ">加密规则备注:</label>
+            <div class="col-sm-7">
+                <textarea id="remark" name="remark" class="form-control "
+                          style="height: 150px;overflow-y: scroll;"></textarea>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+    </div>
+
+    <div class="row Dl-part-title">
+        <div class="col-md-10 col-md-offset-1">
+            <span class="identifier">资源权限</span>
+        </div>
+    </div>
+<!--    <div class="form-group">-->
+<!--        <label class="col-md-2 col-md-offset-1 control-label Dl-required">媒体权限分配:</label>-->
+<!--        <div class="col-sm-7">-->
+<!--            <select class="selectpicker" data-width="100%" id="allow_platform_role" multiple title="权限可多选">-->
+<!--                <option value="alliance" name="alliance">联盟</option>-->
+<!--                <option value="selfsupport" name="selfsupport">自营</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <span class="help-block col-md-7 col-md-offset-3"></span>-->
+<!--    </div>-->
+
+
+    <div id="alliancebox">
+        <div class="form-group">
+            <label class="col-md-2 col-md-offset-1 control-label">联盟媒体</label>
+            <div class="col-sm-7">
+                <input type="checkbox" id="unionmedia_select_all"/><strong>&nbsp;&nbsp; 全选</strong>
+                <br/>
+                <div class="col-sm-7" id="unionmedia_group"></div>
+            </div>
+        </div>
+        <hr/>
+    </div>
+
+    <!--    <div id="selfsupportbox" style="display: none">-->
+    <!--        <div class="form-group">-->
+    <!--            <label class="col-md-2 col-md-offset-1 control-label">自营媒体</label>-->
+    <!--            <div class="col-sm-7">-->
+    <!--                <input type="checkbox" id="media_select_all"/><strong>&nbsp;&nbsp; 全选</strong>-->
+    <!--                <br/>-->
+    <!--                <div class="col-sm-7" id="media_group"></div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    目前广告主都是自营-->
+    <!--    <div class="form-group">-->
+    <!--        <label class="col-md-2 col-md-offset-1 control-label">广告主</label>-->
+    <!--        <div class="col-sm-7">-->
+    <!--            <input type="checkbox" id="client_select_all"/><strong>&nbsp;&nbsp; 全选</strong>-->
+    <!--            <br/>-->
+    <!--            <div class="col-sm-7" id="client_group"></div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+
+    <!--    <hr/>-->
+
+
+    <!--    <div class="form-group ">-->
+    <!--        <label class="col-md-2 col-md-offset-1 control-label">指定权限</label>-->
+    <!--        <div class="col-sm-7" id="authority_group"><br/><br/><br/></div>-->
+    <!--    </div>-->
+
+    <div class="row submit_box">
+        <div class="submit_btn_wrapper">
+            <div class="submit_btn" id="cancel">
+                返回列表
+            </div>
+            <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                完成添加
+            </div>
+        </div>
+    </div>
+</form>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>
+
+<script type="text/javascript">
+
+    var media_type_l;
+    var audit_type_l;
+    checkActionAuth('/user/userpermissionview', 2);
+
+
+    function validateRepPassword(obj) {
+        return $('#password').val() === $('#rep_password').val();
+    }
+
+    function vaMailDuplicated(obj) {
+        var valid = false;
+        $.ajax({
+            url: '/user/checkEmailDuplicated',
+            data: {
+                mail: obj
+            },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                valid = data.data['res'];
+            }
+        });
+        return !valid;
+    }
+
+    var checkList = [
+        {
+            id: '#name',
+            validationFunc: vaWordNumberLimit1_25,
+            msg: '名称长度应为1-50个字符:汉字占2个字符'
+        }, {
+            id: '#corporation_name',
+            validationFunc: vaWordNumberLimit1_25,
+            msg: '名称长度应为1-50个字符:汉字占2个字符'
+        }, {
+            id: '#mail',
+            validationFunc: validateEmailAddress,
+            msg: '请填写正确的邮箱地址'
+        }, {
+            id: '#link_name',
+            validationFunc: vaWordNumberLimit1_25,
+            msg: '名称长度应为1-50个字符:汉字占2个字符'
+        }, {
+            id: '#tel',
+            validationFunc: validatePhoneNum,
+            msg: '请填写正确的电话号码'
+        }, {
+            id: '#bank',
+            validationFunc: vaWordNumberLimit1_25,
+            msg: '名称长度应为1-50个字符:汉字占2个字符'
+        }, {
+            id: '#bank_account',
+            validationFunc: validateBankCard,
+            msg: '银行账户格式错误：不能为空且为16-19位数字'
+        }, {
+            id: '#account_name',
+            validationFunc: vaWordNumberLimit1_25,
+            msg: '名称长度应为1-50个字符:汉字占2个字符'
+        }, {
+            id: '#password',
+            validationFunc: validatePassword,
+            msg: '请填写正确的密码，格式: 长度至少为6个字符，需要包含数字和大小写字母'
+        }, {
+            id: '#rep_password',
+            validationFunc: validateRepPassword,
+            msg: '两次密码填写不一致'
+        }, {
+            id: '#mail',
+            validationFunc: vaMailDuplicated,
+            msg: '邮箱地址已使用'
+        }
+
+    ];
+
+    var checkList_adx = [
+        {
+            id: '#server',
+            validationFunc: isValidIP,
+            msg: '请填写正确的服务器地址'
+        }
+        , {
+            id: '#max_qps',
+            validationFunc: isPositiveInt,
+            msg: '最大QPS设置应为正整数'
+        }
+    ];
+    function validation_adx() {
+        for (var i = 0; i < checkList_adx.length; i++) {
+            var obj = checkList_adx[i];
+            if (!obj.validationFunc($(obj.id).val())) {
+                vaError($(obj.id), obj.msg);
+                $(obj.id).focus();
+                layer.msg(obj.msg);
+                return false;
+            } else {
+                vaSuccess($(obj.id));
+            }
+        }
+        return true;
+    }
+
+    function validation() {
+        for (var i = 0; i < checkList.length; i++) {
+            var obj = checkList[i];
+            if (!obj.validationFunc($(obj.id).val())) {
+                vaError($(obj.id), obj.msg);
+                $(obj.id).focus();
+                layer.msg(obj.msg);
+                return false;
+            } else {
+                vaSuccess($(obj.id));
+            }
+        }
+        return true;
+    }
+
+    function bindValidation_adx() {
+        for (var i = 0; i < checkList_adx.length; i++) {
+            (function () {
+                var obj = checkList_adx[i];
+                $(obj.id).blur(function () {
+                    if (!obj.validationFunc($(obj.id).val())) {
+                        vaError($(obj.id), obj.msg);
+                    } else {
+                        if (obj.msg == $(obj.id).closest('.form-group').find('.help-block').text()) {
+                            vaSuccess($(obj.id));
+                        }
+                    }
+                });
+            })();
+        }
+    }
+
+
+    function bindValidation() {
+        for (var i = 0; i < checkList.length; i++) {
+            (function () {
+                var obj = checkList[i];
+                $(obj.id).blur(function () {
+                    if (!obj.validationFunc($(obj.id).val())) {
+                        vaError($(obj.id), obj.msg);
+                    } else {
+                        if (obj.msg == $(obj.id).closest('.form-group').find('.help-block').text()) {
+                            vaSuccess($(obj.id));
+                        }
+                    }
+                });
+            })();
+        }
+    }
+
+    // 绑定资源的全选框
+    function bindResource() {
+        $('#unionmedia_select_all').click(function () {
+            var media = $('#unionmedia_group input');
+            for (var i = 0; i < media.length; i++) {
+                var media = $('#unionmedia_group input');
+                if ($('#unionmedia_select_all').prop('checked')) {
+                    $(media[i]).prop('checked', 'checked');
+                } else {
+                    $(media[i]).removeProp('checked');
+                }
+            }
+        })
+    }
+
+    function bindSubmitBtn() {
+        $('#submit').click(function () {
+            submit();
+        });
+    }
+
+    function putData(data) {
+        // 媒体
+        if (data.media) {
+            var media_grouphtml = '';
+            var unionmedia_grouphtml = '';
+            for (var i = 0; i < data.media.length; i++) {
+                if (data.media[i].platform_role == 'selfsupport') {
+                    media_grouphtml += '<input id="' + data.media[i].uid + '" type="checkbox" />&nbsp; &nbsp;' + data.media[i].name + '<br />';
+                } else if (data.media[i].platform_role == 'alliance') {
+                    unionmedia_grouphtml += '<input id="' + data.media[i].uid + '" type="checkbox" />&nbsp; &nbsp;' + data.media[i].name + '<br />';
+                } else {
+                    console.log('ERROR:当前媒体无自营/联盟标识');
+                }
+            }
+            $('#unionmedia_group').append(unionmedia_grouphtml);
+        }
+        bindResource();
+        bindSubmitBtn();
+        bindValidation();
+        if (document.getElementById("id_type_input_ad").checked) {
+            bindValidation_adx();
+        }
+
+    }
+
+
+    $.ajax({
+        url: '/user/userdetail?uid=<?php echo $this->parent_id ?>',
+        dataType: 'json',
+        success: function (ret) {
+            // 如果返回正常，而且data有值而且格式正确
+            if (ret.status == 1 && ret.data != undefined) {
+                putData(ret.data);
+            } else {
+                // 异常处理
+                console.log('error');
+            }
+        }
+    });
+
+    function setSetting() {
+        var ret = {};
+        if (document.getElementById("id_type_input_ad").checked) {
+            ret = {
+                'server': $("#server").val(),
+                'max_qps': $("#max_qps").val(),
+                'encrypt_type': $("#encrypt_type option:selected").val(),
+                'remark': $("#remark").val()
+            }
+        }
+        return ret;
+    }
+
+
+    function setResource() {
+        var ret = [];
+        var unionmedia = $('#unionmedia_group input');
+        for (var i = 0; i < unionmedia.length; i++) {
+            if ($(unionmedia[i]).prop('checked')) {
+                var obj = {};
+                obj.type = 'media';
+                obj.id = $(unionmedia[i]).attr('id');
+                obj.platform_role = 'alliance';
+                ret.push(obj);
+            }
+        }
+        return ret;
+    }
+
+    function submit() {
+        if (!validation()) {
+            return;
+        }
+        if (document.getElementById("id_type_input_ad").checked) {
+            if (!validation_adx()) {
+                return;
+            }
+        }
+        data = {};
+        data.media_type = media_type_l;
+        data.audit_type = audit_type_l;
+        data.name = $('#name').val();
+        data.corporation_name = $('#corporation_name').val();
+        data.mail = $('#mail').val();
+        data.link_name = $('#link_name').val();
+        data.tel = $('#tel').val();
+        data.bank = $('#bank').val();
+        data.bank_account = $('#bank_account').val();
+        data.account_name = $('#account_name').val();
+        //目前只提供上传一张图片，格式为数组方便日后添加
+        var attachArry = [];
+        var attach = $('#attach').attr('flag');
+        var attach1 = (attach == "false" ? '' : attach);
+        attachArry.push(attach1);
+        data.attach = attachArry;
+        data.password = $('#password').val();
+        data.setting = JSON.stringify(setSetting());
+        data.resource = JSON.stringify(setResource());
+        data.allow_platform_role = 'alliance';
+        $("#Deepleaper_loading").show();
+        adduserAPI(data, adduserAPIonSuccessFun);
+        function adduserAPIonSuccessFun(result) {
+            var req = JSON.parse(result);
+            if (req.status == 1) {
+                $("#Deepleaper_loading").hide();
+                layer.msg('媒体账户添加成功');
+                setTimeout(function () {
+                    window.location.href = '/user/userpermissionview';
+                }, 2000);
+            } else {
+                $("#Deepleaper_loading").hide();
+                layer.msg(req.msg);
+            }
+        }
+    }
+    $("#attach").fileinput({
+        language: 'zh',
+        uploadUrl: '/materiel/uploadimagewithdetail',
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],
+        maxFileSize: 500,
+        showUploadedThumbs: false,
+        initialPreviewShowDelete: false,
+        layoutTemplates: {
+            actions: '<div class="file-actions">\n' +
+            '    <div class="file-footer-buttons" style="display: none">\n' +
+            '        {upload} {delete} {zoom} {other}' +
+            '    </div>\n' +
+            '    {drag}\n' +
+            '    <div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>\n' +
+            '    <div class="clearfix"></div>\n' +
+            '</div>'
+        }
+    }).on("fileuploaded", function (event, data, previewId, index) {
+        var response = data.response;
+        if (response.status == 1) {
+            event.delegateTarget.setAttribute('flag', response.data.name);
+            layer.msg('图片上传成功！');
+        } else {
+            $("#attach").fileinput('refresh');
+            event.delegateTarget.setAttribute('flag', 'false');
+            layer.msg('图片上传失败：' + response.msg);
+        }
+    }).on('fileclear', function (event) {
+        event.delegateTarget.setAttribute('flag', 'false');
+    }).on('change', function (event) {
+        event.delegateTarget.setAttribute('flag', 'false');
+    }).on('fileselect', function (event) {
+        event.delegateTarget.setAttribute('flag', 'false');
+    });
+    $("#cancel").bind('click', function () {
+        window.location = '/user/userpermissionview';
+    });
+
+
+    //账户类型切换，平台管理设置的显示
+    //初始状态值，有数据时添加
+    $(document).ready(function () {
+        if (document.getElementById("id_type_input_meida").checked) {
+            media_type_l = 'media';
+            $(".ad_platform").hide();
+            document.getElementById("creativity_check_no").checked = "checked";
+            audit_type_l = 'self';
+        } else {
+            media_type_l = 'adx';
+            $(".ad_platform").show();
+            document.getElementById("creativity_check_yes").checked = "checked";
+            audit_type_l = 'self_other';
+        }
+    });
+    //点击单选按钮时的切换
+    $("#id_type_input_meida").bind('click', function () {
+        media_type_l = 'media';
+        $(".ad_platform").hide();
+        document.getElementById("creativity_check_no").checked = "checked";
+        audit_type_l = 'self';
+    });
+    $("#id_type_input_ad").bind('click', function () {
+
+        media_type_l = 'adx';
+        $(".ad_platform").show();
+        document.getElementById("creativity_check_yes").checked = "checked";
+        audit_type_l = 'self_other';
+    });
+    $("#creativity_check_yes").bind('click', function () {
+        audit_type_l = 'self_other';
+
+    });
+    $("#creativity_check_no").bind('click', function () {
+        audit_type_l = 'self';
+
+    });
+</script>

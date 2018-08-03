@@ -1,0 +1,204 @@
+<?php
+    echo $this->partial('layout/listPublicHeader2.phtml');
+?>
+<link rel = "stylesheet" href = "/css/datepicker.css"/>
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
+<div id="toolbar">
+            <div class="form-inline" role="form">
+               
+                
+                <div class="form-group">
+                    <span>开始日期: </span>
+                    <input id="begin_date" name="begin_date" class="form-control w70" type="string" value="">
+                </div>
+                <div class="form-group">
+                    <span>结束日期: </span>
+                    <input id="end_date" name="end_date" class="form-control w70" type="string" value="">
+                </div>
+                
+                <div class="form-group">
+                    <input name="search" class="form-control" type="text" placeholder="Search">
+                </div>
+                <button id="ok" type="submit" class="btn btn-default">OK</button>
+            </div>
+	</div>
+		
+	<script type="text/javascript">
+	function GetDateStr(AddDayCount) {
+		var dd = new Date();
+		dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+		var y = dd.getFullYear();
+		var m = dd.getMonth()+1;//获取当前月份的日期
+		var d = dd.getDate();
+		return y+"/"+m+"/"+d;
+	} 
+
+	(function() {
+	   $('#begin_date').datepicker();
+	   $('#end_date').datepicker();
+	   $('#begin_date').val(GetDateStr(-9));
+	   $('#end_date').val(GetDateStr(-2));
+	 })();
+	</script>
+
+	
+	
+	<script type="text/javascript">
+	randomGreeting = "ddd";
+	
+	
+	 $.extend({'fun1':function(xx){
+			
+			
+			var date_arr=[];
+			var pv_arr=[];
+			for ( x in xx.data) {
+				
+				date_arr[x] = xx.data[x].date;
+				pv_arr[x] = xx.data[x].pv;
+			}
+	
+		  m = $('<div id="main2" style="width: 100%;height:400px;">dd</div>');	
+		  m.insertBefore('#toolbar');
+		  mm = m[0];
+		  
+		 // var myChart = echarts.init(document.getElementById('main2'));
+	  var myChart = echarts.init(mm);
+		  option = {
+			title: {
+				text: '广告位流量报表'
+			},
+			tooltip: {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			toolbox: {
+				feature: {
+					saveAsImage: {}
+				}
+			},
+			xAxis: {
+				type: 'category',
+				boundaryGap: false,
+				data: date_arr
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [
+				{
+					name:'浏览量',
+					type:'line',
+					stack: '总量',
+					data:[120, 132, 101, 134, 90, 230, 210]
+				},
+				{
+					name:'adx曝光量',
+					type:'line',
+					stack: '总量',
+					data:[220, 182, 191, 234, 290, 330, 310]
+				},
+				{
+					name:'打底量',
+					type:'line',
+					stack: '总量',
+					data:[150, 232, 201, 154, 190, 330, 410]
+				}
+			]
+		};
+		myChart.setOption(option);
+	}});    
+		
+		// 指定图表的配置项和数据
+	</script>
+	
+
+
+<script>
+
+    var ListPageConfig = {
+    	func:function(data){
+                 //console.log("111");
+             	 $.fun1(data);     
+        },
+        tableId:'#table',   // 表格id
+        tableIndexCol :'uid', //数据索引字段 一般为 uid 或者 id
+        table : {           //表格配置
+            url: '/stat/slot',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign:'left',
+            pagination: false,
+            pageSize: 25,  //获取所有数据,建立二级结构
+            sortOrder: 'desc',
+           
+            sidePagination: 'server',
+            cookie: true,
+            cookieIdTable: 'saveId',
+            
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'm_c_name',
+                title: '网站/频道',
+            },{
+                field: 'pv',
+                title: '浏览量',
+                sortable:true,
+            },{
+                field: 'u_pv',
+                title: '唯一浏览量',
+            },{
+                field: 'imp',
+                title: '曝光量',
+                sortable:true,
+            },{
+                field: 'pri',
+                title: '填充率',
+                sortable:true,
+             },{
+                field: 'click',
+                title: '点击量',
+                sortable:true,
+         
+             },{      
+                field: 'cpm',
+                title: 'CPM',
+                sortable:true,
+              },{
+                field: 'ecpm',
+                title: 'eCPM',
+                sortable:true,
+            },{
+                field: 'cpc',
+                title: 'CPC',
+                sortable:true,
+                },{
+                field: 'earning',
+                title: '总收益',
+                sortable:true,
+            }]
+        },
+       
+        title:{
+            addTitle:'添加订单',
+            editTitle:'编辑订单',
+        },
+        showDetail:false         //是否显示详细信息按钮
+    }
+ 	
+</script>
+<table id = "table" class="list-table"></table>
+
+<?php
+    echo $this->partial('layout/listPublicFooter2.phtml');
+?>

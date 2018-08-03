@@ -1,0 +1,267 @@
+<!--媒体提现列表界面-->
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<div id="toolbar">
+</div>
+
+<table id="table" class="list-table"></table>
+<script>
+    var statusArry = {'un_pay': '待付款', 'paid': '已付款'};
+    var ListPageConfig = {
+            tableId: '#table',   // 表格id
+            tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+            func: function (data) {
+            },
+            executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+                bindTableFilterAction('purpose');
+                bindTableFilterAction('status');
+            },
+            url: {
+                detail: '/charge/drawdetailview',
+            },
+            htmlConfig: {
+                pay: ['<a class="pay" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">付款</a>'],
+                pay_detail: ['<a class="pay_detail" style="color: #3d5d9f;padding: 0 3px;cursor: pointer;">记录</a>'],
+            }, operateEvents: {
+                'click .pay': function (e, value, row, index) {
+                    console.log(row);
+                    var id = row.id;
+                    var corporation_name = row.corporation_name;
+                    var amount = row.amount;
+                    layer.open({
+                        type: 1
+                        ,
+                        title: ['付款', 'text-aglin:center'] //不显示标题栏
+                        ,
+                        closeBtn: false
+                        ,
+                        area: '500px;'
+                        ,
+                        shade: 0.8
+                        ,
+                        id: 'layerpay' //设定一个id，防止重复弹出
+                        ,
+                        resize: false
+                        ,
+                        btn: ['完成', '取消']
+                        ,
+                        btnAlign: 'c'
+                        ,
+                        moveType: 1 //拖拽模式，0或者1
+
+                        ,
+                        content: '<form class="form-horizontal list-form" style="margin-top: 15px"><div class="container-fluid">' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">公司名:</label><div class="col-md-10">' + corporation_name + '</div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">提现金额:</label><div class="col-md-10">' + amount + '</div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">打款时间:</label><div class="col-md-10"><input name="pay_time" class="form-control"></div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">财务备注:</label><div class="col-md-10"><textarea cols="3" name="comment" class="form-control"></textarea></div></div>' +
+                        '</div></form>'
+                        ,
+                        success: function () {
+                            $("input[name=pay_time]").datepicker({
+                                autoclose: true,//选中之后自动隐藏日期选择框
+                                format: "yyyy-mm-dd",//日期格式;
+                                todayHighlight: true,
+                                endDate: new Date()
+                            }).datepicker('setDate', new Date());
+                        },
+                        yes: function (index, layero) {
+                            paytomediaAPI(id, $('input[name=pay_time]').val().replace(/-/g, ''), $('textarea[name=comment]').val(), function (result) {
+                                var req = JSON.parse(result);
+                                if (req.status == 1) {
+                                    layer.alert('付款成功!', function (index2) {
+                                        layer.close(index2);
+                                        layer.close(index);
+                                    });
+                                    $(ListPageConfig.tableId).bootstrapTable('refresh');
+                                } else {
+                                    layer.msg(req.msg);
+                                }
+                            });
+                        }
+                    });
+                },
+                'click .pay_detail': function (e, value, row, index) {
+                    var corporation_name = row.corporation_name;
+                    var amount = row.amount;
+                    var pay_time = row.pay_time;
+                    var comment = row.comment;
+                    layer.open({
+                        type: 1
+                        ,
+                        title: ['付款纪录', 'text-aglin:center'] //不显示标题栏
+                        ,
+                        closeBtn: false
+                        ,
+                        area: '500px;'
+                        ,
+                        shade: 0.8
+                        ,
+                        id: 'layerpay' //设定一个id，防止重复弹出
+                        ,
+                        resize: false
+                        ,
+                        btn: ['关闭']
+                        ,
+                        btnAlign: 'c'
+                        ,
+                        moveType: 1 //拖拽模式，0或者1
+
+                        ,
+                        content: '<form class="form-horizontal list-form" style="margin-top: 15px"><div class="container-fluid">' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">公司名:</label><div class="col-md-10">' + corporation_name + '</div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">提现金额:</label><div class="col-md-10">' + amount + '</div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">打款时间:</label><div class="col-md-10">' + pay_time + '</div></div>' +
+                        '<div class="form-group"><label class="col-md-2" style="text-align: right;padding-right: 0">财务备注:</label><div class="col-md-10">' + comment + '</div></div>' +
+                        '</div></form>'
+                    });
+                }
+            },
+            showDetail: false,         //是否显示详细信息按钮
+            action: {
+                detail: true,
+                pay: true,
+                pay_detail: true
+            },
+            table: {//表格参数
+                height: undefined,//定义表格的高度
+                undefinedText: '-',//当数据为undefined时显示的字符
+                striped: true,//设置为 true 会有隔行变色效果
+                sortName: 'create_time',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+                sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+                sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+                url: '/charge/drawlist',//服务器数据的加载地址
+                queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                    params['status'] = $("input[name=status]:checked").val();
+                    return params;
+                },
+                responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                    if (res.status == 1) {
+                        return res.data;
+                    } else {
+                        console.log("格式化数据失败");
+                        return res;
+                    }
+                },
+                toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+                searchAlign: 'left',
+                pagination: true,//	设置为 true 会在表格底部显示分页条
+                paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+                onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+                sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+                pageNumber: 1,//如果设置了分页，首页页码
+                pageSize: 50,  //如果设置了分页，页面数据条数
+                pageList: '[30,50,100]',//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+                search: false,//是否启用搜索框
+                showFooter: false,//是否显示列脚
+                showColumns: true,//是否显示 内容列下拉框
+                showRefresh: true,//是否显示 刷新按钮
+                showToggle: false,//是否显示 切换试图（table/card）按钮
+                showPaginationSwitch: false,//是否显示 数据条数选择框
+                paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+                paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+                paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+                clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+                singleSelect: false,//设置True 将禁止多选
+                checkboxHeader: false,//设置false 将在列头隐藏check-all checkbox
+                maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+                sortable: true,//设置为false 将禁止所有列的排序
+                silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+                cookie: true,
+                cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+                cookiePath: '/',
+                rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                    return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+                },
+                rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                    return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                    }
+                },
+                columns: [{//列参数
+                    checkbox: true
+                }, {
+                    field: 'name',
+                    title: '帐户名'
+                }, {
+                    field: 'corporation_name',
+                    title: '公司名称'
+                }, {
+                    field: 'mail',
+                    title: '邮箱'
+                }, {
+                    field: 'create_time',
+                    title: '申请日期',
+                    sortable: true
+                }, {
+                    field: 'status',
+                    title: '状态' + jointTableFilter('status', statusArry, 'un_pay'),
+                    formatter: function (value, row, index) {
+                        switch (value) {
+                            case 'paid':
+                                return '已付款';
+                                break;
+                            case 'un_pay':
+                                return '待付款';
+                                break;
+                            default:
+                                return value;
+                        }
+                    }
+                }, {
+                    field: 'pay_time',
+                    title: '付款日期'
+                }, {
+                    field: 'amount',
+                    title: '提款金额'
+                }, {
+                    field: 'do',
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {// 列表操作列格式器
+                        var action = ListPageConfig.action;
+                        if (row.status == 'un_pay') {
+                            action.pay_detail = false;
+                            action.pay = true;
+                        } else if (row.status == 'paid') {
+                            action.pay = false;
+                            action.pay_detail = true;
+                        } else {
+                            action.pay = false;
+                            action.pay_detail = false;
+                        }
+                        var html = '';
+                        for (key in  action) {
+                            if (action[key] && List.htmlConfig[key]) {
+                                html += List.htmlConfig[key].join('');
+                            }
+                        }
+                        action = '';
+                        return html;
+                    },
+                    events: 'List.operateEvents',
+                    width: '210px'
+                }]
+            }
+        }
+        ;
+    var auth = getAuthorityByUrl('/charge/drawlistview');
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->partial('layout/listAd.phtml');
+?>

@@ -1,0 +1,238 @@
+<?php
+echo $this->partial('layout/listPublicHeader2.phtml');
+echo $this->partial('layout/tablePublic.phtml');
+?>
+<script>
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/order/order',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped: true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+            onMouseoverRow:function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display','inline-block');
+            },
+            onMouseoutRow:function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display','none');
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '订单名称'
+            }, {
+                field: 'order_id',
+                title: '订单号',
+                sortable: true
+            }, {
+                field: 'client_name',
+                title: '广告主'
+            }, {
+                field: 's',
+                title: '起始日期',
+                sortable: true
+            }, {
+                field: 'e',
+                title: '截止日期',
+                sortable: true
+            }, {
+                field: 'pause',
+                title: '订单状态',
+                sortable: true,
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case '暂停':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_start status_modify_active" src="../img/icon/icon_start.png" title="启用"></div>' +
+                                '<img class="status_modify status_end status_modify_end" src="../img/icon/icon_end.png" title="结束" style="margin-left: 3px">';
+                            break;
+                        case '开启':
+                            return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause status_modify_pause" src="../img/icon/icon_pause.png" title="暂停"></div>' +
+                                '<img class="status_modify status_end status_modify_end" src="../img/icon/icon_end.png" title="结束" style="margin-left: 3px">';
+                            break;
+                        case '结束':
+                            return '<span style="color: #808080;position: relative;top: 2px;margin-right: 5px;">结束</span>';
+                            break;
+                        default:
+                            return value;
+                    }
+                },
+                events: {//暂停1 启用2 结束4
+                    'click .status_modify_active': function (e, value, row, index) {
+                        updateorderstatus(row.uid, 2, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                layer.msg(req.msg);
+                            }
+                        });
+                    },
+                    'click .status_modify_pause': function (e, value, row, index) {
+                        updateorderstatus(row.uid, 1, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                layer.msg(req.msg);
+                            }
+                        });
+                    },
+                    'click .status_modify_end': function (e, value, row, index) {
+                        updateorderstatus(row.uid, 4, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh');
+                            } else {
+                                layer.msg(req.msg);
+                            }
+                        });
+                    }
+                },
+                width: '100px'
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        },
+        url: {
+            add: '/order/orderadd',         //添加 数据 html 地址
+            detail: '/order/orderdetail',
+            edit: '/order/orderedit',         //编辑数据 html 地址
+            del: '/order/orderdel'         //删除数据地址
+
+        },
+        action: {
+            detail: true,
+            edit: true,
+            del: true
+        },
+        title: {
+            addTitle: '添加订单',
+            detailTitle: '订单详情',
+            editTitle: '编辑订单'
+
+        },
+        validate: {      //添加提交验证
+            add: function () {
+                $("#Deepleaper_loading").show();
+                var name = $('#name');
+                var nameVal = name.val();
+                var order_id = $('#url');
+                var order_idVal = order_id.val();
+                var cpm = $('#linkman');
+                var cpmVal = cpm.val();
+
+                if (!vaIsNotNull(nameVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(name, '订单名称不能为空');
+                    return false;
+                } else if (!vaIsNotNull(order_idVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(order_id, '订单号不能为空');
+                    return false;
+                }
+                else {
+                    $("#Deepleaper_loading").hide();
+                    return checkFormValidByBackend();
+                }
+            },
+            edit: function () {
+                $("#Deepleaper_loading").show();
+                var name = $('#name');
+                var nameVal = name.val();
+                var order_id = $('#url');
+                var order_idVal = order_id.val();
+                var cpm = $('#linkman');
+                var cpmVal = cpm.val();
+
+                if (!vaIsNotNull(nameVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(name, '订单名称不能为空');
+                    return false;
+                } else if (!vaIsNotNull(order_idVal)) {
+                    $("#Deepleaper_loading").hide();
+                    vaError(order_id, '订单号不能为空');
+                    return false;
+                }
+                else {
+                    $("#Deepleaper_loading").hide();
+                    return checkFormValidByBackend();
+                }
+            },
+            vaPause: function () {//订单结束后，不能修改订单及广告投放的设置
+            }
+        }
+    };
+
+
+    var auth = getAuthorityByUrl('/order/order');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            ListPageConfig.action = {
+                detail: false,
+                edit: false,
+                del: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                detail: true,
+                edit: true,
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+
+</script>
+
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加订单
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="订单名称 or 订单号" value="" name="search">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+               data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+<?php
+echo $this->partial('layout/listPublicFooter2.phtml');
+?>
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

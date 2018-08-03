@@ -1,0 +1,4 @@
+export const USERINFO_INIT = "USERINFO_INIT";
+export const CURRENT_DATA = "CURRENT_DATA";
+export const DELTATIME = "DELTATIME";
+export const USERADSTRUCT_SET = "USERADSTRUCT_SET";

@@ -1,0 +1,183 @@
+/*推荐列表 开始*/
+.recommendList {
+    background-color: #ffffff;
+    margin: 36px 0 30px;
+    width: 100%;
+    position: relative;
+}
+
+.recommendList .recommend {
+    position: absolute;
+    width: 141px;
+    left: 0;
+    top: -25px;
+    z-index: 2;
+}
+
+.recommendList ul li {
+    list-style: none;
+    border-bottom: .4px solid #ebebeb;
+    padding: 15px 20px;
+    position: relative;
+}
+
+.decorate {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.recommendList ul li .listPic {
+    border-radius: 3px;
+}
+
+/*单图样式 开始*/
+.recommendList .styleOne {
+    padding-left: 16px;
+    padding-right: 24px;
+}
+
+.recommendList .styleOne .styleOneWrapper {
+    position: relative;
+}
+
+.recommendList .styleOne .listPic {
+    width: 33%;
+}
+
+.recommendList .styleOne .contentWrapper {
+    position: relative;
+    width: 67%;
+    float: right;
+}
+
+.recommendList .styleOne .contentWrapper .contentTitle {
+    font-size: 15px;
+    height: 40px;
+    overflow: hidden;
+    color: #21292e;
+    letter-spacing: 1px;
+    line-height: 20px;
+    padding-left: 15px;
+}
+
+.recommendList .styleOne .contentSource {
+    position: absolute;
+    left: 33%;
+    bottom: 3px;
+    padding-left: 15px;
+    font-size: 12px;
+    color: #a4aab3;
+    letter-spacing: .62px;
+}
+
+/*单图样式 结束*/
+/*三图样式 开始*/
+.recommendList .styleTwo .contentTitle {
+    font-size: 15px;
+    max-height: 50px;
+    overflow: hidden;
+    color: #21292e;
+    letter-spacing: 1px;
+    line-height: 25px;
+    margin-bottom: 12px;
+}
+
+.recommendList .styleTwo .listPic {
+    width: 33%;
+    float: left;
+}
+
+.recommendList .styleTwo .listPic:nth-child(2) {
+    transform: translateX(-3px);
+}
+
+.recommendList .styleTwo .listPic:nth-child(3) {
+    margin: 0 0.33%;
+}
+
+.recommendList .styleTwo .listPic:nth-child(4) {
+    transform: translateX(3px);
+}
+
+.recommendList .styleTwo .contentSource {
+    clear: both;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #a4aab3;
+    letter-spacing: .62px;
+}
+
+/*三图样式 结束*/
+
+/*大图样式 开始*/
+.recommendList .styleThree {
+    padding-left: 16px;
+    padding-right: 24px;
+}
+
+.recommendList .styleThree .styleOneWrapper {
+    position: relative;
+}
+
+.recommendList .styleThree .listPic {
+    width: 33%;
+}
+
+.recommendList .styleThree .contentWrapper {
+    position: relative;
+    width: 67%;
+    float: right;
+}
+
+.recommendList .styleThree .contentWrapper .contentTitle {
+    font-size: 15px;
+    height: 36px;
+    overflow: hidden;
+    color: #21292e;
+    letter-spacing: 1px;
+    line-height: 18px;
+    padding-left: 15px;
+}
+
+.recommendList .styleThree .contentSource {
+    position: absolute;
+    left: 33%;
+    bottom: 3px;
+    padding-left: 15px;
+    font-size: 12px;
+    color: #a4aab3;
+    letter-spacing: .62px;
+}
+
+/*大图样式 结束*/
+
+
+
+/*推荐列表 结束*/
+/*推荐列表装饰条色号*/
+.color_1 {
+    background-color: #FE74AE;
+}
+
+.color_2 {
+    background-color: #D974FE;
+}
+
+.color_3 {
+    background-color: #FE9B74;
+}
+
+.color_4 {
+    background-color: #74BBFE;
+}
+
+.color_5 {
+    background-color: #74FEF7;
+}
+
+.color_6 {
+    background-color: #FEDF74;
+}

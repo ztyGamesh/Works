@@ -1,0 +1,8 @@
+.DS_Store
+*/.DS_Store
+.idea
+/data/cache/*
+/public/uploads/*
+/config/autoload/global.php
+/public/index.php
+/xlx

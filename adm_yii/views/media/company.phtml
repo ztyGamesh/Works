@@ -1,0 +1,144 @@
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicHeader2.phtml');
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+<script>
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        func: function (data) {
+        },
+        tableIndexCol: 'uid', //数据索引字段 一般为 uid 或者 id
+        table: {           //表格配置
+            url: '/media/company',
+            queryParams: 'queryParams',
+            toolbar: '#toolbar',
+            showColumns: true,
+            searchAlign: 'left',
+            pagination: true,
+            pageSize: 50,
+            pageList: [30, 50, 100],
+            showRefresh: true,
+            sortName: 'create_time',//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',
+            sidePagination: 'server',
+            striped:true,
+            cookie: true,
+            cookieIdTable: 'replacebyListJS',
+            cookiesEnabled: ['bs.table.pageNumber'],
+            cookiePath: '/',
+
+            columns: [
+                {
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '媒介渠道',
+                formatter: function (value, row, index) {
+                    return '<span class="cutValue">' + cutstrbyChar(value, 16) + '</span>'
+                },
+                events: {
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    }
+                }
+            }, {
+                field: 'type',
+                title: '类型'
+
+
+            }, {
+                field: 'linkman',
+                title: '联系人',
+
+            }, {
+                field: 'tel',
+                title: '联系手机号',
+
+            }, {
+
+                field: 'create_time',
+                title: '创建时间',
+
+            }, {
+
+                field: 'create_user',
+                title: '创建/修改人',
+
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+            }]
+        },
+        url: {
+            add: '/media/companyadd',         //添加 数据 html 地址
+            edit: '/media/companyedit',         //编辑数据 html 地址
+            del: '/media/companydel',         //删除数据地址
+            detail: false                      //详细内容地址,为空则取编辑的地址
+        },
+        title: {
+            addTitle: '添加媒介渠道',
+            editTitle: '编辑媒介渠道',
+        },
+        showDetail: false         //是否显示详细信息按钮
+    };
+
+
+    var auth = getAuthorityByUrl('/media/company');
+    function checkAuthority() {
+        if (auth == 0) {
+            // 用户无耻的绕过了验证，你就说怎么办吧
+            // 好吧，勉强给个404让它冷静一下
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                edit: false,
+                del: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                edit: true,
+                //    del: true
+                del: false
+            };
+        }
+    }
+    checkAuthority();
+</script>
+<div id="toolbar">
+    <div class="btn-group pull-left" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">添加媒介渠道
+        </div>
+    </div>
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;'>
+        <input type="text" class="form-control" placeholder="媒介渠道名称" value="" name="search" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')">
+        <span class="input-group-btn">
+			<a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+		</span>
+    </div>
+</div>
+<table id="table" class="list-table"></table>
+
+<?php
+echo $this->renderFile('@app/views/layouts/listPublicFooter3.phtml');
+?>
+
+
+<script>
+    hideChangeBtnIfNeed(auth);
+</script>

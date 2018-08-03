@@ -1,0 +1,51 @@
+
+<form id="edit" method="post" class="form-horizontal list-form">
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">内容合作名称：</label>
+        <div class="col-sm-6 " id="cooperate_name"></div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">内容合作ID：</label>
+        <div class="col-sm-6 " id="uid"></div>
+    </div>
+
+    <div class="form-group ">
+        <label class="col-sm-3 control-label control-label2">应用名称：</label>
+        <div class="col-sm-6 " id="media_name"></div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label control-label2">应用ID：</label>
+        <div class="col-sm-6" id="media_uid"></div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    checkActionAuth('/media/feeds', 1);
+//真正从后台数据库取数据的接口
+    $.ajax({
+        url: '/feeds/getFeeds?uid=<?php echo $_GET["uid"]; ?>',
+        dataType: 'json',
+        success: function(ret){
+            // 如果返回正常，而且data有值而且格式正确
+            if (ret.status == 1 && ret.data != undefined) {
+                putData(ret.data);
+            } else {
+                // 异常处理
+                console.log('error');
+            }
+        }
+    });
+
+    function putData(data) {
+//         基本信息
+        var showList = ['cooperate_name', 'uid', 'media_name', 'media_uid'];
+        for (var i = 0; i < showList.length; i++) {
+            $('#' + showList[i]).text(data[showList[i]] == undefined ? '' : data[showList[i]]);
+        }
+
+    }
+</script>

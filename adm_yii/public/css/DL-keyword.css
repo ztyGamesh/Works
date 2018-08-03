@@ -1,0 +1,45 @@
+.modal .modal-header .modal-title .titledes{
+    font-size: 12px;padding-left: 20px;
+}
+.dl-keyword .keyword-selector-tab{
+    height: 32px;  margin-top: 10px;
+}
+.dl-keyword .matchWrapper{
+    margin:15px 0;
+}
+.dl-keyword .matchWrapper input{
+    margin-top: 0;vertical-align: middle;
+}
+.dl-keyword .matchWrapper .matchTitle{
+    vertical-align: middle;
+}
+.dl-keyword .matchWrapper .radioLabel{
+    vertical-align: middle;
+}
+.dl-keyword .matchWrapper .matchTitleExplain{
+    display:inline-block;cursor: help;vertical-align: middle;
+}
+.dl-keyword .keyword-selector-tab .ctrl-group-keyword-tab-navigator{
+    padding: 0;margin: 0;list-style: none;
+}
+.dl-keyword .keyword-selector-tab .ctrl-group-keyword-tab-navigator .ctrl-group-keyword-tab-tab-title-for-panel{
+    min-width: 85px;height: 32px;line-height: 32px;font-size: 12px;margin-right: 0;border-top-left-radius: 0;border-top-right-radius: 0;border-left: none;border-right: none;border-right: 1px #fff solid;border-top: 1px #ebebeb solid;color: #666;background: #fff;font-weight: bold;border-top-color: #00d5cd;padding: 0 10px;display: inline-block;
+}
+.dl-keyword .keyword-selector-tab .ctrl-group-keyword-tab-navigator .ctrl-group-keyword-tab-tab-title-for-panel.deleteAll{
+    border: none;  text-align: right;  cursor: pointer;  float: right;  color: #00d5cd;
+}
+.dl-keyword .ctrl-group-keyword-text-wrapper{
+    position: relative;overflow: hidden;-moz-border-radius: 0;-webkit-border-radius: 0;border-radius: 0;border: 1px solid #ddd;display: block;height: 300px;width: 568px;padding: 0;margin: 0;outline: 0;font-weight: inherit;font-style: inherit;font-family: inherit;font-size: 100%;vertical-align: baseline;
+}
+.dl-keyword .ctrl-group-keyword-text-wrapper .ctrl-group-keyword-text-num-line{
+    line-height: 1.5;text-align: center;width: 3em;font-size: 1em;overflow: hidden;position: absolute;left: 0;top: 0;height: 100%;-webkit-border-top-left-radius: 0;-moz-border-radius-topleft: 0;border-top-left-radius: 0;-webkit-border-bottom-left-radius: 0;-moz-border-radius-bottomleft: 0;border-bottom-left-radius: 0;background: #f6f6f6;color: #666;
+}
+.dl-keyword .ctrl-group-keyword-text-wrapper .ctrl-group-keyword-text-container{
+    position: absolute; left: 3.2em; right: 0; top: 0; bottom: 0;
+}
+.dl-keyword .ctrl-group-keyword-text-wrapper .ctrl-group-keyword-text-container .group-keyword{
+    width:100%;height:100%; position: relative;display: inline-block;vertical-align: middle;-moz-border-radius: 0;-webkit-border-radius: 0;border-radius: 0;
+}
+.dl-keyword .ctrl-group-keyword-text-wrapper .ctrl-group-keyword-text-container .group-keyword .ctrl-group-keyword{
+    -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;border-radius: 0;position: absolute;width: 100%;height: 100%;line-height: 1.5;padding: 0;margin: 0;outline: none;resize: none;background: none;color: inherit;border: none;word-wrap: normal;white-space: pre;font-size: 12px;background-color: #fff;overflow-x: auto;
+}

@@ -1,0 +1,128 @@
+<link rel="stylesheet" href="../css/Dl_normalize.css"/>
+<?php
+echo $this->partial('layout/formPublicHeader.phtml');
+?>
+<div class="user-message-list">
+    <div class="user-message-list-name">
+        <ol>
+            <li>
+                <span id="companyName" class="user-message-name linkable"><a href="/promotion/adgrouplistview">广告组列表</a></span>
+                <img class="separator" src="/img/arrow.png">
+                <span id="adgroupName" class="user-message-name">添加广告组</span>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="Dl-fullscreen-line"></div>
+<div style="margin-top: 30px">
+    <form class="form-horizontal" role="form">
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">广告组名称</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" value="" id="name">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">选择推广目的</label>
+            <div class="col-sm-7">
+                <select class="selectpicker" data-width="100%" id="purpose">
+                    <option value="landing" selected>落地页</option>
+                    <option value="download">应用下载</option>
+                </select>
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="form-group ">
+            <label class="col-md-2 col-md-offset-1  control-label Dl-required">日预算</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" value="" id="budget">
+            </div>
+            <span class="help-block col-md-7 col-md-offset-3"></span>
+        </div>
+        <div class="row submit_box">
+            <div class="submit_btn_wrapper">
+                <div class="submit_btn" id="cancel">
+                    返回列表
+                </div>
+                <div class="submit_btn submit_btn_default submit_btn_active" id="submit">
+                    完成并继续
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        checkActionAuth('/promotion/adgrouplistview', 2);
+
+        var checkList = [
+            {
+                id: '#name',
+                validationFunc: [vaIsNotNull, vaWordNumberLimit1_25],
+                msg: ['广告组名称不能为空', '名称长度应为1-50个字符:汉字占2个字符']
+            }, {
+                id: '#budget',
+                validationFunc: [vaIsNotNull, vaIsMoney],
+                msg: ['预算不能为空', '日预算格式错误']
+            }
+        ];
+        for (var i = 0; i < checkList.length; i++) {
+            var obj = checkList[i];
+            $(obj.id).bind('blur', {obj: obj}, function (event) {
+                return validatefun(event.data.obj);
+            });
+        }
+        function validatefun(obj) {
+            for (var i = 0; i < obj.validationFunc.length; i++) {
+                if (!obj.validationFunc[i]($(obj.id).val())) {
+                    vaError($(obj.id), obj.msg[i]);
+                    return false;
+                } else {
+                    vaSuccess($(obj.id));
+                }
+            }
+            return true;
+        }
+
+        function presubmit() {//提交验证
+            for (var i = 0; i < checkList.length; i++) {
+                var obj = checkList[i];
+                if (!validatefun(obj)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        $('#submit').click(function () {
+            $("#Deepleaper_loading").show();
+            if (!presubmit()) {
+                $("#Deepleaper_loading").hide();
+                return false;
+            }
+            var name = $("#name").val();
+            var purpose = $("#purpose").val();
+            var budget = $("#budget").val();
+            adgroupsaveAPI(name, purpose, budget, function (result) {
+                var req = JSON.parse(result);
+                if (req.status == 1) {
+                    $("#Deepleaper_loading").hide();
+                    layer.msg('广告组添加成功');
+                    setTimeout(function () {
+                        window.location = '/promotion/adplanaddview?groupId=' + req.data + '&entrance=group';
+                    }, 1000);
+                } else {
+                    $("#Deepleaper_loading").hide();
+                    layer.msg(req.msg);
+                }
+            });
+        });
+        $("#cancel").bind('click', function () {
+            window.location = '/promotion/adgrouplistview';
+        })
+    });
+</script>
+<?php
+echo $this->partial('layout/formPublicFooter.phtml');
+?>

@@ -1,0 +1,496 @@
+<!--广告组列表-->
+<link rel="stylesheet" href="/css/bootstrap-table.css?v=20170719">
+<script type="text/javascript" src="/js/bootstrap-tableFilter-deepleaper.js"></script>
+<style>
+    .bootstrap-table {
+        height: calc(100% - 0px);
+        overflow: hidden;
+    }
+    .bootstrap-table .fixed-table-container {
+        height: calc(100% - 150px);
+    }
+    .bootstrap-table .fixed-table-body {
+        overflow: auto;
+        min-height: 230px;
+    }
+    .bootstrap-table .fixed-table-body .fixed-table-loading {
+        top: 0 !important;
+        height: 100%;
+        padding-top: 80px;
+        font-size: 14px;
+        background-color: rgba(255,255,255,0.85);
+    }
+    .thead-position {
+        position: absolute;
+        z-index: 999;
+        top: 0;
+    }
+    .tbody-block {
+        display: block;
+    }
+    table td:not(:hover) .ad-table-edit-open {
+        visibility: hidden !important;
+    }
+</style>
+<?php
+echo $this->renderFile('@app/views/layouts/tablePublic.phtml');
+?>
+
+
+<div class="toolbar" id="toolbar">
+    <div class="btn-group pull-left create" id="for_change">
+        <div class="btn deepleaper-btn-normal plus">
+            <img src="/img/icon/icon_plussign.png" class="btn-icon">新建广告组
+        </div>
+    </div>
+
+    <div class="input-group pull-left deepleaper-search-control" style='width:250px;margin-right: 14px'>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="请输入广告组名称" value=""
+               name="search">
+        <span class="input-group-btn">
+			                <a id="ok" class="btn btn-default dropdown-toggle deepleaper-search-btn" type="button"
+                               data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+		                </span>
+    </div>
+
+    <div class="input-group pull-left date dl-date-range-wrapper">
+        <input type="text" class="form-control dl-date-range-input" id="searchDate">
+        <span class="caret dl-date-range-input-icon"></span>
+    </div>
+
+    <!-- 批量操作开始 -->
+    <br/>
+    <div class="input-group pull-left" style="margin-top: 8px;" id="all-update">
+        <a class="btn" data-status="active" style="color: #337ab7;" href="javascript:;">启用</a>
+        <a class="btn" data-status="pause" style="color: #337ab7;" href="javascript:;">暂停</a>
+        <a class="btn" data-status="delete" style="color: #337ab7;" href="javascript:;">删除</a>
+    </div>
+    <div class="input-group pull-left" style="margin-top: 8px;">
+        <button style="margin-left: 6px;" type="button" class="btn deepleaper-btn-normal" data-toggle="dropdown" aria-expanded="true" id="dropdownMenu1">
+            <div style="text-align: center;">
+                <span>批量操作</span>
+                <span class="caret"></span>
+            </div>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li><a href="javascript:;" id="all-budget-open">修改日预算</a></li>
+            <li><a href="javascript:;" id="all-copy-open">复制广告组</a></li>
+        </ul>
+    </div>
+    <!-- 批量操作结束 -->
+</div>
+
+<!-- 修改日预算模态框 -->
+<div class="modal fade" id="all-budget-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div style="display: table-cell;">修改日预算：</div>
+                    <input style="margin-left: 5px;margin-right: 5px;display: table-cell;padding: 6px 12px;font-size: 12px;color: #555;border: 1px solid #ccc;border-radius: 6px;"/>
+                    <div style="display: table-cell;">元</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="all-budget">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 复制模态框 -->
+<div class="modal fade" id="all-copy-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top: 155px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="radio-inline">
+                        <input type="radio" name="all-copy-modal-radio" style="margin-top: 0;" value="1" checked="checked"/>
+                        <span>复制广告组及其广告组下广告计划和广告创意</span>
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="all-copy-modal-radio" style="margin-top: 0;" value="0"/>
+                        <span>仅复制广告组</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="all-copy">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="table" class="list-table"></table>
+<?php
+echo $this->renderFile('@app/views/layouts/bootstrapDaterangerpickerPublic.phtml');
+?>
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+<!-- 表格工具 -->
+<script src="/js/listUtils/index.js"></script>
+<!-- 表格可编辑 -->
+<script src="/js/listUtils/editAbleUtil.js"></script>
+<!-- 表格批量操作 -->
+<script src="/js/listUtils/batchOperation.js"></script>
+
+<script>
+    var statusArry = {'active': '启用', 'pause': '暂停'};
+    var purpose = {'landing': '落地页', 'download': '应用下载'};
+    var ListPageConfig = {
+        tableId: '#table',   // 表格id
+        tableIndexCol: 'id', //数据索引字段 一般为 uid 或者 id
+        func: function (data) {
+        },
+        executeFilterBind: function () {//bootstrap-table中绑定tableFilter事件
+            bindTableFilterAction('purpose');
+            bindTableFilterAction('status');
+        },
+        url: {
+            addPlan: '/promotion/adplanaddview',           //添加广告计划
+            add: '/promotion/adgroupaddview',         //添加页面
+            edit: '/promotion/adgroupeditview',         //修改页面
+            colModify: '/promotion/adgroupupdatestatus' //状态(有效/暂停)修改接口
+        },
+        api: {
+            colModify: adgroupupdatestatusAPI //修改状态接口
+        },
+        htmlConfig: {
+            addPlan: ['<div class="addPlan dl-list-action-btn-wrapper"  title="添加广告计划">',
+                '<img src="../img/icon/icon_add.png" class="dl-list-action-btn">',
+                '</div>']
+        },
+        operateEvents: {
+            'click .addPlan': function (e, value, row, index) {
+                window.location.href = ListPageConfig.url.addPlan + '?groupId=' + row.id + '&entrance=group';
+            }
+        },
+        title: {
+            addTitle: '添加用户权限',
+            editTitle: '修改用户权限'
+        },
+        showDetail: false,         //是否显示详细信息按钮
+        action: {
+            edit: true,
+            addPlan: true
+        },
+        toolbar: function () {
+        },
+        table: {//表格参数
+            height: undefined,//定义表格的高度
+            undefinedText: '-',//当数据为undefined时显示的字符
+            striped: true,//设置为 true 会有隔行变色效果
+            sortName: undefined,//定义排序列,通过url方式获取数据填写字段名，否则填写下标
+            sortOrder: 'desc',//定义排序方式 'asc' 或者 'desc'
+            sortStable: true,//设置为 true 将获得稳定的排序，我们会添加_position属性到 row 数据中。
+            url: '/promotion/adgrouplist',//服务器数据的加载地址
+            queryParams: function queryParams(params) {//请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
+                var parent = $('#table').parent();
+                parent.attr('data-scrollTop', parent.scrollTop());
+                var loading = parent.find('.fixed-table-loading:first');
+                loading.show();
+                var searchDate = $('#searchDate').val().replace(' - ', ',').split(',');//查询日期
+                params['begin'] = searchDate[0].replace(/\//g, '-');
+                params['end'] = searchDate[1].replace(/\//g, '-');
+                params['search'] = $("#searchKeyword").val();
+                params['purpose'] = $("input[name=purpose]:checked").val();
+                params['status'] = $("input[name=status]:checked").val();
+                return params;
+            },
+            onLoadSuccess: function(res){
+                var parent = $('#table').parent();
+                var top = parent.attr('data-scrollTop') || 0;
+                parent.scrollTop(top);
+                positionTableHeader();
+            },
+            responseHandler: function (res) {//加载服务器数据之前的处理程序，可以用来格式化数据。
+                var loading = $('#table').parent().find('.fixed-table-loading:first');
+                loading.hide();
+                if (res.status == 1) {
+                    return res.data;
+                } else {
+                    console.log("格式化数据失败");
+                    return res;
+                }
+            },
+            toolbar: '#toolbar',//一个jQuery 选择器，指明自定义的toolbar 例如:#toolbar, .toolbar.
+            searchAlign: 'left',
+            pagination: true,//	设置为 true 会在表格底部显示分页条
+            paginationLoop: true,//	设置为 true 启用分页条无限循环的功能。
+            onlyInfoPagination: false,//设置为 true 只显示总数据数，而不显示分页按钮。需要 pagination='True'
+            sidePagination: 'server',//设置在哪里进行分页，可选值为 'client' 或者 'server'。设置 'server'时，必须设置 服务器数据地址（url）或者重写ajax方法
+            pageNumber: 1,//如果设置了分页，首页页码
+            pageSize: 50,  //如果设置了分页，页面数据条数
+            pageList: [30, 50, 100],//如果设置了分页，设置可供选择的页面数据条数。设置为All 则显示所有记录。
+            search: false,//是否启用搜索框
+            showFooter: false,//是否显示列脚
+            showColumns: true,//是否显示 内容列下拉框
+            showRefresh: true,//是否显示 刷新按钮
+            showToggle: false,//是否显示 切换试图（table/card）按钮
+            showPaginationSwitch: false,//是否显示 数据条数选择框
+            paginationVAlign: 'bottom',//指定 分页条 在垂直方向的位置。'top' or 'bottom' or 'bonth'
+            paginationPreText: '上一页',//指定分页条中上一页按钮的图标或文字
+            paginationNextText: '下一页',//指定分页条中下一页按钮的图标或文字
+            clickToSelect: false,//设置true 将在点击行时，自动选择rediobox 和 checkbox
+            singleSelect: false,//设置True 将禁止多选
+            checkboxHeader: true,//设置false 将在列头隐藏check-all checkbox
+            maintainSelected: false,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            sortable: true,//设置为false 将禁止所有列的排序
+            silentSort: true,//设置为 false 将在点击分页按钮时，自动记住排序项。仅在 sidePagination设置为 server时生效.
+            cookie: true,
+            cookiePath: '/',
+            cookieIdTable: 'replacebyListJS', cookiesEnabled: ['bs.table.pageNumber'],
+            rowStyle: function (row, index) {//自定义行样式 参数为：row: 行数据 index: 行下标 返回值可以为class或者css
+                return {};
+//                if ((index % 2) !== 0) {//demo
+//                    return {
+//                        css: {'color': 'red'}
+//                    }
+//                }else{
+//                    return{}
+//                }
+            },
+            rowAttributes: function rowAttributes(row, index) {//自定义行属性 参数为：row: 行数据 index: 行下标 返回值可以为class或者css 支持所有自定义属性
+                return {
+//                    'data-id': row.guid,
+//                    'data-htmlpath': row.htmlPath,
+//                    'data-xmlpath': row.xmlPath
+                }
+            },
+            onMouseoverRow: function (row, $element) {//自定义行鼠标覆盖事件
+                $element.find('.status_modify').css('display', 'inline-block');
+            },
+            onMouseoutRow: function (row, $element) {//自定义行鼠标移出事件
+                $element.find('.status_modify').css('display', 'none');
+            },
+            columns: [{//列参数
+                checkbox: true
+            }, {
+                field: 'name',
+                title: '广告组',
+                formatter: function (value, row, index) {
+                    return '<a class="groupname" style="color: #3d5d9f;cursor: pointer;"><span class="cutValue">' + cutstrbyChar(value, 16) + '</span></a>' + tableEditTemplate.content;
+                },
+                events: Object.assign({
+                    'mouseenter .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.tips(value, e.target, {
+                                tips: [1, '#353538'],
+                                area: ['auto', 'auto']
+                            });
+                        }
+                    },
+                    'mouseleave .cutValue': function (e, value, row, index) {
+                        if (getCharLength(value) > 16) {
+                            layer.closeAll()
+                        }
+                    },
+                    'click .groupname': function (e, value, row, index) {
+                        window.location.href = '/promotion/adplanlistview?groupId=' + row.id;
+                    },
+                },
+                //修改广告组名称
+                tableEditTemplate.getEvents({
+                    validate: 'charSize',
+                    min: 1, max: 50,
+                    msg: '名称不能为空！50个以内',
+                    url: '/adgroup/update',
+                    query: function(data){
+                        return {
+                            type: 'name',
+                            id: data.id,
+                            name: data.value,
+                        }
+                    }
+                }))
+            }, {
+                field: 'status',
+                title: '状态' + jointTableFilter('status', statusArry),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'pause':
+                            return '<span style="color: #fd998c;position: relative;top: 2px;margin-right: 5px;">暂停</span><img class="status_modify status_start" src="../img/icon/icon_start.png" title="启用">';
+                            break;
+                        case 'active':
+                            return '<span style="color: #00d5cd;position: relative;top: 2px;margin-right: 5px;">启用</span><img class="status_modify status_pause" src="../img/icon/icon_pause.png" title="暂停">';
+                            break;
+                        default:
+                            return value;
+                    }
+                },
+                events: {
+                    'click .status_modify': function (e, value, row, index) {//status开关
+                        if ('active' == row.status) {
+                            row.status = 'pause';
+                        } else {
+                            row.status = 'active';
+                        }
+                        var postData = {
+                            'ids': row.id,
+                            'status': row.status
+                        };
+                        ListPageConfig.api.colModify(ListPageConfig.url.colModify, postData, function (result) {
+                            var req = JSON.parse(result);
+                            if (req.status == 1) {
+                                $(ListPageConfig.tableId).bootstrapTable('refresh', {silent: true});
+                            } else {
+                                Comm.error(data.msg);
+                            }
+                        });
+                    }
+                },
+                width: '85px'
+            }, {
+                field: 'purpose',
+                title: '推广目的' + jointTableFilter('purpose', purpose),
+                formatter: function (value, row, index) {
+                    switch (value) {
+                        case 'landing':
+                            return '落地页';
+                            break;
+                        case 'download':
+                            return '应用下载';
+                            break;
+                        default:
+                            return value;
+                    }
+                }
+            }, {
+                field: 'budget',
+                title: '日预算(元)',
+                formatter: function(value, row, index) {
+                    return '<span>' + value + '</span>' + tableEditTemplate.content;
+                },
+                //修改日预算
+                events: tableEditTemplate.getEvents({
+                    validate: 'numSizeDecial',
+                    min: 50, max: 10, decial: 2,
+                    msg: '请输入最多两位小数的数值！范围：50~9999999999.99',
+                    url: '/adgroup/update',
+                    query: function(data){
+                        return {
+                            type: 'budget',
+                            id: data.id,
+                            budget: data.value,
+                        }
+                    }
+                }),
+            }, {
+                field: 'spend_budget',
+                title: '花费(元)'
+            }, {
+                field: 'imp',
+                title: '展示数'
+            }, {
+                field: 'clk',
+                title: '点击数'
+            }, {
+                field: 'ctr',
+                title: '点击率',
+                formatter: function (value, row, index) {
+                    return value == null ? null : strToPercent(value);
+                }
+            }, {
+                field: 'do',
+                title: '操作',
+                align: 'center',
+                formatter: 'List.operateFormatter',
+                events: 'List.operateEvents',
+                width: '100px'
+            }]
+        }
+    };
+
+    initdaterangepicker($("#searchDate"), moment(), moment(), moment(), moment('1970-01-01'));
+    var auth = getAuthorityByUrl('/promotion/adgrouplistview');
+    function checkAuthority() {
+        if (auth == 0) {
+            ListPageConfig.action = {
+                edit: false,
+                addPlan: false
+            };
+            toFirstLegalPage();
+        } else if (auth == 1) {
+            ListPageConfig.action = {
+                edit: false,
+                addPlan: false
+            };
+        } else if (auth == 2) {
+            ListPageConfig.action = {
+                edit: true,
+                addPlan: true
+            };
+        }
+    }
+    checkAuthority();
+    hideChangeBtnIfNeed(auth);
+</script>
+
+<!-- 批量操作开始 -->
+<script>
+    /* 批量启用，暂停，删除操作 **/
+    initBatchUpdateStatus({
+        id: 'all-update',
+        name: '广告组',
+        url: '/adgroup/batchUpdate',
+    });
+
+    /* 批量修改日预算 **/
+    initBatchUpdateOperation({
+        id: 'all-budget',
+        name: '广告组',
+        title: '修改日预算（已选择#length个广告组）',
+        url: '/adgroup/batchUpdate',
+        init: function(parent){
+            parent.find('.modal-body input').val('');
+        },
+        query: function(parent, dataIds){
+            var input = parent.find('.modal-body input');
+            var value = input.val();
+            if(!validateString(value, 'numSizeDecial', 50, 10, 2)){
+                layer.msg('请输入最多两位小数的数值！范围：50~9999999999.99');
+                input.focus();
+                return false;
+            }
+            return {
+                type: 'budget',
+                ids: dataIds,
+                budget: value,
+            }
+        },
+    });
+
+    /* 批量复制 **/
+    initBatchUpdateOperation({
+        id: 'all-copy',
+        name: '广告组',
+        title: '复制广告组（已选择#length个广告组）',
+        url: '/adgroup/batchCopy',
+        init: function(parent){
+            parent.find('.modal-body input:first').selected();
+        },
+        query: function(parent, dataIds){
+            var value = parent.find('.modal-body input:checked').val();
+            return {
+                gid: dataIds,
+                recurse: value,
+            }
+        },
+    });
+</script>
+<!-- 批量操作结束 -->
+
+<?php
+echo $this->renderFile('@app/views/layouts/listAd.phtml');
+?>
